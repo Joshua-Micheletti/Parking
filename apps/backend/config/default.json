@@ -3,8 +3,8 @@
         "host": "localhost",
         "port": 5432,
         "database": "parking",
-        "username": "parking",
-        "password": "Cvjak$~c6ty9TY)d",
+        "username": "josh",
+        "password": "123457",
         "dialect": "postgres"
     },
     "password": {
