@@ -1,0 +1,9 @@
+<p>home works!</p>
+
+@if (role === 'admin') {
+    <app-admin></app-admin>
+} @else if (role === 'dbadmin') {
+    <app-dbadmin></app-dbadmin>
+} @else {
+    <app-driver></app-driver>
+}

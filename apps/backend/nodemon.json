@@ -1,0 +1,7 @@
+{
+  "watch": ["./apps/back/src"],
+  "ext": "js,json,ts",
+  "ignore": ["node_modules"],
+  "exec": "(npx tsc --project ./apps/backend/tsconfig.json || exit 1) && node ./apps/backend/dist/main.js",
+  "delay": "1000"
+}

@@ -1,0 +1,29 @@
+{
+    "database": {
+        "host": "localhost",
+        "port": 5432,
+        "database": "parking",
+        "username": "parking",
+        "password": "Cvjak$~c6ty9TY)d",
+        "dialect": "postgres"
+    },
+    "password": {
+        "minimumLength": 6,
+        "maximumLength": 20,
+        "saltRounds": 10
+    },
+    "user": {
+        "minimumLength": 3,
+        "maximumLength": 20,
+        "roles": [
+            "admin",
+            "dbadmin",
+            "driver"
+        ],
+        "defaultRole": "driver"
+    },
+    "jwt": {
+        "secret": "asdasdasd",
+        "expiresIn": "8h"
+    }
+}
