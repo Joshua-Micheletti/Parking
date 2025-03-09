@@ -1,1 +1,14 @@
-{}
+{
+    "database": {
+        "options": {
+            "host": "localhost",
+            "port": 5432,
+            "database": "parking",
+            "username": "josh",
+            "password": "123457",
+            "dialect": "postgres",
+            "connect": true
+        },
+        "connect": true
+    }
+}

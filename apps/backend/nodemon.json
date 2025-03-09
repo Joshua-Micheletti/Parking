@@ -1,5 +1,5 @@
 {
-  "watch": ["./apps/back/src"],
+  "watch": ["./apps/backend/src"],
   "ext": "js,json,ts",
   "ignore": ["node_modules"],
   "exec": "(npx tsc --project ./apps/backend/tsconfig.json || exit 1) && node ./apps/backend/dist/main.js",
