@@ -22,13 +22,21 @@ class User extends Model { }
 
 
 if (config.get('database.connect')) {
-    sequelize = new Sequelize(sequelizeOptions);
+    // sequelize = new Sequelize(sequelizeOptions);
+    sequelize = new Sequelize("postgresql://neondb_owner:npg_y1jXWr0eINvC@ep-mute-block-a9db7f0g-pooler.gwc.azure.neon.tech/neondb?sslmode=require", {
+        dialect: 'postgres',
+        dialectOptions: {
+            ssl: {
+                require: true
+            }
+        }
+    });
 
     const roles: string[] = Array.isArray(config.get('user.roles'))
         ? config.get('user.roles')
         : ['admin', 'dbadmin', 'driver'];
 
-    
+
     const userFields: ModelAttributes = {
         username: {
             type: DataTypes.STRING,
@@ -58,5 +66,5 @@ if (config.get('database.connect')) {
     User.sync({ alter: true });
 }
 
-export {sequelize, User};
+export { sequelize, User };
 
