@@ -17,12 +17,12 @@ async function main() {
 
   app.use("/", apiServer());
 
-  app.listen(3000, (err) => {
+  app.listen(10000, (err) => {
     if (err) {
       console.error(err);
       return;
     }
-    console.log("Server is running on port 3000");
+    console.log("Server is running on port 10000");
   });
 
   app.use(errorHandler);

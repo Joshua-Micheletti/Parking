@@ -17,37 +17,46 @@ const sequelizeOptions: Options = {
     dialect: config.get('database.dialect')
 };
 
-export const sequelize = new Sequelize(sequelizeOptions);
+let sequelize;
+class User extends Model { }
 
-const roles: string[] = Array.isArray(config.get('user.roles'))
-    ? config.get('user.roles')
-    : ['admin', 'dbadmin', 'driver'];
 
-export class User extends Model {}
-const userFields: ModelAttributes = {
-    username: {
-        type: DataTypes.STRING,
-        primaryKey: true
-    },
-    password: {
-        type: DataTypes.STRING
-    },
-    role: {
-        type: DataTypes.ENUM(...roles),
-        defaultValue: config.get('user.defaultRole') ?? 'driver',
-        allowNull: false
-    }
-};
-const userInitOptions: InitOptions = {
-    sequelize,
-    modelName: 'User',
-    name: {
-        singular: 'user',
-        plural: 'user'
-    },
-    tableName: 'user',
-    timestamps: false
-};
+if (config.get('database.connect')) {
+    sequelize = new Sequelize(sequelizeOptions);
 
-User.init(userFields, userInitOptions);
-User.sync({ alter: true });
+    const roles: string[] = Array.isArray(config.get('user.roles'))
+        ? config.get('user.roles')
+        : ['admin', 'dbadmin', 'driver'];
+
+    
+    const userFields: ModelAttributes = {
+        username: {
+            type: DataTypes.STRING,
+            primaryKey: true
+        },
+        password: {
+            type: DataTypes.STRING
+        },
+        role: {
+            type: DataTypes.ENUM(...roles),
+            defaultValue: config.get('user.defaultRole') ?? 'driver',
+            allowNull: false
+        }
+    };
+    const userInitOptions: InitOptions = {
+        sequelize,
+        modelName: 'User',
+        name: {
+            singular: 'user',
+            plural: 'user'
+        },
+        tableName: 'user',
+        timestamps: false
+    };
+
+    User.init(userFields, userInitOptions);
+    User.sync({ alter: true });
+}
+
+export {sequelize, User};
+

@@ -4,8 +4,9 @@
         "port": 5432,
         "database": "parking",
         "username": "josh",
-        "password": "123457",
-        "dialect": "postgres"
+        "password": "123456",
+        "dialect": "postgres",
+        "connect": false
     },
     "password": {
         "minimumLength": 6,
