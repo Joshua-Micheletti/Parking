@@ -22,7 +22,7 @@ export class AuthService {
     this.token = sessionStorage.getItem('token');
     this._httpService
       .request(
-        new HttpRequest('GET', '/api/users/roles', {
+        new HttpRequest('GET', 'https://parking-2uym.onrender.com/users/roles', {
           headers: new HttpHeaders({ Authorization: `Bearer ${this.token}` }),
         })
       )
@@ -45,7 +45,7 @@ export class AuthService {
 
   public login(credentials: { username: string; password: string }): void {
     this._httpService
-      .request(new HttpRequest('POST', '/api/auth/login', credentials, {}))
+      .request(new HttpRequest('POST', 'https://parking-2uym.onrender.com/auth/login', credentials, {}))
       .subscribe({
         next: (res: { message: string; token: string; role: string }) => {
           this.user = credentials.username;
