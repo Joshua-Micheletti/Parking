@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "exec_back": "npx nodemon --config ./apps/backend/nodemon.json || exit 1",
-    "build_back": "npx tsc --project ./apps/backend/tsconfig.json",
+    "build_back": "npm install && npx tsc --project ./apps/backend/tsconfig.json",
     "ng": "ng",
     "exec_front": "(cd ./apps/frontend && ng serve)",
     "build_front": "(cd ./apps/frontend && ng build)",
