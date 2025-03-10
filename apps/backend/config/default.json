@@ -12,7 +12,15 @@
             "dbadmin",
             "driver"
         ],
-        "defaultRole": "driver"
+        "defaultRole": "driver",
+        "bases": [
+            "SEV",
+            "BCN",
+            "MAD",
+            "MLG",
+            "VLC"
+        ],
+        "defaultBase": "SEV"
     },
     "jwt": {
         "secret": "asdasdasd",

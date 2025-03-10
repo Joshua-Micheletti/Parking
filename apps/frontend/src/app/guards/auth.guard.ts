@@ -13,13 +13,12 @@ import { AuthService } from '../services/auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private _authService: AuthService, private _router: Router) {}
+  constructor(private _authService: AuthService, private _router: Router) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): MaybeAsync<GuardResult> {
-    console.log(this._authService.token);
     if (this._authService.token) {
       return true;
     }

@@ -6,7 +6,7 @@ export async function getUsers(req: Request, res: Response): Promise<void> {
   let response;
 
   const findOptions: FindOptions = {
-    attributes: ["username"],
+    attributes: ["username", "role", "base"],
   };
 
   try {

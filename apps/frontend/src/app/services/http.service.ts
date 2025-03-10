@@ -6,9 +6,21 @@ import { filter, map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   public request(requestParams: HttpRequest<any>): Observable<any> {
+    const token: string = sessionStorage.getItem('token') ?? '';
+
+    console.log(token);
+
+    if (token.length !== 0) {
+      requestParams = requestParams.clone({
+        setHeaders: {
+          Authorization: 'Bearer ' + token
+        }
+      });
+    }
+
     return this._httpClient
       .request(requestParams)
       .pipe(filter((res: any) => res.body), map((res: any) => res.body));

@@ -11,6 +11,7 @@ export default async function authenticate(
     const authHeader: string = req.headers.authorization ?? '';
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        console.log('missing auth header');
         res.status(401).json({ message: 'Unauthorized' });
         return;
     }
@@ -18,6 +19,7 @@ export default async function authenticate(
     const authToken: string = authHeader.replace('Bearer ', '');
 
     if (!authToken) {
+        console.log('missing auth token');
         res.status(401).json({ message: 'Unauthorized' });
         return;
     }
@@ -31,6 +33,7 @@ export default async function authenticate(
 
     jwt.verify(authToken, secret, (err: any, decoded: any) => {
         if (err) {
+            console.log('Error verifying jwt', err);
             res.status(401).json({ message: 'Unauthorized' });
             return;
         }
@@ -38,6 +41,7 @@ export default async function authenticate(
         const payload: IJwtPayload = decoded;
 
         if (!payload) {
+            console.log('No payload found in the token');
             res.status(401).json({ message: 'Unauthorized' });
             return;
         }
