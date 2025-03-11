@@ -4,6 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { HttpService } from '../../../services/http.service';
 import { Endpoint, environment } from '../../../../environments/environment';
 import { HttpRequest } from '@angular/common/http';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -12,21 +13,9 @@ import { HttpRequest } from '@angular/common/http';
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent implements OnInit {
-  constructor(private _httpService: HttpService) { }
+  constructor(private _httpService: HttpService, private _usersService: UserService) { }
 
   ngOnInit(): void {
     console.log('initialized');
-    const requestConfig: Endpoint = environment.endpoints['getUsers'];
-
-    if (requestConfig) {
-      this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).subscribe({
-        next: (response: unknown) => {
-          console.log('Users', response);
-        },
-        error: (error: any) => {
-          console.log('Could not get users', error);
-        }
-      });
-    }
   }
 }

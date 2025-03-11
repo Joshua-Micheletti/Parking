@@ -25,6 +25,10 @@ export const environment: Environment = {
             path: '/api/users',
             method: 'POST'
         },
+        deleteUser: {
+            path: '/api/users',
+            method: 'DELETE'
+        },
         getRoles: {
             path: '/api/users/roles',
             method: 'GET'

@@ -7,9 +7,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, LoadingComponent, HttpClientModule],
-  providers: [
-    LoadingService
-  ],
+  providers: [],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
