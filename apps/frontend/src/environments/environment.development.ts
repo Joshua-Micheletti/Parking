@@ -32,6 +32,10 @@ export const environment: Environment = {
         getRoles: {
             path: '/api/users/roles',
             method: 'GET'
+        },
+        updateUser: {
+            path: '/api/users/update',
+            method: 'POST'
         }
     }
 };

@@ -45,8 +45,8 @@ export async function deleteUser(
             }
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        next(error);
+        return;
     }
 
     res.status(200).json(response);

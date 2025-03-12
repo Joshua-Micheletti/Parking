@@ -9,6 +9,7 @@ import { postUser, postUserInputValidation } from './endpoints/postUser';
 import rolesServer from './roles/rolesServer';
 import { deleteUser, deleteUserInputValidation } from './endpoints/deleteUser';
 import admin from '../../middleware/admin';
+import { updateUser, updateUserInputValidation } from './endpoints/updateUser';
 
 /**
  * Function to setup the various endpoints of the API
@@ -23,6 +24,7 @@ export default function apiServer(): Router {
     router.get('/', admin, getUsers);
     router.post('/', admin, postUserInputValidation, postUser);
     router.delete('/', admin, deleteUserInputValidation, deleteUser);
+    router.post('/update', admin, updateUserInputValidation, updateUser);
 
     router.use('/roles', rolesServer());
 
