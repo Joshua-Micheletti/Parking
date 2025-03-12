@@ -11,7 +11,29 @@ export type Environment = {
     };
 }
 
+const host: string = "https://parking-2uym.onrender.com";
 
 export const environment: Environment = {
-    endpoints: {}
+    endpoints: {
+        login: {
+            path: host + '/auth/login',
+            method: 'POST'
+        },
+        getUsers: {
+            path: host + '/users',
+            method: 'GET'
+        },
+        postUsers: {
+            path: host + '/users',
+            method: 'POST'
+        },
+        deleteUser: {
+            path: host + '/users',
+            method: 'DELETE'
+        },
+        getRoles: {
+            path: host + '/users/roles',
+            method: 'GET'
+        }
+    }
 };
