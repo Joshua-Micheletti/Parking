@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="dialog-wrapper">
     <div class="title">{{ 'Add user'}}</div>
     <div class="content">
         <form [formGroup]="userForm">
@@ -42,6 +42,6 @@
     </div>
     <div class="actions">
         <button mat-flat-button (click)="save()" class="save-button">Save</button>
-        <button mat-flat-button color="warn" (click)="close()" class="close-button">Close</button>
+        <button mat-flat-button (click)="close()" class="close-button warning-button">Close</button>
     </div>
 </div>

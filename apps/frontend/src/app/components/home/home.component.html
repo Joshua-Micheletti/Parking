@@ -1,7 +1,22 @@
-@if (role === 'admin') {
-    <app-admin></app-admin>
-} @else if (role === 'dbadmin') {
-    <app-dbadmin></app-dbadmin>
-} @else {
-    <app-driver></app-driver>
-}
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+        #sidenav
+        mode="side"
+        [class.expanded]="isExpanded"
+        (mouseenter)="expandSidenav()"
+        (mouseleave)="collapseSidenav()"
+    >
+        <p>Sidenav content</p>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <button mat-button (click)="toggleSidenav()">Toggle Sidenav</button>
+        @if (role === 'admin') {
+        <app-admin></app-admin>
+        } @else if (role === 'dbadmin') {
+        <app-dbadmin></app-dbadmin>
+        } @else {
+        <app-driver></app-driver>
+        }
+    </mat-sidenav-content>
+</mat-sidenav-container>

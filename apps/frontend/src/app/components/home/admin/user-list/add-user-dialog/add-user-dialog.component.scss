@@ -1,13 +1,8 @@
 .wrapper {
-    background: white;
-    border-radius: 8px;
+    background: var(--dialog-background);
+    border-radius: var(--border-radius);
     min-width: 30vw;
     padding: 2rem 2rem;
-}
-
-.title {
-    font-size: 3rem;
-    margin-bottom: 1rem;
 }
 
 .message {

@@ -1,41 +1,41 @@
-<button mat-raised-button (click)="addUser()">
-    Add User
-</button>
+<button mat-raised-button (click)="addUser()" class="add-user">Add User</button>
 
-<table mat-table [dataSource]="users" class="mat-elevation-z8">
-    <!--- Note that these columns can be defined in any order.
+<div class="table-custom">
+    <table mat-table [dataSource]="users" class="mat-elevation-z8">
+        <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef>Username</th>
-        <td mat-cell *matCellDef="let user">{{ user.username }}</td>
-    </ng-container>
+        <!-- Position Column -->
+        <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Username</th>
+            <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef>Role</th>
-        <td mat-cell *matCellDef="let user">{{ user.role }}</td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <td mat-cell *matCellDef="let user">{{ user.role }}</td>
+        </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="base">
-        <th mat-header-cell *matHeaderCellDef>Base</th>
-        <td mat-cell *matCellDef="let user">{{ user.base }}</td>
-    </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="base">
+            <th mat-header-cell *matHeaderCellDef>Base</th>
+            <td mat-cell *matCellDef="let user">{{ user.base }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>Action</th>
-        <td mat-cell *matCellDef="let user">
-            <button mat-icon-button (click)="updateUser(user)">
-                <mat-icon>settings</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteUser(user.username)">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </td>
-    </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let user">
+                <button mat-icon-button (click)="updateUser(user)">
+                    <mat-icon>settings</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteUser(user.username)">
+                    <mat-icon class="delete-icon">delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns"></tr>
-</table>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    </table>
+</div>

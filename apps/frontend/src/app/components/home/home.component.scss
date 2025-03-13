@@ -1,0 +1,15 @@
+.sidenav-container {
+    height: 100vh;
+}
+
+/* Default collapsed sidenav */
+mat-sidenav {
+    width: 50px;
+    overflow: hidden;
+    transition: width 0.3s ease-in-out;
+}
+
+/* Expanded sidenav */
+mat-sidenav.expanded {
+    width: 250px;
+}

@@ -1,0 +1,14 @@
+.mat-column-role, .mat-column-username, .mat-column-base {
+    width: 30%;
+}
+.table-custom {
+    border-radius: var(--border-radius);
+    margin: 1rem;
+    overflow: hidden;
+}
+.add-user {
+    margin: 1rem 1rem 0rem 1rem;
+}
+.delete-icon {
+    color: var(--warn-color);
+}
