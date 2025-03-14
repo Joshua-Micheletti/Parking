@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { LoadingService } from './services/loading.service';
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { LoadingComponent } from './components/loading/loading.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoadingComponent, HttpClientModule],
+  imports: [RouterOutlet, LoadingComponent, HttpClientModule, RouterModule],
   providers: [],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

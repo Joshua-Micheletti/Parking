@@ -1,22 +1,24 @@
-<mat-sidenav-container class="sidenav-container">
-    <mat-sidenav
-        #sidenav
-        mode="side"
-        [class.expanded]="isExpanded"
-        (mouseenter)="expandSidenav()"
-        (mouseleave)="collapseSidenav()"
-    >
-        <p>Sidenav content</p>
-    </mat-sidenav>
-
-    <mat-sidenav-content>
-        <button mat-button (click)="toggleSidenav()">Toggle Sidenav</button>
-        @if (role === 'admin') {
-        <app-admin></app-admin>
-        } @else if (role === 'dbadmin') {
-        <app-dbadmin></app-dbadmin>
-        } @else {
-        <app-driver></app-driver>
+<div class="wrapper">
+    <div class="sidenav-base" (mouseenter)="openSidenav()" (mouseleave)="closeSidenav()">
+        @for (feature of features; track feature) {
+        <button mat-fab class="functionality-icon">
+            <mat-icon>{{ feature.icon }}</mat-icon>
+        </button>
         }
-    </mat-sidenav-content>
-</mat-sidenav-container>
+    </div>
+
+    <mat-sidenav-container class="sidenav-container">
+        <mat-sidenav #sidenav mode="side" (mouseenter)="openSidenav()" (mouseleave)="closeSidenav()">
+            <div class="sidenav-content-container">
+                @for (feature of features; track feature) {
+                <mat-card matRipple (click)="selectFeature(feature.path ?? '')">
+                    <mat-card-content>{{ feature.name }}</mat-card-content>
+                </mat-card>
+                }
+            </div>
+        </mat-sidenav>
+        <mat-sidenav-content class="w-100">
+            <router-outlet />
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
