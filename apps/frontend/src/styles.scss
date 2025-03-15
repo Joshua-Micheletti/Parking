@@ -76,13 +76,18 @@
 .dark {
     --border-radius: 8px;
     --background: #121212;
-    --sidenav-base-background: #202020;
-    --sidenav-background: #1a1a1a; 
+    --sidenav-base-background: #1a1a1a;
+    --sidenav-background: #1a1a1a;
     --dialog-background: #202020;
     --button-text: rgb(25, 25, 25);
     --text-color: rgb(200, 200, 200);
     --warn-color: #ff746c;
+    --warn-color-ripple: #6d332f;
     --component-background-color: #1a1a1a;
+    --sidenav-card-background: #202020;
+    --table-background-color: #1a1a1a;
+    --table-row-hover-color: #2a2a2a;
+    --table-row-selected-color: #242424;
     @include mat.theme-overrides(
         (
             primary: #73dc85,
@@ -142,6 +147,18 @@
             inverse-tertiary: #006a68
         )
     );
+
+    @include mat.card-overrides(
+        (
+            elevated-container-color: var(--sidenav-card-background)
+        )
+    );
+
+    @include mat.table-overrides(
+        (
+            background-color: var(--table-background-color),
+        )
+    );
 }
 
 .title {
@@ -157,10 +174,16 @@
 }
 
 .warning-button {
-    @include mat.button-overrides((
-        filled-container-color: var(--warn-color),
-        filled-label-text-color: var(--button-text)
-    ));
+    @include mat.button-overrides(
+        (
+            filled-container-color: var(--warn-color),
+            filled-label-text-color: var(--button-text),
+            outlined-label-text-color: var(--warn-color),
+            protected-label-text-color: var(--warn-color),
+            protected-state-layer-color: var(--warn-color),
+            protected-ripple-color: var(--warn-color-ripple)
+        )
+    );
 }
 
 html,

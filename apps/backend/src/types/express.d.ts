@@ -6,6 +6,7 @@ declare global {
         interface Request {
             user?: string; // Your custom property
             role?: string; // Your custom property
+            base?: string;
         }
     }
 }

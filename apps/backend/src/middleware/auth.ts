@@ -48,6 +48,7 @@ export default async function authenticate(
 
         req.user = payload.username;
         req.role = payload.role;
+        req.base = payload.base;
 
         next();
     });

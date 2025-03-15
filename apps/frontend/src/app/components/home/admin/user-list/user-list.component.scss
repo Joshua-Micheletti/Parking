@@ -1,14 +1,34 @@
-.mat-column-role, .mat-column-username, .mat-column-base {
-    width: 30%;
-}
+// .mat-column-role,
+// .mat-column-username,
+// .mat-column-base {
+//     width: 30%;
+// }
 .table-custom {
     border-radius: var(--border-radius);
     margin: 1rem;
     overflow: hidden;
 }
-.add-user {
-    margin: 1rem 1rem 0rem 1rem;
+.action-button {
+    // margin: 0rem 1rem;
 }
 .delete-icon {
     color: var(--warn-color);
+}
+
+.table-row {
+    cursor: pointer;
+}
+
+.table-row:hover {
+    background-color: var(--table-row-hover-color);
+}
+
+.table-row-selected {
+    background-color: var(--table-row-selected-color);
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
 }

@@ -1,4 +1,4 @@
-import { HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { Router } from '@angular/router';
@@ -12,12 +12,14 @@ export class AuthService {
   public user: string | null = null;
   public token: string | null = null;
   public role: string | null = null;
+  public base: string | null = null;
 
   public authenticated$: BehaviorSubject<{
     token: string;
     user: string;
     role: string;
-  }> = new BehaviorSubject({ token: '', user: '', role: '' });
+    base: string;
+  }> = new BehaviorSubject({ token: '', user: '', role: '', base: '' });
 
   constructor(private _httpService: HttpService, private _router: Router) {
     this.token = sessionStorage.getItem('token');
@@ -37,14 +39,16 @@ export class AuthService {
         new HttpRequest(requestConfig.method, requestConfig.path, {})
       )
       .subscribe({
-        next: (response: { user: string; role: string }) => {
+        next: (response: { user: string; role: string, base: string }) => {
           this.user = response.user;
           this.role = response.role;
+          this.base = response.base;
 
           this.authenticated$.next({
             token: this.token ?? '',
             user: this.user,
             role: this.role,
+            base: this.base
           });
         },
         error: (err: unknown) => {
@@ -58,15 +62,17 @@ export class AuthService {
     this._httpService
       .request(new HttpRequest(requestConfig.method, requestConfig.path, credentials))
       .subscribe({
-        next: (res: { message: string; token: string; role: string }) => {
+        next: (res: { message: string; token: string; role: string; base: string }) => {
           this.user = credentials.username;
           this.token = res.token;
           this.role = res.role;
+          this.base = res.base;
 
           this.authenticated$.next({
             token: this.token ?? '',
             user: this.user,
             role: this.role,
+            base: this.base
           });
 
           sessionStorage.setItem('token', this.token);
@@ -77,5 +83,15 @@ export class AuthService {
           console.log(err);
         },
       });
+  }
+
+  public logout(): void {
+    sessionStorage.clear();
+    this.authenticated$.next({token: '', user: '', role: '', base: ''});
+    this.token = null;
+    this.user = null;
+    this.role = null;
+    this.base = null;
+    this._router.navigate(['/login']);
   }
 }

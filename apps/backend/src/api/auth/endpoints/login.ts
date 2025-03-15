@@ -45,7 +45,7 @@ export async function login(
 
     try {
         response = await User.findOne({
-            attributes: ['password', 'role'],
+            attributes: ['password', 'role', 'base'],
             where: {
                 username: username
             }
@@ -70,10 +70,6 @@ export async function login(
             return;
         }
 
-        const options: jwt.SignOptions = {
-            expiresIn: '1h'
-        };
-
         const secret: string = config.get('jwt.secret');
 
         if (!secret) {
@@ -82,12 +78,12 @@ export async function login(
         }
 
         const token = jwt.sign(
-            { username: username, role: response.role },
+            { username: username, role: response.role, base: response.base },
             secret,
             { expiresIn: config.get('jwt.expiresIn') ?? '1h' }
         );
 
-        res.status(200).json({ message: 'Login successful', token: token, role: response.role });
+        res.status(200).json({ message: 'Login successful', token: token, role: response.role, base: response.base });
         return;
     });
 }

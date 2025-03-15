@@ -1,10 +1,14 @@
 <div class="wrapper">
     <div class="sidenav-base" (mouseenter)="openSidenav()" (mouseleave)="closeSidenav()">
         @for (feature of features; track feature) {
-        <button mat-fab class="functionality-icon">
+        <button mat-fab class="functionality-icon" (click)="selectFeature(feature.path ?? '')">
             <mat-icon>{{ feature.icon }}</mat-icon>
         </button>
         }
+
+        <button mat-fab class="functionality-icon" style="position: absolute; bottom: 10px">
+            <mat-icon>person</mat-icon>
+        </button>
     </div>
 
     <mat-sidenav-container class="sidenav-container">
@@ -15,6 +19,39 @@
                     <mat-card-content>{{ feature.name }}</mat-card-content>
                 </mat-card>
                 }
+
+                <mat-card class="user-card">
+                    <mat-card-header style="text-align: center">
+                        <h4 style="width: 100%">{{ user }}</h4>
+                    </mat-card-header>
+                    <mat-card-content style="margin: 1rem 0rem">
+                        <div class="row" style="text-align: center">
+                            <div
+                                class="col-6"
+                                style="
+                                    display: inline-flex;
+                                    gap: 8px;
+                                    justify-content: center;
+                                    align-items: center;
+                                    margin-bottom: 0px;
+                                "
+                            >
+                                <h6 style="margin-bottom: 0px">Role:</h6>
+                                <mat-chip>{{ role }}</mat-chip>
+                            </div>
+                            <div
+                                class="col-6"
+                                style="display: inline-flex; gap: 8px; justify-content: center; align-items: center"
+                            >
+                                <h6 style="margin-bottom: 0px">Base:</h6>
+                                <mat-chip>{{ base }}</mat-chip>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions style="justify-content: end">
+                        <button mat-button (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
+                    </mat-card-actions>
+                </mat-card>
             </div>
         </mat-sidenav>
         <mat-sidenav-content class="w-100">
