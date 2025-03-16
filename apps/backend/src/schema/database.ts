@@ -8,10 +8,13 @@ import {
 import config from 'config';
 import { DatabaseConfig } from '../types/databaseConfig';
 
-const sequelizeConfig: DatabaseConfig = JSON.parse(JSON.stringify(config.get('database')));
+const sequelizeConfig: DatabaseConfig = JSON.parse(
+    JSON.stringify(config.get('database'))
+);
 
 let sequelize;
-class User extends Model { }
+class User extends Model {}
+class Distance extends Model {}
 
 if (sequelizeConfig.connect) {
     if (sequelizeConfig.url) {
@@ -26,7 +29,7 @@ if (sequelizeConfig.connect) {
 
     const bases: string[] = Array.isArray(config.get('user.bases'))
         ? config.get('user.bases')
-        : ['SEV', 'BCN', 'MAD', 'MLG', 'VLC']
+        : ['SEV', 'BCN', 'MAD', 'MLG', 'VLC'];
 
     const userFields: ModelAttributes = {
         username: {
@@ -59,19 +62,52 @@ if (sequelizeConfig.connect) {
     };
 
     User.init(userFields, userInitOptions);
-    User.sync({ alter: true }).then(() => {
-        User.create({
-            username: 'superuser',
-            password: '$2a$10$qL6UvYwsBVIvTtX8zN2Jquk7Mfg0Kx7vhwAdlC0Vtcv1b5vYLcQ3i',
-            role: 'admin',
-            base: 'SEV'
-        }).catch((error) => {
-            console.log('superuser already saved');
+    User.sync({ alter: true })
+        .then(() => {
+            User.create({
+                username: 'superuser',
+                password:
+                    '$2a$10$qL6UvYwsBVIvTtX8zN2Jquk7Mfg0Kx7vhwAdlC0Vtcv1b5vYLcQ3i',
+                role: 'admin',
+                base: 'SEV'
+            }).catch((error) => {
+                console.log('superuser already saved');
+            });
+        })
+        .catch((error) => {
+            console.log('Failed to sync the user table');
         });
-    }).catch((error) => {
-        console.log('Failed to sync the user table');
-    });
+
+    const distanceFields: ModelAttributes = {
+        origin: {
+            type: DataTypes.STRING,
+            primaryKey: true
+        },
+        destination: {
+            type: DataTypes.STRING,
+            primaryKey: true
+        },
+        distance: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        fuel_price: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        }
+    };
+    const distanceInitOptions: InitOptions = {
+        sequelize,
+        modelName: 'Distance',
+        name: {
+            singular: 'distance',
+            plural: 'distance'
+        },
+        tableName: 'distance',
+        timestamps: false
+    };
+    Distance.init(distanceFields, distanceInitOptions);
+    Distance.sync({ alter: true });
 }
 
-export { sequelize, User };
-
+export { sequelize, User, Distance };

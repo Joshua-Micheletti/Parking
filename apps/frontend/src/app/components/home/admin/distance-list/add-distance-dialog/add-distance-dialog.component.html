@@ -1,0 +1,39 @@
+<div class="dialog-wrapper">
+    <div class="title">{{ 'Add distance'}}</div>
+    <div class="content">
+        <form [formGroup]="distanceForm">
+            <div class="row">
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Origin</mat-label>
+                        <input matInput formControlName="origin" />
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Destination</mat-label>
+                        <input matInput formControlName="destination" />
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Distance</mat-label>
+                        <input matInput formControlName="distance" />
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Price</mat-label>
+                        <input matInput formControlName="fuel_price" />
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <button mat-flat-button (click)="save()" class="save-button">Save</button>
+        <button mat-flat-button (click)="close()" class="close-button warning-button">Close</button>
+    </div>
+</div>

@@ -8,11 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { Dialog } from '@angular/cdk/dialog';
 import { ModifyUserDialogComponent } from './modify-user-dialog/modify-user-dialog.component';
 import { AddUserDialogComponent } from './add-user-dialog/add-user-dialog.component';
-import { MatRipple, MatRippleModule } from '@angular/material/core';
+import { MatRippleModule } from '@angular/material/core';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
     selector: 'app-user-list',
-    imports: [MatTableModule, MatIconModule, MatButtonModule, MatRippleModule],
+    imports: [MatTableModule, MatIconModule, MatButtonModule, MatRippleModule, MatChipsModule],
     templateUrl: './user-list.component.html',
     styleUrl: './user-list.component.scss'
 })

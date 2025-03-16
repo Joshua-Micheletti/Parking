@@ -1,0 +1,21 @@
+.wrapper {
+    background: var(--dialog-background);
+    border-radius: var(--border-radius);
+    min-width: 30vw;
+    padding: 2rem 2rem;
+}
+
+.message {
+    font-size: 1.5rem;
+}
+
+.actions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: end;
+    margin-top: 1rem;
+}
+
+.save-button {
+    margin-right: 1rem;
+}

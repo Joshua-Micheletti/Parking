@@ -1,10 +1,11 @@
 /**
  * @module ApiServer
- * @author Joshua Micheletti <j.micheletti@ebw.it>
+ * @author Joshua Micheletti <joshua.e.n.micheletti@gmail.com>
  */
 
 import { Router, Request, Response } from 'express';
 import usersServer from './users/usersServer';
+import distancesServer from './distances/distancesServer';
 import authServer from './auth/authServer';
 import authenticate from '../middleware/auth';
 
@@ -20,6 +21,7 @@ export default function apiServer(): Router {
 
   router.use('/users', authenticate, usersServer());
   router.use('/auth', authServer());
+  router.use('/distances', authenticate, distancesServer());
 
   /**
    * Endpoint for /healthcheck. Logs a message and returns OK

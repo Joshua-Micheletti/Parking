@@ -7,7 +7,7 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterOutlet, Router, RouterModule } from '@angular/router';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
     selector: 'app-home',
@@ -32,7 +32,8 @@ export class HomeComponent implements OnInit {
     public features: { icon: string; name: string; path?: string }[] = [
         { icon: 'group', name: 'Users', path: 'users' },
         { icon: 'dataset', name: 'Data' },
-        { icon: 'directions_car_filled', name: 'Parking' }
+        { icon: 'directions_car_filled', name: 'Parking' },
+        { icon: 'work', name: 'Distances', path: 'distances' }
     ];
 
     public role: string = 'driver';
@@ -44,11 +45,11 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         this._authService.authenticated$
             .pipe(
-                filter((authenticated: { token: string; role: string; user: string, base: string }) => {
+                filter((authenticated: { token: string; role: string; user: string; base: string }) => {
                     return authenticated.role !== '';
                 })
             )
-            .subscribe((authenticated: { token: string; role: string; user: string, base: string }) => {
+            .subscribe((authenticated: { token: string; role: string; user: string; base: string }) => {
                 this.role = authenticated.role;
                 this.user = authenticated.user;
                 this.base = authenticated.base;

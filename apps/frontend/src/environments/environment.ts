@@ -38,6 +38,14 @@ export const environment: Environment = {
         updateUser: {
             path: host + '/users/update',
             method: 'POST'
+        },
+        getDistances: {
+            path: host + '/distances',
+            method: 'GET'
+        },
+        postDistance: {
+            path: host + '/distances',
+            method: 'POST'
         }
     }
 };

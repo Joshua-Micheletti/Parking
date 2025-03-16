@@ -1,6 +1,6 @@
 /**
  * @module ApiServer
- * @author Joshua Micheletti <j.micheletti@ebw.it>
+ * @author Joshua Micheletti <joshua.e.n.micheletti@gmail.com>
  */
 
 import { Router, Request, Response } from 'express';
