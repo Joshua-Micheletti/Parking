@@ -15,6 +15,7 @@ const sequelizeConfig: DatabaseConfig = JSON.parse(
 let sequelize;
 class User extends Model {}
 class Distance extends Model {}
+class Parking extends Model {}
 
 if (sequelizeConfig.connect) {
     if (sequelizeConfig.url) {
@@ -23,6 +24,7 @@ if (sequelizeConfig.connect) {
         sequelize = new Sequelize(sequelizeConfig.options);
     }
 
+    /* ---------------------------------- USER ---------------------------------- */
     const roles: string[] = Array.isArray(config.get('user.roles'))
         ? config.get('user.roles')
         : ['admin', 'dbadmin', 'driver'];
@@ -76,8 +78,10 @@ if (sequelizeConfig.connect) {
         })
         .catch((error) => {
             console.log('Failed to sync the user table');
+            console.log(error);
         });
 
+    /* -------------------------------- DISTANCE -------------------------------- */
     const distanceFields: ModelAttributes = {
         origin: {
             type: DataTypes.STRING,
@@ -107,7 +111,90 @@ if (sequelizeConfig.connect) {
         timestamps: false
     };
     Distance.init(distanceFields, distanceInitOptions);
-    Distance.sync({ alter: true });
+    Distance.sync({ alter: true }).catch((error) => {
+        console.log('Failed to sync the distance table');
+        console.log(error);
+    });
+
+    /* --------------------------------- PARKING -------------------------------- */
+    const gearboxTypes: string[] = Array.isArray(
+        config.get('parking.gearboxTypes')
+    )
+        ? config.get('parking.gearbox_types')
+        : ['AUTOMATIC', 'MANUAL'];
+
+    const fuelTypes: string[] = Array.isArray(config.get('parking.fuelTypes'))
+        ? config.get('parking.fuelTypes')
+        : ['DIESEL', 'GASOLINA', 'GAS LICUADO', 'HIBRIDO', 'ELECTRICO'];
+
+    const statuses: string[] = Array.isArray(config.get('parking.statuses'))
+        ? config.get('parking.statuses')
+        : [
+              'DISPONIBLE',
+              'NO DISPONIBLE',
+              'TRASLADO',
+              'EN TALLER',
+              'ENTREGADO AL PROVEEDOR',
+              'ENTREGADO CLIENTE'
+          ];
+
+    const parkingFields: ModelAttributes = {
+        license_plate: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false
+        },
+        brand: {
+            type: DataTypes.STRING
+        },
+        model: {
+            type: DataTypes.STRING
+        },
+        color: {
+            type: DataTypes.STRING
+        },
+        provider: {
+            type: DataTypes.STRING
+        },
+        gearbox_type: {
+            type: DataTypes.ENUM(...gearboxTypes)
+        },
+        fuel_type: {
+            type: DataTypes.ENUM(...fuelTypes)
+        },
+        status: {
+            type: DataTypes.ENUM(...statuses),
+            allowNull: false
+        },
+        notes: {
+            type: DataTypes.STRING
+        },
+        enter_date: {
+            type: DataTypes.DATE
+        },
+        billing_start_date: {
+            type: DataTypes.DATE
+        },
+        billing_end_date: {
+            type: DataTypes.DATE
+        }
+    };
+    const parkingInitOptions: InitOptions = {
+        sequelize,
+        modelName: 'Parking',
+        name: {
+            singular: 'parking',
+            plural: 'parking'
+        },
+        tableName: 'parking',
+        timestamps: false
+    };
+
+    Parking.init(parkingFields, parkingInitOptions);
+    Parking.sync({ alter: true }).catch((error) => {
+        console.log('Failed to sync the parking table');
+        console.log(error);
+    });
 }
 
-export { sequelize, User, Distance };
+export { sequelize, User, Distance, Parking };
