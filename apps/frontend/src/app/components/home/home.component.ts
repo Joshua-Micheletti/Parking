@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
     public features: { icon: string; name: string; path?: string }[] = [
         { icon: 'group', name: 'Users', path: 'users' },
         { icon: 'dataset', name: 'Data' },
-        { icon: 'directions_car_filled', name: 'Parking' },
+        { icon: 'directions_car_filled', name: 'Parking', path: 'parking' },
         { icon: 'work', name: 'Distances', path: 'distances' }
     ];
 

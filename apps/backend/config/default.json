@@ -7,20 +7,28 @@
     "user": {
         "minimumLength": 3,
         "maximumLength": 20,
-        "roles": [
-            "admin",
-            "dbadmin",
-            "driver"
-        ],
+        "roles": ["admin", "dbadmin", "driver"],
         "defaultRole": "driver",
-        "bases": [
-            "SEV",
-            "BCN",
-            "MAD",
-            "MLG",
-            "VLC"
-        ],
+        "bases": ["SEV", "BCN", "MAD", "MLG", "VLC"],
         "defaultBase": "SEV"
+    },
+    "parking": {
+        "gearboxTypes": ["AUTOMATIC", "MANUAL"],
+        "fuelTypes": [
+            "DIESEL",
+            "GASOLINE",
+            "GPL",
+            "HYBRID",
+            "ELECTRIC"
+        ],
+        "statuses": [
+            "AVAILABLE",
+            "NOT AVAILABLE",
+            "MOVED",
+            "IN WORKSHOP",
+            "DELIVERED TO PROVIDER",
+            "DELIVERED TO CLIENT"
+        ]
     },
     "jwt": {
         "secret": "asdasdasd",

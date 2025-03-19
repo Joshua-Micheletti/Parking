@@ -11,6 +11,8 @@ import errorHandler from "./middleware/error";
 
 import cors from 'cors';
 
+import config from 'config';
+
 async function main() {
   const app: Express = express();
 

@@ -25,13 +25,9 @@ if (sequelizeConfig.connect) {
     }
 
     /* ---------------------------------- USER ---------------------------------- */
-    const roles: string[] = Array.isArray(config.get('user.roles'))
-        ? config.get('user.roles')
-        : ['admin', 'dbadmin', 'driver'];
+    const roles: string[] = config.get('user.roles');
 
-    const bases: string[] = Array.isArray(config.get('user.bases'))
-        ? config.get('user.bases')
-        : ['SEV', 'BCN', 'MAD', 'MLG', 'VLC'];
+    const bases: string[] = config.get('user.bases');
 
     const userFields: ModelAttributes = {
         username: {
@@ -117,26 +113,11 @@ if (sequelizeConfig.connect) {
     });
 
     /* --------------------------------- PARKING -------------------------------- */
-    const gearboxTypes: string[] = Array.isArray(
-        config.get('parking.gearboxTypes')
-    )
-        ? config.get('parking.gearbox_types')
-        : ['AUTOMATIC', 'MANUAL'];
+    const gearboxTypes: string[] = config.get('parking.gearboxTypes');
 
-    const fuelTypes: string[] = Array.isArray(config.get('parking.fuelTypes'))
-        ? config.get('parking.fuelTypes')
-        : ['DIESEL', 'GASOLINA', 'GAS LICUADO', 'HIBRIDO', 'ELECTRICO'];
+    const fuelTypes: string[] = config.get('parking.fuelTypes');
 
-    const statuses: string[] = Array.isArray(config.get('parking.statuses'))
-        ? config.get('parking.statuses')
-        : [
-              'DISPONIBLE',
-              'NO DISPONIBLE',
-              'TRASLADO',
-              'EN TALLER',
-              'ENTREGADO AL PROVEEDOR',
-              'ENTREGADO CLIENTE'
-          ];
+    const statuses: string[] = config.get('parking.statuses');
 
     const parkingFields: ModelAttributes = {
         license_plate: {
