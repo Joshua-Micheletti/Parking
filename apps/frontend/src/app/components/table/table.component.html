@@ -1,0 +1,46 @@
+<div class="actions">
+    @for (action of actions; track action) { @if (selectedRow !== null || action.condition !== 'selectedRow') {
+    <button
+        mat-raised-button
+        (click)="action.callback()"
+        class="action-button"
+        [ngClass]="{ 'warning-button': action.type === 'warn' }"
+    >
+        <mat-icon>{{ action.icon }}</mat-icon>
+        {{ action.name }}
+    </button>
+    } }
+</div>
+
+<div class="table-custom">
+    <table mat-table [dataSource]="data" class="mat-elevation-z8">
+        @for (column of columns; track column) {
+        <ng-container [matColumnDef]="column.id">
+            <th mat-header-cell *matHeaderCellDef style="padding-bottom: 1rem">
+                <span>{{ column.name }}</span>
+                @if (column.icon) {
+                <mat-icon style="vertical-align: bottom; margin-left: 4px">{{ column.icon }}</mat-icon>
+                } @if (column.unit) {
+                <span>{{ ' (' + column.unit + ')' }}</span>
+                }
+            </th>
+            <td mat-cell *matCellDef="let row">
+                @if (column.customTemplate) {
+                <ng-container [ngTemplateOutlet]="column.customTemplate" [ngTemplateOutletContext]="{ $implicit: row }">
+                </ng-container>
+                } @else {
+                {{ row?.[column.id] }}
+                }
+            </td>
+        </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="getColumnIDs()" style="vertical-align: bottom"></tr>
+        <tr
+            mat-row
+            *matRowDef="let row; columns: getColumnIDs()"
+            (click)="selectRow(row)"
+            [class]="'table-row' + (selectedRow === row ? ' table-row-selected' : '')"
+        ></tr>
+    </table>
+</div>

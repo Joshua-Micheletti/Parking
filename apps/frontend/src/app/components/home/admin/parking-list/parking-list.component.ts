@@ -1,24 +1,20 @@
 import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
 import { ParkedCar } from '../../../../types/parkedCar';
 import { Subscription } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
+import { Action, Column } from '../../../../types/table';
+import { TableComponent } from '../../../table/table.component';
 
 @Component({
     selector: 'app-parking-list',
-    imports: [MatTableModule, MatIconModule, MatButtonModule],
+    imports: [TableComponent],
     templateUrl: './parking-list.component.html',
     styleUrl: './parking-list.component.scss'
 })
 export class ParkingListComponent {
-    public distances: ParkedCar[] = [];
-    public selectedRow: ParkedCar | null = null;
+    public cars: ParkedCar[] = [];
 
-    private _subscriptions: Subscription[] = [];
-
-    public columns: { id: string; name: string; icon?: string; unit?: string }[] = [
+    public columns: Column[] = [
         { id: 'licensePlate', name: 'License Plate' },
         { id: 'brand', name: 'Brand' },
         { id: 'model', name: 'Model' },
@@ -33,18 +29,36 @@ export class ParkingListComponent {
         { id: 'billingEndDate', name: 'Billing End Date' }
     ];
 
+    public actions: Action[] = [
+        {
+            callback: this.addCar.bind(this),
+            name: 'Add Car'
+        },
+        {
+            callback: this.updateCar.bind(this),
+            name: 'Update Car',
+            condition: 'selectedRow'
+        },
+        {
+            callback: this.deleteCar.bind(this),
+            name: 'Delete Car',
+            condition: 'selectedRow'
+        }
+    ];
+
+    private _selectedCar: ParkedCar | null = null;
+
+    private _subscriptions: Subscription[] = [];
+
     constructor(private _dialog: Dialog) {}
 
-    public getColumnIDs(): string[] {
-        return this.columns.map((column: { id: string; name: string }) => column.id);
-    }
+    public addCar(): void {}
 
-    public selectRow(row: ParkedCar): void {
-        if (this.selectedRow === row) {
-            this.selectedRow = null;
-            return;
-        }
+    public updateCar(): void {}
 
-        this.selectedRow = row;
+    public deleteCar(): void {}
+
+    public onSelectedCar(car: ParkedCar | null) {
+        this._selectedCar = car;
     }
 }

@@ -1,56 +1,7 @@
-<div class="actions">
-    <button mat-raised-button (click)="addUser()" class="action-button"><mat-icon>person_add</mat-icon>Add User</button>
-    @if (selectedRow.username !== '') {
-    <button mat-raised-button (click)="updateUser()" class="action-button">
-        <mat-icon>manage_accounts</mat-icon>Update User
-    </button>
-    <button mat-raised-button (click)="deleteUser()" class="action-button warning-button">
-        <mat-icon>person_remove</mat-icon>Delete User
-    </button>
-    }
-</div>
+<app-table [data]="users" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedUser($event)"></app-table>
 
-<div class="table-custom">
-    <table mat-table [dataSource]="users" class="mat-elevation-z8">
-        <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-        <!-- Position Column -->
-        <ng-container matColumnDef="username">
-            <th mat-header-cell *matHeaderCellDef>Username</th>
-            <td mat-cell *matCellDef="let user">{{ user.username }}</td>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="role">
-            <th mat-header-cell *matHeaderCellDef>Role</th>
-            <td mat-cell *matCellDef="let user"><mat-chip>{{ user.role }}</mat-chip></td>
-        </ng-container>
-
-        <!-- Weight Column -->
-        <ng-container matColumnDef="base">
-            <th mat-header-cell *matHeaderCellDef>Base</th>
-            <td mat-cell *matCellDef="let user"><mat-chip>{{ user.base }}</mat-chip></td>
-        </ng-container>
-
-        <!-- <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let user">
-                <button mat-icon-button (click)="updateUser(user)">
-                    <mat-icon>settings</mat-icon>
-                </button>
-                <button mat-icon-button (click)="deleteUser(user.username)">
-                    <mat-icon class="delete-icon">delete</mat-icon>
-                </button>
-            </td>
-        </ng-container> -->
-
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr
-            mat-row
-            *matRowDef="let row; columns: columns"
-            (click)="selectRow(row)"
-            [class]="'table-row' + (selectedRow === row ? ' table-row-selected' : '')"
-        ></tr>
-    </table>
-</div>
+<ng-template #customTemplate let-element>
+    <mat-chip [ngClass]="{'admin-chip': element.role === 'admin'}">
+        {{element.role}}
+    </mat-chip>
+</ng-template>

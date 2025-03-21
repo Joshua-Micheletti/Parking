@@ -11,6 +11,7 @@
 :host {
     --border-radius: 8px;
     --title-size: 3rem;
+    --admin-color: #3e72ff;
     @include mat.theme-overrides(
         (
             primary: #006e2c,
@@ -184,6 +185,12 @@
             protected-ripple-color: var(--warn-color-ripple)
         )
     );
+}
+
+.admin-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--admin-color)
+    ));
 }
 
 html,

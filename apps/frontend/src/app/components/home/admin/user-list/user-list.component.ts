@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
@@ -10,21 +10,48 @@ import { ModifyUserDialogComponent } from './modify-user-dialog/modify-user-dial
 import { AddUserDialogComponent } from './add-user-dialog/add-user-dialog.component';
 import { MatRippleModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
+import { TableComponent } from '../../../table/table.component';
+import { Action, Column } from '../../../../types/table';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-user-list',
-    imports: [MatTableModule, MatIconModule, MatButtonModule, MatRippleModule, MatChipsModule],
+    imports: [MatTableModule, MatIconModule, MatButtonModule, MatRippleModule, MatChipsModule, TableComponent, CommonModule],
     templateUrl: './user-list.component.html',
     styleUrl: './user-list.component.scss'
 })
-export class UserListComponent implements OnInit, OnDestroy {
+export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild('customTemplate') customTemplateRef!: TemplateRef<any>;
+
     public users: User[] = [];
-    public columns: string[] = ['username', 'role', 'base'];
-    public selectedRow: User = { username: '', role: '', base: '' };
+    public columns: Column[] = [];
+
+    public actions: Action[] = [
+        {
+            callback: this.addUser.bind(this),
+            name: 'Add User',
+            icon: 'person_add'
+        },
+        {
+            callback: this.updateUser.bind(this),
+            name: 'Update User',
+            condition: 'selectedRow',
+            icon: 'manage_accounts'
+        },
+        {
+            callback: this.deleteUser.bind(this),
+            name: 'Delete User',
+            type: 'warn',
+            condition: 'selectedRow',
+            icon: 'person_remove'
+        }
+    ];
+
+    private _selectedUser: User | null = null;
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _userService: UserService, private _dialog: Dialog) {}
+    constructor(private _userService: UserService, private _dialog: Dialog, private _change: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this._userService.getUsers();
@@ -42,48 +69,39 @@ export class UserListComponent implements OnInit, OnDestroy {
         });
     }
 
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.columns = [
+                { id: 'username', name: 'Username', icon: 'person' },
+                { id: 'role', name: 'Role', icon: 'person_pin', customTemplate: this.customTemplateRef },
+                { id: 'base', name: 'Base', icon: 'warehouse' }
+            ];
+        });
+    }
+
     public addUser(): void {
         this._dialog.open(AddUserDialogComponent);
     }
 
-    public deleteUser(username?: string): void {
-        if (username === undefined) {
-            if (this.selectedRow.username === '') {
-                console.log('called without selecting any user');
-                return;
-            }
-
-            this._userService.deleteUser(this.selectedRow.username);
-            this.selectedRow = {username: '', role: '', base: ''};
+    public deleteUser(): void {
+        if (this._selectedUser === null) {
+            console.error('Called delete user without a user selected');
             return;
         }
 
-        this._userService.deleteUser(username);
-
-        console.log('resetting selected row');
-        this.selectedRow = {username: '', role: '', base: ''};
-        console.log('selected row', this.selectedRow);
+        this._userService.deleteUser(this._selectedUser.username);
     }
 
-    public updateUser(user?: User): void {
-        if (user === undefined) {
-            if (this.selectedRow.username === '') {
-                console.log('called without selecting any user');
-                return;
-            }
-
-            this._dialog.open(ModifyUserDialogComponent, { data: this.selectedRow });
+    public updateUser(): void {
+        if (this._selectedUser === null) {
+            console.error('Called update user without a user selected');
             return;
         }
 
-        this._dialog.open(ModifyUserDialogComponent, { data: user });
+        this._dialog.open(ModifyUserDialogComponent, { data: this._selectedUser });
     }
 
-    public selectRow(row: User): void {
-        if (this.selectedRow === row) {
-            this.selectedRow = { username: '', role: '', base: '' };
-            return;
-        }
-        this.selectedRow = row;
+    public onSelectedUser(user: User | null): void {
+        this._selectedUser = user;
     }
 }

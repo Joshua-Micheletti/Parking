@@ -7,25 +7,48 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Dialog } from '@angular/cdk/dialog';
 import { AddDistanceDialogComponent } from './add-distance-dialog/add-distance-dialog.component';
+import { Action, Column } from '../../../../types/table';
+import { TableComponent } from '../../../table/table.component';
+import { Event } from '@angular/router';
 
 @Component({
     selector: 'app-distance-list',
-    imports: [MatTableModule, MatIconModule, MatButtonModule],
+    imports: [MatTableModule, MatIconModule, MatButtonModule, TableComponent],
     templateUrl: './distance-list.component.html',
     styleUrl: './distance-list.component.scss'
 })
 export class DistanceListComponent implements OnInit, OnDestroy {
+    /* ------------------------------- Table Data ------------------------------- */
     public distances: Distance[] = [];
-    public selectedRow: Distance | null = null;
 
-    private _subscriptions: Subscription[] = [];
-
-    public columns: { id: string; name: string; icon?: string, unit?: string }[] = [
+    public columns: Column[] = [
         { id: 'origin', name: 'Origin', icon: 'arrow_upward' },
         { id: 'destination', name: 'Destination', icon: 'arrow_downward' },
         { id: 'distance', name: 'Distance', unit: 'Km' },
         { id: 'fuel_price', name: 'Price', unit: '€' }
     ];
+
+    public actions: Action[] = [
+        {
+            callback: this.addDistance.bind(this),
+            name: 'Add Distance'
+        },
+        {
+            callback: this.updateDistance.bind(this),
+            name: 'Update Distance',
+            condition: 'selectedRow'
+        },
+        {
+            callback: this.deleteDistance.bind(this),
+            name: 'Delete Distance',
+            condition: 'selectedRow',
+            type: 'warn'
+        }
+    ]
+
+    private _selectedDistance: Distance | null = null;
+
+    private _subscriptions: Subscription[] = [];
 
     constructor(private _distanceService: DistanceService, private _dialog: Dialog) {}
 
@@ -45,13 +68,8 @@ export class DistanceListComponent implements OnInit, OnDestroy {
         });
     }
 
-    public selectRow(row: Distance): void {
-        if (this.selectedRow === row) {
-            this.selectedRow = null;
-            return;
-        }
-
-        this.selectedRow = row;
+    public onSelectDistance(distance: Distance | null): void {
+        this._selectedDistance = distance;
     }
 
     public getColumnIDs(): string[] {
