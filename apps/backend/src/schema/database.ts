@@ -158,6 +158,10 @@ if (sequelizeConfig.connect) {
         },
         billing_end_date: {
             type: DataTypes.DATE
+        },
+        base: {
+            type: DataTypes.ENUM(...bases),
+            allowNull: false
         }
     };
     const parkingInitOptions: InitOptions = {

@@ -1,3 +1,6 @@
+@if (user === null) {
+<div>MISSING USER</div>
+} @else {
 <div class="dialog-wrapper">
     <div class="title">{{ 'Modify user ' + user.username }}</div>
     <div class="content">
@@ -31,3 +34,4 @@
         <button mat-flat-button color="warn" (click)="close()" class="close-button warning-button">Close</button>
     </div>
 </div>
+}

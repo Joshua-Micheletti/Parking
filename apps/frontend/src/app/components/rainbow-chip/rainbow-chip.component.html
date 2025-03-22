@@ -1,0 +1,14 @@
+<mat-chip
+    [ngClass]="{
+        'admin-chip': value === 'admin',
+        'dbadmin-chip': value === 'dbadmin',
+        'driver-chip': value === 'driver',
+        'sev-chip': value === 'SEV',
+        'bcn-chip': value === 'BCN',
+        'vlc-chip': value === 'VLC',
+        'mad-chip': value === 'MAD',
+        'mlg-chip': value === 'MLG'
+    }"
+>
+{{value}}
+</mat-chip>

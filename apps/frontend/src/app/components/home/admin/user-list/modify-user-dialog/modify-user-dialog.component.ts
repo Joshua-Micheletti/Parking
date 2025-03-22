@@ -14,25 +14,33 @@ import { MatSelectModule } from '@angular/material/select';
     styleUrl: './modify-user-dialog.component.scss'
 })
 export class ModifyUserDialogComponent implements OnInit {
-    public user: User = { username: '', role: '', base: '' };
+    public user: User | null = null;
     public userForm: FormGroup = new FormGroup({});
     public availableRoles: string[] = ['Admin', 'DBAdmin', 'Driver'];
     public availableBases: string[] = ['SEV', 'BCN', 'MAD', 'MLG', 'VLC'];
 
     constructor(private _dialogRef: DialogRef, private _userService: UserService) {
         const dialogData = inject(DIALOG_DATA);
-        this.user = dialogData ?? { username: '', role: '', base: '' };
+        this.user = dialogData ?? null;
     }
 
     ngOnInit(): void {
+        if (this.user === null) {
+            return;
+        }
+
         this.userForm.addControl(
             'role',
-            new FormControl(this.availableRoles.find((role) => role.toLowerCase() === this.user.role))
+            new FormControl(this.availableRoles.find((role) => role.toLowerCase() === this.user?.role))
         );
         this.userForm.addControl('base', new FormControl(this.user.base));
     }
 
     public save() {
+        if (this.user === null) {
+            return;
+        }
+        
         if (this.userForm.invalid) {
             this.userForm.markAllAsTouched();
             return;

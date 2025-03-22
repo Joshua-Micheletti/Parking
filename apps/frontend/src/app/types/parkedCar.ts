@@ -1,3 +1,5 @@
+import { Base } from "./user";
+
 export type GearboxType = 'AUTOMATIC' | 'MANUAL';
 export type FuelType = 'DIESEL' | 'GASOLINE' | 'GPL' | 'HYBRID' | 'ELECTRIC';
 export type Status =
@@ -21,4 +23,5 @@ export type ParkedCar = {
     enterDate?: string;
     billindStartDate?: string;
     billingEndDate?: string;
+    base: Base
 };

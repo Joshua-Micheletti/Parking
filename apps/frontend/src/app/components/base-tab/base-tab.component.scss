@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+
+
+.sev-tab {
+    @include mat.tabs-overrides(
+        (
+            active-indicator-color: var(--sev-color),
+            active-focus-indicator-color: var(--sev-color),
+            active-hover-indicator-color: var(--sev-color)
+        )
+    );    
+}
+
+.bcn-tab {
+    @include mat.tabs-overrides(
+        (
+            active-indicator-color: var(--bcn-color),
+            active-focus-indicator-color: var(--bcn-color),
+            active-hover-indicator-color: var(--bcn-color)
+        )
+    );   
+}
+
+.mlg-tab {
+    @include mat.tabs-overrides(
+        (
+            active-indicator-color: var(--mlg-color),
+            active-focus-indicator-color: var(--mlg-color),
+            active-hover-indicator-color: var(--mlg-color)
+        )
+    );   
+}
+
+.mad-tab {
+    @include mat.tabs-overrides(
+        (
+            active-indicator-color: var(--mad-color),
+            active-focus-indicator-color: var(--mad-color),
+            active-hover-indicator-color: var(--mad-color)
+        )
+    );   
+}
+
+.vlc-tab {
+    @include mat.tabs-overrides(
+        (
+            active-indicator-color: var(--vlc-color),
+            active-focus-indicator-color: var(--vlc-color),
+            active-hover-indicator-color: var(--vlc-color)
+        )
+    );   
+}

@@ -1,0 +1,16 @@
+<mat-tab-group
+    [ngClass]="{
+        'sev-tab': currentBase === 'SEV',
+        'bcn-tab': currentBase === 'BCN',
+        'mlg-tab': currentBase === 'MLG',
+        'mad-tab': currentBase === 'MAD',
+        'vlc-tab': currentBase === 'VLC'
+    }"
+    (selectedTabChange)="changeBase($event)"
+>
+    @for (base of availableBases; track base) {
+    <mat-tab label="{{ base }}">
+        <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: base }"> </ng-container>
+    </mat-tab>
+    }
+</mat-tab-group>

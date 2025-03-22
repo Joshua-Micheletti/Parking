@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+
+.admin-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--admin-color)
+    ));
+}
+
+.dbadmin-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--dbadmin-color)
+    ));
+}
+
+.driver-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--driver-color)
+    ));
+}
+
+.sev-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--sev-color)
+    ));
+}
+
+.mad-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--mad-color)
+    ));
+}
+
+.vlc-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--vlc-color)
+    ));
+}
+
+.bcn-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--bcn-color)
+    ));
+}
+
+.mlg-chip {
+    @include mat.chips-overrides((
+        outline-color: var(--mlg-color)
+    ));
+}

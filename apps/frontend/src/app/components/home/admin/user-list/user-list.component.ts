@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Templat
 import { MatTableModule } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
-import { User } from '../../../../types/user';
+import { Base, User } from '../../../../types/user';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Dialog } from '@angular/cdk/dialog';
@@ -13,15 +13,18 @@ import { MatChipsModule } from '@angular/material/chips';
 import { TableComponent } from '../../../table/table.component';
 import { Action, Column } from '../../../../types/table';
 import { CommonModule } from '@angular/common';
+import { RainbowChipComponent } from '../../../rainbow-chip/rainbow-chip.component';
+import { BaseTabComponent } from "../../../base-tab/base-tab.component";
 
 @Component({
     selector: 'app-user-list',
-    imports: [MatTableModule, MatIconModule, MatButtonModule, MatRippleModule, MatChipsModule, TableComponent, CommonModule],
+    imports: [MatTableModule, BaseTabComponent, MatIconModule, MatButtonModule, MatRippleModule, MatChipsModule, TableComponent, CommonModule, RainbowChipComponent, BaseTabComponent],
     templateUrl: './user-list.component.html',
     styleUrl: './user-list.component.scss'
 })
 export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('customTemplate') customTemplateRef!: TemplateRef<any>;
+    @ViewChild('roleTemplate') roleTemplateRef!: TemplateRef<any>;
+    @ViewChild('baseTemplate') baseTemplateRef!: TemplateRef<any>;
 
     public users: User[] = [];
     public columns: Column[] = [];
@@ -73,8 +76,8 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(() => {
             this.columns = [
                 { id: 'username', name: 'Username', icon: 'person' },
-                { id: 'role', name: 'Role', icon: 'person_pin', customTemplate: this.customTemplateRef },
-                { id: 'base', name: 'Base', icon: 'warehouse' }
+                { id: 'role', name: 'Role', icon: 'person_pin', customTemplate: this.roleTemplateRef },
+                { id: 'base', name: 'Base', icon: 'warehouse', customTemplate: this.baseTemplateRef }
             ];
         });
     }
@@ -99,6 +102,10 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this._dialog.open(ModifyUserDialogComponent, { data: this._selectedUser });
+    }
+
+    public getUsersByBase(base: Base): User[] {
+        return this.users.filter((user: User) => user.base === base);
     }
 
     public onSelectedUser(user: User | null): void {

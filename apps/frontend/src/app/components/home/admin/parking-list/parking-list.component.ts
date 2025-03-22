@@ -4,10 +4,11 @@ import { Subscription } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-parking-list',
-    imports: [TableComponent],
+    imports: [TableComponent, MatTabsModule],
     templateUrl: './parking-list.component.html',
     styleUrl: './parking-list.component.scss'
 })

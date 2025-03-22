@@ -12,6 +12,13 @@
     --border-radius: 8px;
     --title-size: 3rem;
     --admin-color: #3e72ff;
+    --dbadmin-color: #ff462e;
+    --driver-color: #32ff65;
+    --sev-color: #ff4133;
+    --bcn-color: #1cff60;
+    --mad-color: #ff30ee;
+    --vlc-color: #328bff;
+    --mlg-color: #ffe23c;
     @include mat.theme-overrides(
         (
             primary: #006e2c,
@@ -185,12 +192,6 @@
             protected-ripple-color: var(--warn-color-ripple)
         )
     );
-}
-
-.admin-chip {
-    @include mat.chips-overrides((
-        outline-color: var(--admin-color)
-    ));
 }
 
 html,

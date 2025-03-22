@@ -1,7 +1,13 @@
-<app-table [data]="users" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedUser($event)"></app-table>
+<app-base-tab [template]="tableTemplate"></app-base-tab>
 
-<ng-template #customTemplate let-element>
-    <mat-chip [ngClass]="{'admin-chip': element.role === 'admin'}">
-        {{element.role}}
-    </mat-chip>
+<ng-template #tableTemplate let-base>
+    <app-table [data]="getUsersByBase(base)" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedUser($event)"></app-table>
+</ng-template>
+
+<ng-template #roleTemplate let-element>
+    <app-rainbow-chip [value]="element.role"></app-rainbow-chip>
+</ng-template>
+
+<ng-template #baseTemplate let-element>
+    <app-rainbow-chip [value]="element.base"></app-rainbow-chip>
 </ng-template>
