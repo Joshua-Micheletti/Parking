@@ -37,17 +37,20 @@ export class ParkingListComponent {
     public actions: Action[] = [
         {
             callback: this.addCar.bind(this),
-            name: 'features.parking.actions.add'
+            name: 'features.parking.actions.add',
+            icon: 'add_circle'
         },
         {
             callback: this.updateCar.bind(this),
             name: 'features.parking.actions.update',
-            condition: 'selectedRow'
+            condition: 'selectedRow',
+            icon: 'edit'
         },
         {
             callback: this.deleteCar.bind(this),
             name: 'features.parking.table.delete',
-            condition: 'selectedRow'
+            condition: 'selectedRow',
+            icon: 'delete'
         }
     ];
 

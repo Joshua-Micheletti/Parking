@@ -31,18 +31,21 @@ export class DistanceListComponent implements OnInit, OnDestroy {
     public actions: Action[] = [
         {
             callback: this.addDistance.bind(this),
-            name: 'features.distances.actions.add'
+            name: 'features.distances.actions.add',
+            icon: 'add_circle'
         },
         {
             callback: this.updateDistance.bind(this),
             name: 'features.distances.actions.update',
-            condition: 'selectedRow'
+            condition: 'selectedRow',
+            icon: 'rebase_edit'
         },
         {
             callback: this.deleteDistance.bind(this),
             name: 'features.distances.actions.delete',
             condition: 'selectedRow',
-            type: 'warn'
+            type: 'warn',
+            icon: 'delete'
         }
     ]
 

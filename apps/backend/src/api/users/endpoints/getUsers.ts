@@ -1,20 +1,38 @@
-import { NextFunction, Request, Response } from "express";
-import { User } from "../../../schema/database";
-import { FindOptions } from "sequelize";
+import { NextFunction, Request, Response } from 'express';
+import { User } from '../../../schema/database';
+import { FindOptions } from 'sequelize';
 
-export async function getUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
-  let response;
+export async function getUsers(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    let response;
 
-  const findOptions: FindOptions = {
-    attributes: ["username", "role", "base"],
-  };
+    // set the default conditions for the query
+    const attributes: string[] = ['username', 'role'];
+    const where: any = {base: req.base};
 
-  try {
-    response = await User.findAll(findOptions);
-  } catch (error) {
-    next(error);
-    return;
-  }
+    // if the user is admin, add the base in the query and delete the filter
+    if (req.role === 'admin') {
+        attributes.push('base');
+        delete where.base;
+    }
 
-  res.status(200).json(response);
+    // create the find options for the query
+    const findOptions: FindOptions = {
+      attributes,
+      where
+    }
+
+    // execute the query
+    try {
+        response = await User.findAll(findOptions);
+    } catch (error) {
+        next(error);
+        return;
+    }
+
+    // respond with the results
+    res.status(200).json(response);
 }

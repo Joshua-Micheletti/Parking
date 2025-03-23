@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild
 import { MatTableModule } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
-import { Base, User } from '../../../../types/user';
+import { Base, Role, User } from '../../../../types/user';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Dialog } from '@angular/cdk/dialog';
@@ -15,6 +15,7 @@ import { Action, Column } from '../../../../types/table';
 import { CommonModule } from '@angular/common';
 import { RainbowChipComponent } from '../../../rainbow-chip/rainbow-chip.component';
 import { BaseTabComponent } from '../../../base-tab/base-tab.component';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
     selector: 'app-user-list',
@@ -36,8 +37,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     public users: User[] = [];
     public columns: Column[] = [
         { id: 'username', name: 'features.users.table.username', icon: 'person' },
-        { id: 'role', name: 'features.users.table.role', icon: 'person_pin' },
-        { id: 'base', name: 'features.users.table.base', icon: 'warehouse' }
+        { id: 'role', name: 'features.users.table.role', icon: 'person_pin' }
     ];
 
     public actions: Action[] = [
@@ -61,13 +61,23 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
     ];
 
+    public role: Role = 'driver';
+    public base: Base = 'SEV';
+
     private _selectedUser: User | null = null;
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _userService: UserService, private _dialog: Dialog, private _change: ChangeDetectorRef) {}
+    constructor(private _userService: UserService, private _dialog: Dialog, private _authService: AuthService) {}
 
     ngOnInit(): void {
+        this.role = this._authService.role ?? 'driver';
+        this.base = this._authService.base ?? 'SEV';
+
+        if (this.role === 'admin') {
+            this.columns.push({ id: 'base', name: 'features.users.table.base', icon: 'warehouse' });
+        }
+
         this._userService.getUsers();
 
         this._subscriptions.push(

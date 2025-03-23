@@ -1,5 +1,13 @@
-<app-base-tab [template]="tableTemplate"></app-base-tab>
-
-<ng-template #tableTemplate let-base>
-    <app-table [data]="getUsersByBase(base)" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedUser($event)"></app-table>
-</ng-template>
+@if (role === 'admin') {
+    <app-base-tab [template]="tableTemplate"></app-base-tab>
+    
+    <ng-template #tableTemplate let-base>
+        <app-table [data]="getUsersByBase(base)" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedUser($event)"></app-table>
+    </ng-template>
+} @else if (role === 'dbadmin') {
+    <app-table [data]="users" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedUser($event)"></app-table>
+} @else {
+    <div>
+        YOU'RE NOT SUPPOSED TO BE HERE
+    </div>
+}

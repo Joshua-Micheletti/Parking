@@ -10,6 +10,7 @@ import rolesServer from './roles/rolesServer';
 import { deleteUser, deleteUserInputValidation } from './endpoints/deleteUser';
 import admin from '../../middleware/admin';
 import { updateUser, updateUserInputValidation } from './endpoints/updateUser';
+import dbadmin from '../../middleware/dbadmin';
 
 /**
  * Function to setup the various endpoints of the API
@@ -21,10 +22,10 @@ export default function apiServer(): Router {
     // create a new Express Router
     const router: Router = Router();
 
-    router.get('/', admin, getUsers);
-    router.post('/', admin, postUserInputValidation, postUser);
-    router.delete('/', admin, deleteUserInputValidation, deleteUser);
-    router.post('/update', admin, updateUserInputValidation, updateUser);
+    router.get('/', dbadmin, getUsers);
+    router.post('/', dbadmin, postUserInputValidation, postUser);
+    router.delete('/', dbadmin, deleteUserInputValidation, deleteUser);
+    router.post('/update', dbadmin, updateUserInputValidation, updateUser);
 
     router.use('/roles', rolesServer());
 
