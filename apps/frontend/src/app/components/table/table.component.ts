@@ -4,10 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { Action, Column } from '../../types/table';
 import { CommonModule } from '@angular/common';
+import { RainbowChipComponent } from '../rainbow-chip/rainbow-chip.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-table',
-    imports: [MatIconModule, MatTableModule, MatButtonModule, CommonModule],
+    imports: [MatIconModule, MatTableModule, MatButtonModule, CommonModule, RainbowChipComponent, TranslateModule],
     templateUrl: './table.component.html',
     styleUrl: './table.component.scss'
 })

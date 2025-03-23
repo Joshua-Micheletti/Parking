@@ -1,0 +1,75 @@
+{
+    "features": {
+        "users": {
+            "name": "Usuarios",
+            "actions": {
+                "add": "Añadir Usuario",
+                "update": "Modificar Usuario",
+                "delete": "Eliminar Usuario"
+            },
+            "table": {
+                "username": "Nombre de Usuario",
+                "role": "Rol",
+                "base": "Base"
+            }
+        },
+        "parking": {
+            "name": "Aparcamiento",
+            "actions": {
+                "add": "Añadir Coche",
+                "update": "Modificar Coche",
+                "delete": "Eliminar Coche"
+            },
+            "table": {
+                "licensePlate": "Matricula",
+                "brand": "Marca",
+                "model": "Modelo",
+                "color": "Color",
+                "provider": "Proveedor",
+                "gearboxType": "Tipo de Cambio",
+                "fuelType": "Combustible",
+                "status": "Estado",
+                "notes": "Comentario",
+                "enterDate": "Fecha Entrada",
+                "billingStartDate": "Fecha Inicio Facturacion",
+                "billingEndDate": "Fecha Fin Facturacion",
+                "base": "Base"
+            }
+        },
+        "distances": {
+            "name": "Distancias",
+            "actions": {
+                "add": "Añadir Distancia",
+                "update": "Modificar Distancia",
+                "delete": "Eliminar Distancia"
+            },
+            "table": {
+                "origin": "Origen",
+                "destination": "Destino",
+                "distance": "Distancia",
+                "price": "Precio"
+            }
+        }
+    },
+    "data": {
+        "base": {
+            "SEV": "Sevilla",
+            "BCN": "Barcelona",
+            "MLG": "Malaga",
+            "VLC": "Valencia",
+            "MAD": "Madrid"
+        },
+        "role": {
+            "admin": "Admin",
+            "dbadmin": "DBAdmin",
+            "driver": "Driver"
+        }
+    },
+    "user": {
+        "role": "Rol",
+        "base": "Base",
+        "logout": "Salir",
+        "theme": "Tema",
+        "language": "Idioma"
+    }
+}

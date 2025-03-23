@@ -3,10 +3,11 @@ import { BaseService } from '../../services/base.service';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Base } from '../../types/user';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-base-tab',
-  imports: [MatTabsModule, CommonModule],
+  imports: [MatTabsModule, CommonModule, TranslateModule],
   templateUrl: './base-tab.component.html',
   styleUrl: './base-tab.component.scss'
 })

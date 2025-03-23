@@ -22,25 +22,25 @@ export class DistanceListComponent implements OnInit, OnDestroy {
     public distances: Distance[] = [];
 
     public columns: Column[] = [
-        { id: 'origin', name: 'Origin', icon: 'arrow_upward' },
-        { id: 'destination', name: 'Destination', icon: 'arrow_downward' },
-        { id: 'distance', name: 'Distance', unit: 'Km' },
-        { id: 'fuel_price', name: 'Price', unit: '€' }
+        { id: 'origin', name: 'features.distances.table.origin', icon: 'arrow_upward' },
+        { id: 'destination', name: 'features.distances.table.destination', icon: 'arrow_downward' },
+        { id: 'distance', name: 'features.distances.table.distance', unit: 'Km' },
+        { id: 'fuel_price', name: 'features.distances.table.price', unit: '€' }
     ];
 
     public actions: Action[] = [
         {
             callback: this.addDistance.bind(this),
-            name: 'Add Distance'
+            name: 'features.distances.actions.add'
         },
         {
             callback: this.updateDistance.bind(this),
-            name: 'Update Distance',
+            name: 'features.distances.actions.update',
             condition: 'selectedRow'
         },
         {
             callback: this.deleteDistance.bind(this),
-            name: 'Delete Distance',
+            name: 'features.distances.actions.delete',
             condition: 'selectedRow',
             type: 'warn'
         }

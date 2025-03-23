@@ -1,0 +1,74 @@
+{
+    "features": {
+        "users": {
+            "name": "Users",
+            "actions": {
+                "add": "Add User",
+                "update": "Update User",
+                "delete": "Delete User"
+            },
+            "table": {
+                "username": "Username",
+                "role": "Role",
+                "base": "Base"
+            }
+        },
+        "parking": {
+            "name": "Parking",
+            "actions": {
+                "add": "Add Car",
+                "update": "Update Car",
+                "delete": "Delete Car"
+            },
+            "table": {
+                "licensePlate": "License Plate",
+                "brand": "Brand",
+                "model": "Model",
+                "color": "Color",
+                "provider": "Provider",
+                "gearboxType": "Gearbox Type",
+                "fuelType": "Fuel Type",
+                "status": "Status",
+                "notes": "Notes",
+                "enterDate": "Enter Date",
+                "billingStartDate": "Billing Start Date",
+                "billingEndDate": "Billing End Date"
+            }
+        },
+        "distances": {
+            "name": "Distances",
+            "actions": {
+                "add": "Add Distance",
+                "update": "Update Distance",
+                "delete": "Delete Distance"
+            },
+            "table": {
+                "origin": "Origin",
+                "destination": "Destination",
+                "distance": "Distance",
+                "price": "Price"
+            }
+        }
+    },
+    "data": {
+        "base": {
+            "SEV": "Sevilla",
+            "BCN": "Barcelona",
+            "MLG": "Malaga",
+            "VLC": "Valencia",
+            "MAD": "Madrid"
+        },
+        "role": {
+            "admin": "Admin",
+            "dbadmin": "DBAdmin",
+            "driver": "Driver"
+        }
+    },
+    "user": {
+        "role": "Role",
+        "base": "Base",
+        "logout": "Logout",
+        "theme": "Theme",
+        "language": "Language"
+    }
+}

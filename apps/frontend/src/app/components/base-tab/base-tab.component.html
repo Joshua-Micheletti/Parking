@@ -9,7 +9,7 @@
     (selectedTabChange)="changeBase($event)"
 >
     @for (base of availableBases; track base) {
-    <mat-tab label="{{ base }}">
+    <mat-tab label="{{ 'data.base.' + base | translate }}">
         <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: base }"> </ng-container>
     </mat-tab>
     }

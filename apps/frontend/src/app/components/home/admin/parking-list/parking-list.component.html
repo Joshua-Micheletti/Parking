@@ -1,1 +1,5 @@
-<app-table [data]="cars" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedCar($event)"></app-table>
+<app-base-tab [template]="tableTemplate"></app-base-tab>
+
+<ng-template #tableTemplate let-base>
+    <app-table [data]="getCarsByBase(base)" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedCar($event)"></app-table>
+</ng-template>

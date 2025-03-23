@@ -1,48 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ParkedCar } from '../../../../types/parkedCar';
 import { Subscription } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
-import { MatTabsModule } from '@angular/material/tabs';
+import { Base } from '../../../../types/user';
+import { BaseTabComponent } from '../../../base-tab/base-tab.component';
 
 @Component({
     selector: 'app-parking-list',
-    imports: [TableComponent, MatTabsModule],
+    imports: [TableComponent, BaseTabComponent],
     templateUrl: './parking-list.component.html',
     styleUrl: './parking-list.component.scss'
 })
 export class ParkingListComponent {
+    @ViewChild('baseTemplate') baseTemplate!: TemplateRef<any>;
+
     public cars: ParkedCar[] = [];
 
     public columns: Column[] = [
-        { id: 'licensePlate', name: 'License Plate' },
-        { id: 'brand', name: 'Brand' },
-        { id: 'model', name: 'Model' },
-        { id: 'color', name: 'Color' },
-        { id: 'provider', name: 'Provider' },
-        { id: 'gearboxType', name: 'Gearbox Type' },
-        { id: 'fuelType', name: 'Fuel Type' },
-        { id: 'status', name: 'Status' },
-        { id: 'notes', name: 'Notes' },
-        { id: 'enterDate', name: 'Enter Date' },
-        { id: 'billingStartDate', name: 'Billing Start Date' },
-        { id: 'billingEndDate', name: 'Billing End Date' }
+        { id: 'licensePlate', name: 'features.parking.table.licensePlate' },
+        { id: 'brand', name: 'features.parking.table.brand' },
+        { id: 'model', name: 'features.parking.table.model' },
+        { id: 'color', name: 'features.parking.table.color' },
+        { id: 'provider', name: 'features.parking.table.provider' },
+        { id: 'gearboxType', name: 'features.parking.table.gearboxType' },
+        { id: 'fuelType', name: 'features.parking.table.fuelType' },
+        { id: 'status', name: 'features.parking.table.status' },
+        { id: 'notes', name: 'features.parking.table.notes' },
+        { id: 'enterDate', name: 'features.parking.table.enterDate' },
+        { id: 'billingStartDate', name: 'features.parking.table.billingStartDate' },
+        { id: 'billingEndDate', name: 'features.parking.table.billingEndDate' },
+        { id: 'base', name: 'features.parking.table.base' }
     ];
 
     public actions: Action[] = [
         {
             callback: this.addCar.bind(this),
-            name: 'Add Car'
+            name: 'features.parking.actions.add'
         },
         {
             callback: this.updateCar.bind(this),
-            name: 'Update Car',
+            name: 'features.parking.actions.update',
             condition: 'selectedRow'
         },
         {
             callback: this.deleteCar.bind(this),
-            name: 'Delete Car',
+            name: 'features.parking.table.delete',
             condition: 'selectedRow'
         }
     ];
@@ -58,6 +62,10 @@ export class ParkingListComponent {
     public updateCar(): void {}
 
     public deleteCar(): void {}
+
+    public getCarsByBase(base: Base): ParkedCar[] {
+        return this.cars.filter((car: ParkedCar) => car.base === base);
+    }
 
     public onSelectedCar(car: ParkedCar | null) {
         this._selectedCar = car;

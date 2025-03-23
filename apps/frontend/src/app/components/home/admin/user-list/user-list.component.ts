@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
@@ -14,36 +14,47 @@ import { TableComponent } from '../../../table/table.component';
 import { Action, Column } from '../../../../types/table';
 import { CommonModule } from '@angular/common';
 import { RainbowChipComponent } from '../../../rainbow-chip/rainbow-chip.component';
-import { BaseTabComponent } from "../../../base-tab/base-tab.component";
+import { BaseTabComponent } from '../../../base-tab/base-tab.component';
 
 @Component({
     selector: 'app-user-list',
-    imports: [MatTableModule, BaseTabComponent, MatIconModule, MatButtonModule, MatRippleModule, MatChipsModule, TableComponent, CommonModule, RainbowChipComponent, BaseTabComponent],
+    imports: [
+        MatTableModule,
+        BaseTabComponent,
+        MatIconModule,
+        MatButtonModule,
+        MatRippleModule,
+        MatChipsModule,
+        TableComponent,
+        CommonModule,
+        BaseTabComponent
+    ],
     templateUrl: './user-list.component.html',
     styleUrl: './user-list.component.scss'
 })
-export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('roleTemplate') roleTemplateRef!: TemplateRef<any>;
-    @ViewChild('baseTemplate') baseTemplateRef!: TemplateRef<any>;
-
+export class UserListComponent implements OnInit, OnDestroy {
     public users: User[] = [];
-    public columns: Column[] = [];
+    public columns: Column[] = [
+        { id: 'username', name: 'features.users.table.username', icon: 'person' },
+        { id: 'role', name: 'features.users.table.role', icon: 'person_pin' },
+        { id: 'base', name: 'features.users.table.base', icon: 'warehouse' }
+    ];
 
     public actions: Action[] = [
         {
             callback: this.addUser.bind(this),
-            name: 'Add User',
+            name: 'features.users.actions.add',
             icon: 'person_add'
         },
         {
             callback: this.updateUser.bind(this),
-            name: 'Update User',
+            name: 'features.users.actions.update',
             condition: 'selectedRow',
             icon: 'manage_accounts'
         },
         {
             callback: this.deleteUser.bind(this),
-            name: 'Delete User',
+            name: 'features.users.actions.delete',
             type: 'warn',
             condition: 'selectedRow',
             icon: 'person_remove'
@@ -69,16 +80,6 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy(): void {
         this._subscriptions.forEach((subscription: Subscription) => {
             subscription.unsubscribe();
-        });
-    }
-
-    ngAfterViewInit() {
-        setTimeout(() => {
-            this.columns = [
-                { id: 'username', name: 'Username', icon: 'person' },
-                { id: 'role', name: 'Role', icon: 'person_pin', customTemplate: this.roleTemplateRef },
-                { id: 'base', name: 'Base', icon: 'warehouse', customTemplate: this.baseTemplateRef }
-            ];
         });
     }
 

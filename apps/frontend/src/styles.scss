@@ -19,6 +19,20 @@
     --mad-color: #ff30ee;
     --vlc-color: #328bff;
     --mlg-color: #ffe23c;
+
+    --background: #ffffff;
+    --sidenav-base-background: #dae1e7;
+    --sidenav-background: #1a1a1a;
+    --dialog-background: #202020;
+    --button-text: rgb(25, 25, 25);
+    --text-color: rgb(200, 200, 200);
+    --warn-color: #ff746c;
+    --warn-color-ripple: #6d332f;
+    --component-background-color: #1a1a1a;
+    --sidenav-card-background: #9c9ea7;
+    --table-background-color: #dbe6f0;
+    --table-row-hover-color: #d9e0eb;
+    --table-row-selected-color: #dee6f0;
     @include mat.theme-overrides(
         (
             primary: #006e2c,

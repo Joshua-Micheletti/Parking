@@ -3,11 +3,3 @@
 <ng-template #tableTemplate let-base>
     <app-table [data]="getUsersByBase(base)" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedUser($event)"></app-table>
 </ng-template>
-
-<ng-template #roleTemplate let-element>
-    <app-rainbow-chip [value]="element.role"></app-rainbow-chip>
-</ng-template>
-
-<ng-template #baseTemplate let-element>
-    <app-rainbow-chip [value]="element.base"></app-rainbow-chip>
-</ng-template>

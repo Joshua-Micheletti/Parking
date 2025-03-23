@@ -1,14 +1,25 @@
-<mat-chip
-    [ngClass]="{
-        'admin-chip': value === 'admin',
-        'dbadmin-chip': value === 'dbadmin',
-        'driver-chip': value === 'driver',
-        'sev-chip': value === 'SEV',
-        'bcn-chip': value === 'BCN',
-        'vlc-chip': value === 'VLC',
-        'mad-chip': value === 'MAD',
-        'mlg-chip': value === 'MLG'
-    }"
->
-{{value}}
-</mat-chip>
+@if (isRole(value)) {
+    <mat-chip
+        [ngClass]="{
+            'admin-chip': value === 'admin',
+            'dbadmin-chip': value === 'dbadmin',
+            'driver-chip': value === 'driver',
+        }"
+    >
+    {{'data.role.' + value | translate}}
+    </mat-chip>
+} @else if (isBase(value)) {
+    <mat-chip
+        [ngClass]="{
+            'sev-chip': value === 'SEV',
+            'bcn-chip': value === 'BCN',
+            'vlc-chip': value === 'VLC',
+            'mad-chip': value === 'MAD',
+            'mlg-chip': value === 'MLG'
+        }"
+    >
+    {{'data.base.' + value | translate}}
+    </mat-chip>
+    
+}
+

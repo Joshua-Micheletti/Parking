@@ -7,7 +7,7 @@
         [ngClass]="{ 'warning-button': action.type === 'warn' }"
     >
         <mat-icon>{{ action.icon }}</mat-icon>
-        {{ action.name }}
+        {{ action.name | translate }}
     </button>
     } }
 </div>
@@ -17,7 +17,7 @@
         @for (column of columns; track column) {
         <ng-container [matColumnDef]="column.id">
             <th mat-header-cell *matHeaderCellDef style="padding-bottom: 1rem">
-                <span>{{ column.name }}</span>
+                <span>{{ column.name | translate }}</span>
                 @if (column.icon) {
                 <mat-icon style="vertical-align: bottom; margin-left: 4px">{{ column.icon }}</mat-icon>
                 } @if (column.unit) {
@@ -28,7 +28,10 @@
                 @if (column.customTemplate) {
                 <ng-container [ngTemplateOutlet]="column.customTemplate" [ngTemplateOutletContext]="{ $implicit: row }">
                 </ng-container>
-                } @else {
+                } @else if (column.id === 'base' || column.id === 'role') {
+                    <app-rainbow-chip [value]="row?.[column.id]"></app-rainbow-chip>
+                } 
+                @else {
                 {{ row?.[column.id] }}
                 }
             </td>
