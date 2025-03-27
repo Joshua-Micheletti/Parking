@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../../../schema/database';
-import { FindOptions } from 'sequelize';
+import { Attributes, FindOptions, WhereOptions } from 'sequelize';
 
 export async function getUsers(
     req: Request,
@@ -10,8 +10,8 @@ export async function getUsers(
     let response;
 
     // set the default conditions for the query
-    const attributes: string[] = ['username', 'role'];
-    const where: any = {base: req.base};
+    const attributes: string[]  = ['username', 'role'];
+    const where: WhereOptions = {base: req.base};
 
     // if the user is admin, add the base in the query and delete the filter
     if (req.role === 'admin') {

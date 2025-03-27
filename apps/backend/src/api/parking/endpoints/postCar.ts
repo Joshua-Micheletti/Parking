@@ -9,7 +9,7 @@ import config from 'config';
 import { Parking } from '../../../schema/database';
 import { objectFieldsToSnakeCase } from '../../../utils/stringUtils';
 
-const postCarInputValidation = [
+export const postCarInputValidation = [
     body('licensePlate').isString().isLength({ min: 4, max: 10 }),
     body('brand').isString().optional(),
     body('model').isString().optional(),
@@ -39,9 +39,7 @@ export async function postCar(
     const values = objectFieldsToSnakeCase(req.body);
 
     try {
-        const response = await Parking.create(values);
-
-        console.log(response);
+        await Parking.create(values);
     } catch (error) {
         next(error);
         return;

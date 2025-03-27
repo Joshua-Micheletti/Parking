@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment, Endpoint } from '../../environments/environment';
 import { Base, Role } from '../types/user';
 import { BaseService } from './base.service';
+import { Auth, Credentials } from '../types/auth';
 
 @Injectable({
     providedIn: 'root'
@@ -16,17 +17,7 @@ export class AuthService {
     public role: Role | null = null;
     public base: Base | null = null;
 
-    public authenticated$: BehaviorSubject<{
-        token: string;
-        user: string;
-        role: Role;
-        base: Base;
-    }> = new BehaviorSubject<{
-        token: string;
-        user: string;
-        role: Role;
-        base: Base;
-    }>({ token: '', user: '', role: 'driver', base: 'SEV' });
+    public authenticated$: BehaviorSubject<Auth> = new BehaviorSubject<Auth>({ token: '', user: '', role: 'driver', base: 'SEV' });
 
     constructor(private _httpService: HttpService, private _router: Router, private _baseService: BaseService) {
         this.token = sessionStorage.getItem('token');
@@ -42,7 +33,7 @@ export class AuthService {
         }
 
         this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).subscribe({
-            next: (response: { user: string; role: Role; base: Base }) => {
+            next: (response: Auth) => {
                 this.user = response.user;
                 this.role = response.role;
                 this.base = response.base;
@@ -60,7 +51,7 @@ export class AuthService {
         });
     }
 
-    public login(credentials: { username: string; password: string }): void {
+    public login(credentials: Credentials): void {
         const requestConfig: Endpoint = environment.endpoints?.['login'];
 
         this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, credentials)).subscribe({

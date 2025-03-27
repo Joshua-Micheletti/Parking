@@ -6,6 +6,7 @@ export type Column = {
     icon?: string;
     unit?: string;
     customTemplate?: TemplateRef<any>;
+    sortable?: boolean;
 };
 
 export type Condition = undefined | 'selectedRow';

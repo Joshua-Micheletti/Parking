@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
 import { Base, Role, User } from '../../../../types/user';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,9 +13,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { TableComponent } from '../../../table/table.component';
 import { Action, Column } from '../../../../types/table';
 import { CommonModule } from '@angular/common';
-import { RainbowChipComponent } from '../../../rainbow-chip/rainbow-chip.component';
 import { BaseTabComponent } from '../../../base-tab/base-tab.component';
 import { AuthService } from '../../../../services/auth.service';
+import { Auth } from '../../../../types/auth';
+import { TableService } from '../../../../services/table.service';
 
 @Component({
     selector: 'app-user-list',
@@ -36,8 +37,8 @@ import { AuthService } from '../../../../services/auth.service';
 export class UserListComponent implements OnInit, OnDestroy {
     public users: User[] = [];
     public columns: Column[] = [
-        { id: 'username', name: 'features.users.table.username', icon: 'person' },
-        { id: 'role', name: 'features.users.table.role', icon: 'person_pin' }
+        { id: 'username', name: 'features.users.table.username', icon: 'person', sortable: true },
+        { id: 'role', name: 'features.users.table.role', icon: 'person_pin', sortable: true }
     ];
 
     public actions: Action[] = [
@@ -68,23 +69,41 @@ export class UserListComponent implements OnInit, OnDestroy {
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _userService: UserService, private _dialog: Dialog, private _authService: AuthService) {}
+    constructor(
+        private _userService: UserService,
+        private _dialog: Dialog,
+        private _authService: AuthService,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _tableService: TableService
+    ) {}
 
     ngOnInit(): void {
-        this.role = this._authService.role ?? 'driver';
-        this.base = this._authService.base ?? 'SEV';
+        const subscription: Subscription = this._authService.authenticated$
+            .pipe(
+                filter((authenticated: Auth) => {
+                    return authenticated.token !== '';
+                })
+            )
+            .subscribe((authenticated: Auth) => {
+                this.role = authenticated.role;
+                this.base = authenticated.base;
 
-        if (this.role === 'admin') {
-            this.columns.push({ id: 'base', name: 'features.users.table.base', icon: 'warehouse' });
-        }
+                if (this.role === 'admin') {
+                    this.columns.push({ id: 'base', name: 'features.users.table.base', icon: 'warehouse' });
+                }
 
-        this._userService.getUsers();
+                this._userService.getUsers();
 
-        this._subscriptions.push(
-            this._userService.users$.subscribe((users: User[]) => {
-                this.users = users;
-            })
-        );
+                this._subscriptions.push(
+                    this._userService.users$.subscribe((users: User[]) => {
+                        this.users = users;
+                        this._tableService.update$.next();
+                        this._changeDetectorRef.detectChanges();
+                    })
+                );
+            });
+
+        this._subscriptions.push(subscription);
     }
 
     ngOnDestroy(): void {
