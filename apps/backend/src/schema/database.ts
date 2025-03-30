@@ -6,7 +6,7 @@ import {
     InitOptions
 } from 'sequelize';
 import config from 'config';
-import { DatabaseConfig } from '../types/databaseConfig';
+import { DatabaseConfig } from '../types/config';
 
 const sequelizeConfig: DatabaseConfig = JSON.parse(
     JSON.stringify(config.get('database'))
@@ -16,6 +16,7 @@ let sequelize;
 class User extends Model {}
 class Distance extends Model {}
 class Parking extends Model {}
+class API extends Model {}
 
 if (sequelizeConfig.connect) {
     if (sequelizeConfig.url) {
@@ -62,13 +63,16 @@ if (sequelizeConfig.connect) {
     User.init(userFields, userInitOptions);
     User.sync({ alter: true })
         .then(() => {
-            User.create({
-                username: 'superuser',
-                password:
-                    '$2a$10$qL6UvYwsBVIvTtX8zN2Jquk7Mfg0Kx7vhwAdlC0Vtcv1b5vYLcQ3i',
-                role: 'admin',
-                base: 'SEV'
-            }).catch((error) => {
+            User.create(
+                {
+                    username: 'superuser',
+                    password:
+                        '$2a$10$qL6UvYwsBVIvTtX8zN2Jquk7Mfg0Kx7vhwAdlC0Vtcv1b5vYLcQ3i',
+                    role: 'admin',
+                    base: 'SEV'
+                },
+                { logging: false }
+            ).catch((error) => {
                 console.log('superuser already saved');
             });
         })
@@ -107,7 +111,7 @@ if (sequelizeConfig.connect) {
         timestamps: false
     };
     Distance.init(distanceFields, distanceInitOptions);
-    Distance.sync({ alter: true }).catch((error) => {
+    Distance.sync({ alter: true, logging: false }).catch((error) => {
         console.log('Failed to sync the distance table');
         console.log(error);
     });
@@ -176,10 +180,52 @@ if (sequelizeConfig.connect) {
     };
 
     Parking.init(parkingFields, parkingInitOptions);
-    Parking.sync({ alter: true }).catch((error) => {
+    Parking.sync({ alter: true, logging: false }).catch((error) => {
         console.log('Failed to sync the parking table');
+        console.log(error);
+    });
+
+    /* ------------------------------- API Tokens ------------------------------- */
+    const apiTypes: string[] = config.get('api.types');
+
+    const APIFields: ModelAttributes = {
+        api_type: {
+            type: DataTypes.ENUM(...apiTypes),
+            primaryKey: true
+        },
+        access_token: {
+            type: DataTypes.STRING
+        },
+        refresh_token: {
+            type: DataTypes.STRING
+        },
+        id_token: {
+            type: DataTypes.STRING
+        },
+        token_type: {
+            type: DataTypes.STRING
+        },
+        expire_date: {
+            type: DataTypes.BIGINT
+        }
+    };
+
+    const APIInitOptions: InitOptions = {
+        sequelize,
+        modelName: 'API',
+        name: {
+            singular: 'api',
+            plural: 'api'
+        },
+        tableName: 'api',
+        timestamps: false
+    };
+
+    API.init(APIFields, APIInitOptions);
+    API.sync({ alter: true, logging: false }).catch((error) => {
+        console.log('Failed to sync the api table');
         console.log(error);
     });
 }
 
-export { sequelize, User, Distance, Parking };
+export { sequelize, User, Distance, Parking, API };

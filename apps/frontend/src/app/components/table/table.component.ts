@@ -1,26 +1,24 @@
 import {
     AfterViewInit,
+    ApplicationRef,
     ChangeDetectorRef,
     Component,
-    DoCheck,
     EventEmitter,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
     ViewChild
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Action, Column } from '../../types/table';
 import { CommonModule } from '@angular/common';
 import { RainbowChipComponent } from '../rainbow-chip/rainbow-chip.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { Role, roleOrder, User } from '../../types/user';
+import { roleOrder, User } from '../../types/user';
 import { TableService } from '../../services/table.service';
 import { Subscription } from 'rxjs';
 
@@ -38,7 +36,7 @@ import { Subscription } from 'rxjs';
     templateUrl: './table.component.html',
     styleUrl: './table.component.scss'
 })
-export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy, DoCheck {
+export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
     @Input() public data: T[] = [];
     @Input() public columns: Column[] = [];
     @Input() public actions: Action[] = [];
@@ -53,35 +51,20 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy, DoCh
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _tableService: TableService, private _changeDetectionRef: ChangeDetectorRef) {}
+    constructor(
+        private _tableService: TableService,
+        private _applicationRef: ApplicationRef
+    ) {}
 
-    ngOnInit(): void {
-        this._tableService.update$.subscribe(() => {
-            this.data;
-            console.log("🐛 | table.component.ts:61 | TableComponent<T> | this._tableService.update$.subscribe | this.data:", this.data)
-            this._changeDetectionRef.detectChanges();
-        });
-    }
+    ngOnInit(): void {}
+
     ngAfterViewInit() {
-        this.dataSource = new MatTableDataSource<T>(this.data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.sortingDataAccessor = (item: T, sortHeaderId: string) => {
-            if (sortHeaderId === 'role') {
-                return roleOrder[(<User>item).role] || 999;
-            }
+        this._setupData(this.data);
 
-            const value = item[sortHeaderId as keyof T];
-
-            if (typeof value === 'string' || typeof value === 'number') {
-                return value;
-            }
-
-            return '';
-        };
-    }
-
-    ngDoCheck(): void {
-        this._changeDetectionRef.markForCheck();
+        this._tableService.update$.subscribe(() => {
+            this._applicationRef.tick();
+            this._setupData(this.data);
+        });
     }
 
     ngOnDestroy(): void {
@@ -101,5 +84,23 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy, DoCh
 
     public check(): void {
         console.log(this.columns);
+    }
+
+    private _setupData(data: T[]): void {
+        this.dataSource = new MatTableDataSource<T>(data);
+        this.dataSource.sort = this.sort;
+        this.dataSource.sortingDataAccessor = (item: T, sortHeaderId: string) => {
+            if (sortHeaderId === 'role') {
+                return roleOrder[(<User>item).role] || 999;
+            }
+
+            const value = item[sortHeaderId as keyof T];
+
+            if (typeof value === 'string' || typeof value === 'number') {
+                return value;
+            }
+
+            return '';
+        };
     }
 }

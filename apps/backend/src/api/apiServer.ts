@@ -8,6 +8,7 @@ import usersServer from './users/usersServer';
 import distancesServer from './distances/distancesServer';
 import parkingServer from './parking/parkingServer';
 import authServer from './auth/authServer';
+import filesServer from './files/filesServer';
 import authenticate from '../middleware/auth';
 
 /**
@@ -20,10 +21,11 @@ export default function apiServer(): Router {
   // create a new Express Router
   const router: Router = Router();
 
-  router.use('/users', authenticate, usersServer());
   router.use('/auth', authServer());
+  router.use('/users', authenticate, usersServer());
   router.use('/distances', authenticate, distancesServer());
   router.use('/parking', authenticate, parkingServer());
+  router.use('/files', authenticate, filesServer());
 
   /**
    * Endpoint for /healthcheck. Logs a message and returns OK

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { filter, Subscription } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
@@ -74,7 +74,8 @@ export class UserListComponent implements OnInit, OnDestroy {
         private _dialog: Dialog,
         private _authService: AuthService,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _tableService: TableService
+        private _tableService: TableService,
+        private _applicationRef: ApplicationRef
     ) {}
 
     ngOnInit(): void {
@@ -97,8 +98,12 @@ export class UserListComponent implements OnInit, OnDestroy {
                 this._subscriptions.push(
                     this._userService.users$.subscribe((users: User[]) => {
                         this.users = users;
+                        console.log("🐛 | user-list.component.ts:101 | UserListComponent | this._userService.users$.subscribe | this.users:", this.users)
                         this._tableService.update$.next();
-                        this._changeDetectorRef.detectChanges();
+                        setTimeout(() => {
+                            this._changeDetectorRef.detectChanges();
+                            this._applicationRef.tick();
+                        }, 0);
                     })
                 );
             });

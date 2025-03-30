@@ -14,13 +14,7 @@
     },
     "parking": {
         "gearboxTypes": ["AUTOMATIC", "MANUAL"],
-        "fuelTypes": [
-            "DIESEL",
-            "GASOLINE",
-            "GPL",
-            "HYBRID",
-            "ELECTRIC"
-        ],
+        "fuelTypes": ["DIESEL", "GASOLINE", "GPL", "HYBRID", "ELECTRIC"],
         "statuses": [
             "AVAILABLE",
             "NOT AVAILABLE",
@@ -33,5 +27,17 @@
     "jwt": {
         "secret": "asdasdasd",
         "expiresIn": "8h"
+    },
+    "api": {
+        "types": ["google_drive"],
+        "googleDrive": {
+            "web": {
+                "project_id": "parking-455121",
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                "redirect_uris": ["http://localhost:10000/drive/callback"]
+            }
+        }
     }
 }
