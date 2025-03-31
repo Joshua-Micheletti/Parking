@@ -10,7 +10,15 @@ export default async function errorHandler(
   console.error(error);
 
   if (error instanceof Error) {
-    res.status(500).json({ message: error.message });
+    let message: any;
+
+    try {
+      message = JSON.parse(error.message);
+    } catch (parseError) {
+      message = error.message;
+    }
+
+    res.status(500).json({ message });
   } 
   else if (error instanceof Result) {
     res.status(400).json({ message: "Invalid input", errors: error });

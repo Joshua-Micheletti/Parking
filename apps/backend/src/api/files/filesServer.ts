@@ -4,11 +4,15 @@ import { Request, Response, Router } from "express";
 // import { listCars } from './endpoints/listCars';
 import {uploadInputValidation, upload} from './endpoints/upload';
 import { upload as uploadMiddleware } from '../../middleware/upload';
+import { download, downloadInputValidation } from "./endpoints/download";
+import { remove, removeInputValidation } from "./endpoints/remove";
 
 export default function parkingServer(): Router {
     const router: Router = Router();
 
-    router.post('/upload', uploadMiddleware.single('file'), uploadInputValidation, upload);
+    router.post('/', uploadMiddleware.single('file'), uploadInputValidation, upload);
+    router.get('/', downloadInputValidation, download);
+    router.delete('/', removeInputValidation, remove);
     // router.get('/download', postCarInputValidation, postCar);
 
     function healthcheck(req: Request, res: Response): void {

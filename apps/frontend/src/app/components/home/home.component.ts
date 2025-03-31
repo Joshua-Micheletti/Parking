@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { filter } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,9 @@ import { Base, Role } from '../../types/user';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { ThemeService } from '../../services/theme.service';
+import { HttpService } from '../../services/http.service';
+import { Endpoint, environment } from '../../../environments/environment';
+import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 
 @Component({
     selector: 'app-home',
@@ -35,6 +38,8 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class HomeComponent implements OnInit {
     @ViewChild('sidenav') sidenav!: MatSidenav;
+    @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
     public user: string = '';
     public menuIsOpen: boolean = false;
 
@@ -48,11 +53,14 @@ export class HomeComponent implements OnInit {
     public base: Base = 'SEV';
     public isExpanded: boolean = true;
 
+    private _imageId: string = '';
+
     constructor(
         private _authService: AuthService,
         private _router: Router,
         private _translate: TranslateService,
-        private _themeService: ThemeService
+        private _themeService: ThemeService,
+        private _httpService: HttpService
     ) {}
 
     ngOnInit(): void {
@@ -100,6 +108,75 @@ export class HomeComponent implements OnInit {
     }
 
     public getTheme(): string {
-        return this._themeService.currentTheme === 'dark' ? 'dark_mode' : 'light_mode'; 
+        return this._themeService.currentTheme === 'dark' ? 'dark_mode' : 'light_mode';
+    }
+
+    public uploadImage(): void {
+        this.fileInput.nativeElement.click();
+    }
+
+    public onFileSelected(event: Event): void {
+        const input = event.target as HTMLInputElement;
+
+        const requestConfig: Endpoint = environment.endpoints?.['uploadImage'];
+
+        if (!requestConfig) {
+            return;
+        }
+
+        const formData: FormData = new FormData();
+
+        if (input.files) {
+            formData.append('file', input.files[0]);
+        }
+
+        const headers = new HttpHeaders({
+            Accept: '*/*' // Ensures binary response is correctly handled
+        });
+
+        this._httpService
+            .request(
+                new HttpRequest(requestConfig.method, requestConfig.path, formData, { headers, reportProgress: true })
+            )
+            .subscribe({
+                next: (response: any) => {
+                    console.log(response);
+                    this._imageId = response.id;
+                },
+                error: (error: unknown) => {
+                    console.log(error);
+                }
+            });
+    }
+
+    public downloadImage(): void {
+        const requestConfig: Endpoint = environment.endpoints?.['downloadImage'];
+
+        this._httpService
+            .request(
+                new HttpRequest(
+                    requestConfig.method,
+                    requestConfig.path,
+                    { responseType: 'blob', reportProgres: true },
+                    { params: new HttpParams().set('id', this._imageId) }
+                )
+            )
+            .subscribe({
+                next: (response: any) => {
+                    console.log(response);
+                    const blob = response.body as Blob;
+                    const objectURL = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = objectURL;
+                    a.download = 'downloaded-image.jpg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(objectURL);
+                },
+                error: (error: unknown) => {
+                    console.log(error);
+                }
+            });
     }
 }

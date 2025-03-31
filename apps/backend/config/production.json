@@ -10,5 +10,10 @@
             }
         },
         "connect": true
+    },
+    "api": {
+        "googleDrive": {
+            "parentFolderId": ["1PTo3D8qZFZjqce3dxe6du-TDAjQSk9A-"]
+        }
     }
 }
