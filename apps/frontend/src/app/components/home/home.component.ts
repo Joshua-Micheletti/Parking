@@ -46,7 +46,8 @@ export class HomeComponent implements OnInit {
     public features: { icon: string; name: string; path?: string }[] = [
         { icon: 'group', name: 'users', path: 'users' },
         { icon: 'directions_car_filled', name: 'parking', path: 'parking' },
-        { icon: 'work', name: 'distances', path: 'distances' }
+        { icon: 'work', name: 'distances', path: 'distances' },
+        { icon: 'insert_drive_file', name: 'files', path: 'files' }
     ];
 
     public role: Role = 'driver';
@@ -109,74 +110,5 @@ export class HomeComponent implements OnInit {
 
     public getTheme(): string {
         return this._themeService.currentTheme === 'dark' ? 'dark_mode' : 'light_mode';
-    }
-
-    public uploadImage(): void {
-        this.fileInput.nativeElement.click();
-    }
-
-    public onFileSelected(event: Event): void {
-        const input = event.target as HTMLInputElement;
-
-        const requestConfig: Endpoint = environment.endpoints?.['uploadImage'];
-
-        if (!requestConfig) {
-            return;
-        }
-
-        const formData: FormData = new FormData();
-
-        if (input.files) {
-            formData.append('file', input.files[0]);
-        }
-
-        const headers = new HttpHeaders({
-            Accept: '*/*' // Ensures binary response is correctly handled
-        });
-
-        this._httpService
-            .request(
-                new HttpRequest(requestConfig.method, requestConfig.path, formData, { headers, reportProgress: true })
-            )
-            .subscribe({
-                next: (response: any) => {
-                    console.log(response);
-                    this._imageId = response.id;
-                },
-                error: (error: unknown) => {
-                    console.log(error);
-                }
-            });
-    }
-
-    public downloadImage(): void {
-        const requestConfig: Endpoint = environment.endpoints?.['downloadImage'];
-
-        this._httpService
-            .request(
-                new HttpRequest(
-                    requestConfig.method,
-                    requestConfig.path,
-                    { responseType: 'blob', reportProgres: true },
-                    { params: new HttpParams().set('id', this._imageId) }
-                )
-            )
-            .subscribe({
-                next: (response: any) => {
-                    console.log(response);
-                    const blob = response.body as Blob;
-                    const objectURL = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = objectURL;
-                    a.download = 'downloaded-image.jpg';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(objectURL);
-                },
-                error: (error: unknown) => {
-                    console.log(error);
-                }
-            });
-    }
+    }    
 }

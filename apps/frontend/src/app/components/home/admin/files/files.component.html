@@ -1,0 +1,19 @@
+<div style="display: flex; width: 100%; justify-content: center; gap: 10rem; padding-top: 10rem">
+    <button mat-fab (click)="upload()" style="transform: scale(3)">
+        <mat-icon>upload</mat-icon>
+    </button>
+    <button mat-fab (click)="download()" style="transform: scale(3)">
+        <mat-icon>download</mat-icon>
+    </button>
+    <button mat-fab (click)="remove()" style="transform: scale(3)">
+        <mat-icon>delete</mat-icon>
+    </button>
+</div>
+
+<input #fileInput type="file" (change)="onFileSelected($event)" hidden />
+
+@if (this.imageSrc !== '') {
+    <div style="margin-top: 5rem; display: flex; justify-content: center; width: 100%">
+        <img [src]="this.imageSrc"/>
+    </div>
+}

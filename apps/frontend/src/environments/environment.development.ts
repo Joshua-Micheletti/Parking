@@ -52,6 +52,10 @@ export const environment: Environment = {
         downloadImage: {
             path: '/api/files',
             method: 'GET'
+        },
+        deleteImage: {
+            path: '/api/files',
+            method: 'DELETE'
         }
     }
 };

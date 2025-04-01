@@ -46,6 +46,18 @@ export const environment: Environment = {
         postDistance: {
             path: host + '/distances',
             method: 'POST'
+        },
+        uploadImage: {
+            path: host + '/files',
+            method: 'POST'
+        },
+        downloadImage: {
+            path: host + '/files',
+            method: 'GET'
+        },
+        deleteImage: {
+            path: host + '/files',
+            method: 'DELETE'
         }
     }
 };
