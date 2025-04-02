@@ -28,6 +28,8 @@ export class FilesComponent {
         const input = event.target as HTMLInputElement;
 
         const requestConfig: Endpoint = environment.endpoints?.['uploadImage'];
+        console.log("🐛 | files.component.ts:31 | FilesComponent | onFileSelected | environment:", environment)
+        console.log("🐛 | files.component.ts:32 | FilesComponent | onFileSelected | requestConfig:", requestConfig)
 
         if (!requestConfig) {
             return;
