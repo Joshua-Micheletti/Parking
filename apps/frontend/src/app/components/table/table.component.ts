@@ -39,7 +39,7 @@ import { Subscription } from 'rxjs';
 export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
     @Input() public data: T[] = [];
     @Input() public columns: Column[] = [];
-    @Input() public actions: Action[] = [];
+    @Input() public actions: Action<T>[] = [];
 
     @Output('selectedRow') public selectedRowEvent: EventEmitter<T | null> = new EventEmitter();
 

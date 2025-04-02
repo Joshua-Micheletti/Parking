@@ -6,6 +6,9 @@ import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
 import { Base } from '../../../../types/user';
 import { BaseTabComponent } from '../../../base-tab/base-tab.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
+import { FormDialogData } from '../../../../types/formDialog';
 
 @Component({
     selector: 'app-parking-list',
@@ -34,7 +37,7 @@ export class ParkingListComponent {
         { id: 'base', name: 'features.parking.table.base' }
     ];
 
-    public actions: Action[] = [
+    public actions: Action<ParkedCar>[] = [
         {
             callback: this.addCar.bind(this),
             name: 'features.parking.actions.add',
@@ -58,9 +61,34 @@ export class ParkingListComponent {
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _dialog: Dialog) {}
+    constructor(private _matDialog: MatDialog) {}
 
-    public addCar(): void {}
+    public addCar(): void {
+        const sampleData: ParkedCar = {licensePlate: 'something', base: 'SEV', status: 'AVAILABLE'};
+        const data: FormDialogData<ParkedCar> = {
+            title: 'Something',
+            controls: [
+                { label: 'features.parking.table.licensePlate', validators: [], name: 'licensePlate'},
+                { label: 'features.parking.table.licensePlate', validators: [], name: 'base'},
+                { label: 'features.parking.table.licensePlate', validators: [], name: 'status'},
+            ],
+            actions: [
+                {
+                    callback: this.test.bind(this),
+                    name: 'sberembe'
+                }
+            ],
+            sampleData: sampleData
+        };
+
+        const dialogRef: MatDialogRef<FormDialogComponent<ParkedCar>> = this._matDialog.open<FormDialogComponent<ParkedCar>>(FormDialogComponent, {
+            data
+        });
+    }
+
+    public test(input?: ParkedCar): void {
+        console.log('🐛 | parking-list.component.ts:81 | ParkingListComponent | test | input:', input);
+    }
 
     public updateCar(): void {}
 

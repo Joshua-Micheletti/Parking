@@ -13,8 +13,11 @@ export type Condition = undefined | 'selectedRow';
 
 export type ActionType = 'normal' | 'warn';
 
-export type Action = {
-    callback: () => void;
+export type Action<T> = {
+    callback: {
+        (): void;
+        (input: T): void;
+    };
     name: string;
     condition?: Condition;
     type?: ActionType;

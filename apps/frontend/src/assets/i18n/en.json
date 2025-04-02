@@ -1,4 +1,7 @@
 {
+    "common": {
+        "close": "Close"
+    },
     "features": {
         "users": {
             "name": "Users",
@@ -48,6 +51,9 @@
                 "distance": "Distance",
                 "price": "Price"
             }
+        },
+        "files": {
+            "name": "Files"
         }
     },
     "data": {

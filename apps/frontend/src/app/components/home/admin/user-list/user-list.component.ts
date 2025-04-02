@@ -41,7 +41,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         { id: 'role', name: 'features.users.table.role', icon: 'person_pin', sortable: true }
     ];
 
-    public actions: Action[] = [
+    public actions: Action<User>[] = [
         {
             callback: this.addUser.bind(this),
             name: 'features.users.actions.add',

@@ -1,4 +1,7 @@
 {
+    "common": {
+        "close": "Cerrar"
+    },
     "features": {
         "users": {
             "name": "Usuarios",
@@ -49,6 +52,9 @@
                 "distance": "Distancia",
                 "price": "Precio"
             }
+        },
+        "files": {
+            "name": "Archivos"
         }
     },
     "data": {
