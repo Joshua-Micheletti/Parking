@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpService } from '../../../../services/http.service';
 import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { Endpoint, environment } from '../../../../../environments/environment.development';
+import { Endpoint, environment } from '../../../../../environments/environment';
 
 @Component({
     selector: 'app-files',
