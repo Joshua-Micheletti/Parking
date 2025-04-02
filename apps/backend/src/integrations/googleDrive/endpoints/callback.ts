@@ -26,7 +26,7 @@ export function getCallbackEndpoint(client: OAuth2Client): RequestHandler[] {
         console.log("🐛 | callback.ts:25 | callback | tokens:", tokens)
 
         try {
-            await API.create({
+            await API.upsert({
                 access_token: tokens.access_token,
                 refresh_token: tokens.refresh_token,
                 id_token: tokens.id_token,
