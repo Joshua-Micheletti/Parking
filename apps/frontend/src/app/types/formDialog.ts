@@ -4,8 +4,10 @@ import { Action } from './table';
 export type ControlData = {
     label: string;
     defaultValue?: string;
-    validators: ValidatorFn[];
+    validators?: ValidatorFn[];
     name: string;
+    enum?: string[];
+    translation?: string;
 };
 
 export type FormDialogData<T> = {
@@ -13,4 +15,5 @@ export type FormDialogData<T> = {
     actions: Action<T>[];
     controls: ControlData[];
     sampleData: T;
+    groupSize?: number
 };

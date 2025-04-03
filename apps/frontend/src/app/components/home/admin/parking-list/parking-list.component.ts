@@ -1,14 +1,23 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ParkedCar } from '../../../../types/parkedCar';
+import {
+    fuelTypes,
+    fuelTypeTranslation,
+    gearboxTypes,
+    gearboxTypeTranslation,
+    ParkedCar,
+    statuses,
+    statusTranslation
+} from '../../../../types/parkedCar';
 import { Subscription } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
-import { Base } from '../../../../types/user';
+import { Base, bases, baseTranslation } from '../../../../types/user';
 import { BaseTabComponent } from '../../../base-tab/base-tab.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
-import { FormDialogData } from '../../../../types/formDialog';
+import { ControlData, FormDialogData } from '../../../../types/formDialog';
+import { Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-parking-list',
@@ -57,6 +66,46 @@ export class ParkingListComponent {
         }
     ];
 
+    public addCarControls: ControlData[] = [
+        {
+            label: 'features.parking.table.licensePlate',
+            name: 'licensePlate',
+            validators: [Validators.required]
+        },
+        {
+            label: 'features.parking.table.base',
+            name: 'base',
+            validators: [Validators.required],
+            enum: bases,
+            translation: baseTranslation
+        },
+        {
+            label: 'features.parking.table.status',
+            name: 'status',
+            validators: [Validators.required],
+            enum: statuses,
+            translation: statusTranslation
+        },
+        {
+            label: 'features.parking.table.gearboxType',
+            name: 'gearboxType',
+            enum: gearboxTypes,
+            translation: gearboxTypeTranslation
+        },
+        {
+            label: 'features.parking.table.fuelType',
+            name: 'fuelType',
+            enum: fuelTypes,
+            translation: fuelTypeTranslation
+        },
+        { label: 'features.parking.table.color', name: 'color' },
+        { label: 'features.parking.table.provider', name: 'provider' },
+        { label: 'features.parking.table.notes', name: 'notes' },
+        { label: 'features.parking.table.enterDate', name: 'enterDate' },
+        { label: 'features.parking.table.billingStartDate', name: 'billingStartDate' },
+        { label: 'features.parking.table.billingEndDate', name: 'billingEndDate' }
+    ];
+
     private _selectedCar: ParkedCar | null = null;
 
     private _subscriptions: Subscription[] = [];
@@ -64,25 +113,25 @@ export class ParkingListComponent {
     constructor(private _matDialog: MatDialog) {}
 
     public addCar(): void {
-        const sampleData: ParkedCar = {licensePlate: 'something', base: 'SEV', status: 'AVAILABLE'};
+        const sampleData: ParkedCar = { licensePlate: 'something', base: 'SEV', status: 'AVAILABLE' };
         const data: FormDialogData<ParkedCar> = {
             title: 'Something',
-            controls: [
-                { label: 'features.parking.table.licensePlate', validators: [], name: 'licensePlate'},
-                { label: 'features.parking.table.licensePlate', validators: [], name: 'base'},
-                { label: 'features.parking.table.licensePlate', validators: [], name: 'status'},
-            ],
+            controls: this.addCarControls,
             actions: [
                 {
                     callback: this.test.bind(this),
                     name: 'sberembe'
                 }
             ],
-            sampleData: sampleData
+            sampleData: sampleData,
+            groupSize: 3
         };
 
-        const dialogRef: MatDialogRef<FormDialogComponent<ParkedCar>> = this._matDialog.open<FormDialogComponent<ParkedCar>>(FormDialogComponent, {
-            data
+        const dialogRef: MatDialogRef<FormDialogComponent<ParkedCar>> = this._matDialog.open<
+            FormDialogComponent<ParkedCar>
+        >(FormDialogComponent, {
+            data,
+            panelClass: 'custom-panel'
         });
     }
 

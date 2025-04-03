@@ -4,9 +4,17 @@
         @for (group of groupedControls; track group) {
         <div style="display: flex; gap: 1rem">
             @for (control of group; track control; let i = $index) {
-            <mat-form-field class="w-100">
-                <mat-label>{{ control.label | translate }}</mat-label>
-                <input matInput [formControlName]="control.name"/>
+                <mat-form-field class="w-100">
+                    <mat-label>{{ control.label | translate }}</mat-label>
+                    @if (control.enum) {
+                            <mat-select [formControlName]="control.name">
+                              @for (value of control.enum; track value) {
+                                <mat-option [value]="value">{{control.translation + value | translate}}</mat-option>
+                              }
+                            </mat-select>
+                    } @else {
+                        <input matInput [formControlName]="control.name"/>
+                    }
             </mat-form-field>
             }
         </div>

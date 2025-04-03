@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { UtilsService } from '../../../services/utils.service';
 import { Action } from '../../../types/table';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
     selector: 'app-form-dialog',
@@ -27,7 +28,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
         TranslateModule,
         MatFormFieldModule,
         MatInputModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatSelectModule
     ],
     templateUrl: './form-dialog.component.html',
     styleUrl: './form-dialog.component.scss'
@@ -47,7 +49,7 @@ export class FormDialogComponent<T> {
     ) {
         this.title = data.title;
         this.controls = data.controls;
-        this.groupedControls = this._utilsService.groupArray(this.controls);
+        this.groupedControls = this._utilsService.groupArray(this.controls, this.data.groupSize);
         this.actions = data.actions;
         this.sampleData = data.sampleData;
 

@@ -69,6 +69,25 @@
             "admin": "Admin",
             "dbadmin": "DBAdmin",
             "driver": "Driver"
+        },
+        "status": {
+            "AVAILABLE": "Disponible",
+            "NOT AVAILABLE": "No Disponible",
+            "MOVED": "Traslado",
+            "IN WORKSHOP": "En Taller",
+            "DELIVERED TO PROVIDER": "Entregado al Proveedor",
+            "DELIVERED TO CLIENT": "Entregado Cliente"
+        },
+        "gearboxType": {
+            "AUTOMATIC": "Automatico",
+            "MANUAL": "Manual"
+        },
+        "fuelType": {
+            "DIESEL": "Diesel",
+            "GASOLINE": "Gasolina",
+            "GPL": "Gas Licuado",
+            "HYBRID": "Hibrido",
+            "ELECTRIC": "Electrico"
         }
     },
     "user": {
