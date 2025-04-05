@@ -11,50 +11,68 @@ export type Environment = {
     };
 }
 
+const host: string = "/api";
+
 export const environment: Environment = {
     endpoints: {
         login: {
-            path: '/api/auth/login',
+            path: host + '/auth/login',
             method: 'POST'
         },
         getUsers: {
-            path: '/api/users',
+            path: host + '/users',
             method: 'GET'
         },
         postUsers: {
-            path: '/api/users',
+            path: host + '/users',
             method: 'POST'
         },
         deleteUser: {
-            path: '/api/users',
+            path: host + '/users',
             method: 'DELETE'
         },
         getRoles: {
-            path: '/api/users/roles',
+            path: host + '/users/roles',
             method: 'GET'
         },
         updateUser: {
-            path: '/api/users/update',
+            path: host + '/users/update',
             method: 'POST'
         },
         getDistances: {
-            path: '/api/distances',
+            path: host + '/distances',
             method: 'GET'
         },
         postDistance: {
-            path: '/api/distances',
+            path: host + '/distances',
             method: 'POST'
         },
         uploadImage: {
-            path: '/api/files',
+            path: host + '/files',
             method: 'POST'
         },
         downloadImage: {
-            path: '/api/files',
+            path: host + '/files',
             method: 'GET'
         },
         deleteImage: {
-            path: '/api/files',
+            path: host + '/files',
+            method: 'DELETE'
+        },
+        getCars: {
+            path: host + '/parking',
+            method: 'GET'
+        },
+        postCar: {
+            path: host + '/parking',
+            method: 'POST'
+        },
+        updateCar: {
+            path: host + '/parking/update',
+            method: 'POST'
+        },
+        deleteCar: {
+            path: host + '/parking',
             method: 'DELETE'
         }
     }

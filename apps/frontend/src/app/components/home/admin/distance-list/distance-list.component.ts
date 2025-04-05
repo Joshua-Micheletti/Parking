@@ -28,7 +28,7 @@ export class DistanceListComponent implements OnInit, OnDestroy {
         { id: 'fuel_price', name: 'features.distances.table.price', unit: '€' }
     ];
 
-    public actions: Action<Distance>[] = [
+    public actions: Action[] = [
         {
             callback: this.addDistance.bind(this),
             name: 'features.distances.actions.add',

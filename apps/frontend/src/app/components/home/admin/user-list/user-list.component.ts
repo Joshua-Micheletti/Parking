@@ -2,7 +2,7 @@ import { ApplicationRef, ChangeDetectorRef, Component, OnDestroy, OnInit, Templa
 import { MatTableModule } from '@angular/material/table';
 import { filter, Subscription } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
-import { Base, Role, User } from '../../../../types/user';
+import { Base, bases, baseTranslation, Role, roles, roleTranslation, User } from '../../../../types/user';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Dialog } from '@angular/cdk/dialog';
@@ -17,6 +17,10 @@ import { BaseTabComponent } from '../../../base-tab/base-tab.component';
 import { AuthService } from '../../../../services/auth.service';
 import { Auth } from '../../../../types/auth';
 import { TableService } from '../../../../services/table.service';
+import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ControlData, FormDialogData } from '../../../../types/formDialog';
+import { Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-user-list',
@@ -37,18 +41,18 @@ import { TableService } from '../../../../services/table.service';
 export class UserListComponent implements OnInit, OnDestroy {
     public users: User[] = [];
     public columns: Column[] = [
-        { id: 'username', name: 'features.users.table.username', icon: 'person', sortable: true },
-        { id: 'role', name: 'features.users.table.role', icon: 'person_pin', sortable: true }
+        { id: 'username', name: 'features.users.fields.username', icon: 'person', sortable: true },
+        { id: 'role', name: 'features.users.fields.role', icon: 'person_pin', sortable: true }
     ];
 
-    public actions: Action<User>[] = [
+    public actions: Action[] = [
         {
-            callback: this.addUser.bind(this),
+            callback: this.openAddDialog.bind(this),
             name: 'features.users.actions.add',
             icon: 'person_add'
         },
         {
-            callback: this.updateUser.bind(this),
+            callback: this.openUpdateDialog.bind(this),
             name: 'features.users.actions.update',
             condition: 'selectedRow',
             icon: 'manage_accounts'
@@ -62,6 +66,42 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
     ];
 
+    public addUserControls: ControlData[] = [
+        { label: 'features.users.fields.username', name: 'username', validators: [Validators.required] },
+        { label: 'features.users.fields.password', name: 'password', validators: [Validators.required] },
+        {
+            label: 'features.users.fields.role',
+            name: 'role',
+            enum: roles,
+            translation: roleTranslation,
+            validators: [Validators.required]
+        },
+        {
+            label: 'features.users.fields.base',
+            name: 'base',
+            enum: bases,
+            translation: baseTranslation,
+            validators: [Validators.required]
+        }
+    ];
+
+    public updateUserControls: ControlData[] = [
+        {
+            label: 'features.users.fields.role',
+            name: 'role',
+            enum: roles,
+            translation: roleTranslation,
+            validators: [Validators.required]
+        },
+        {
+            label: 'features.users.fields.base',
+            name: 'base',
+            enum: bases,
+            translation: baseTranslation,
+            validators: [Validators.required]
+        }
+    ];
+
     public role: Role = 'driver';
     public base: Base = 'SEV';
 
@@ -71,7 +111,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
     constructor(
         private _userService: UserService,
-        private _dialog: Dialog,
+        private _matDialog: MatDialog,
         private _authService: AuthService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _tableService: TableService,
@@ -90,7 +130,7 @@ export class UserListComponent implements OnInit, OnDestroy {
                 this.base = authenticated.base;
 
                 if (this.role === 'admin') {
-                    this.columns.push({ id: 'base', name: 'features.users.table.base', icon: 'warehouse' });
+                    this.columns.push({ id: 'base', name: 'features.users.fields.base', icon: 'warehouse' });
                 }
 
                 this._userService.getUsers();
@@ -98,8 +138,12 @@ export class UserListComponent implements OnInit, OnDestroy {
                 this._subscriptions.push(
                     this._userService.users$.subscribe((users: User[]) => {
                         this.users = users;
-                        console.log("🐛 | user-list.component.ts:101 | UserListComponent | this._userService.users$.subscribe | this.users:", this.users)
+                        console.log(
+                            '🐛 | user-list.component.ts:142 | UserListComponent | this._userService.users$.subscribe | this.users:',
+                            this.users
+                        );
                         this._tableService.update$.next();
+                        this._matDialog.closeAll();
                         setTimeout(() => {
                             this._changeDetectorRef.detectChanges();
                             this._applicationRef.tick();
@@ -117,8 +161,49 @@ export class UserListComponent implements OnInit, OnDestroy {
         });
     }
 
-    public addUser(): void {
-        this._dialog.open(AddUserDialogComponent);
+    public openAddDialog(): void {
+        const data: FormDialogData = {
+            title: 'features.users.actions.add',
+            controls: this.addUserControls,
+            actions: [
+                {
+                    callback: this.addUser.bind(this),
+                    name: 'features.users.actions.add',
+                    icon: 'add'
+                }
+            ],
+            groupSize: 2
+        };
+
+        const dialogRef: MatDialogRef<FormDialogComponent> = this._matDialog.open<FormDialogComponent>(
+            FormDialogComponent,
+            {
+                data,
+                panelClass: 'custom-panel'
+            }
+        );
+    }
+
+    public addUser(
+        user?: { username: string; password: string; role: Role; base: Base },
+        dialogRef?: MatDialogRef<FormDialogComponent>
+    ): void {
+        console.log("🐛 | user-list.component.ts:192 | UserListComponent | dialogRef:", dialogRef)
+        console.log("🐛 | user-list.component.ts:193 | UserListComponent | user:", user)
+        
+        if (user === undefined || dialogRef === undefined) {
+            console.error('MISSING PARAMETERS IN FUNCTION addUser');
+            return;
+        }
+
+        const subscription = this._userService
+            .addUser(user.username, user.password, user.role.toLowerCase(), user.base)
+            .subscribe((success: boolean) => {
+                if (success) {
+                    dialogRef.close();
+                }
+                subscription.unsubscribe();
+            });
     }
 
     public deleteUser(): void {
@@ -130,13 +215,48 @@ export class UserListComponent implements OnInit, OnDestroy {
         this._userService.deleteUser(this._selectedUser.username);
     }
 
-    public updateUser(): void {
+    public openUpdateDialog(): void {
         if (this._selectedUser === null) {
             console.error('Called update user without a user selected');
             return;
         }
 
-        this._dialog.open(ModifyUserDialogComponent, { data: this._selectedUser });
+        const data: FormDialogData = {
+            title: 'features.users.actions.update',
+            controls: this.updateUserControls.map((control: ControlData) => {
+                if (control.name === 'role') {
+                    control.defaultValue = this._selectedUser?.role;
+                } else if (control.name === 'base') {
+                    control.defaultValue = this._selectedUser?.base;
+                }
+                return control;
+            }),
+            actions: [
+                {
+                    callback: this.updateUser.bind(this),
+                    name: 'features.users.actions.update',
+                    icon: 'manage_accounts'
+                }
+            ],
+            groupSize: 2
+        };
+
+        const dialogRef: MatDialogRef<FormDialogComponent> = this._matDialog.open<FormDialogComponent>(
+            FormDialogComponent,
+            {
+                data,
+                panelClass: 'custom-panel'
+            }
+        );
+    }
+
+    public updateUser(user?: {role: Role, base: Base}, dialogRef?: MatDialogRef<FormDialogComponent>): void {
+        if (user === undefined || dialogRef === undefined) {
+            console.error('MISSING PARAMETERS IN updateUser');
+            return;
+        }
+
+        this._userService.updateUser(this._selectedUser!.username, user.role.toLowerCase(), user.base);
     }
 
     public getUsersByBase(base: Base): User[] {

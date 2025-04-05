@@ -10,8 +10,9 @@
                 "update": "Modificar Usuario",
                 "delete": "Eliminar Usuario"
             },
-            "table": {
+            "fields": {
                 "username": "Nombre de Usuario",
+                "password": "Contraseña",
                 "role": "Rol",
                 "base": "Base"
             }
@@ -23,7 +24,7 @@
                 "update": "Modificar Coche",
                 "delete": "Eliminar Coche"
             },
-            "table": {
+            "fields": {
                 "licensePlate": "Matricula",
                 "brand": "Marca",
                 "model": "Modelo",
@@ -46,7 +47,7 @@
                 "update": "Modificar Distancia",
                 "delete": "Eliminar Distancia"
             },
-            "table": {
+            "fields": {
                 "origin": "Origen",
                 "destination": "Destino",
                 "distance": "Distancia",

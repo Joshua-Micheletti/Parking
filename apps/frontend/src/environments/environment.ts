@@ -58,6 +58,22 @@ export const environment: Environment = {
         deleteImage: {
             path: host + '/files',
             method: 'DELETE'
+        },
+        getCars: {
+            path: host + '/parking',
+            method: 'GET'
+        },
+        postCar: {
+            path: host + '/parking',
+            method: 'POST'
+        },
+        updateCar: {
+            path: host + '/parking/update',
+            method: 'POST'
+        },
+        deleteCar: {
+            path: host + '/parking',
+            method: 'DELETE'
         }
     }
 };

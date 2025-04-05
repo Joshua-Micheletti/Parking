@@ -1,4 +1,5 @@
 import { TemplateRef } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 export type Column = {
     id: string;
@@ -13,10 +14,11 @@ export type Condition = undefined | 'selectedRow';
 
 export type ActionType = 'normal' | 'warn';
 
-export type Action<T> = {
+export type Action = {
     callback: {
         (): void;
-        (input: T): void;
+        (input: any): void;
+        (input: any, dialogRef: MatDialogRef<any, any>): void;
     };
     name: string;
     condition?: Condition;

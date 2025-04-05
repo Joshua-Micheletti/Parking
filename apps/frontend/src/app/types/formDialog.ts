@@ -1,4 +1,4 @@
-import { Validator, ValidatorFn } from '@angular/forms';
+import { ValidatorFn } from '@angular/forms';
 import { Action } from './table';
 
 export type ControlData = {
@@ -8,12 +8,12 @@ export type ControlData = {
     name: string;
     enum?: string[];
     translation?: string;
+    date?: boolean;
 };
 
-export type FormDialogData<T> = {
+export type FormDialogData = {
     title: string;
-    actions: Action<T>[];
+    actions: Action[];
     controls: ControlData[];
-    sampleData: T;
     groupSize?: number
 };

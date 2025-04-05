@@ -1,13 +1,13 @@
 import { Request, Response, Router } from "express";
-import { getCar, getCarInputValidation } from './endpoints/getCar';
+import { getCars } from './endpoints/getCars';
 import { postCar, postCarInputValidation } from "./endpoints/postCar";
-import { listCars } from './endpoints/listCars';
+// import { listCars } from './endpoints/getCars';
 
 export default function parkingServer(): Router {
     const router: Router = Router();
 
-    router.get('/car', getCarInputValidation, getCar);
-    router.post('/car', postCarInputValidation, postCar);
+    router.get('/', getCars);
+    router.post('/', postCarInputValidation, postCar);
     // router.get('/list', listCars);
 
     function healthcheck(req: Request, res: Response): void {

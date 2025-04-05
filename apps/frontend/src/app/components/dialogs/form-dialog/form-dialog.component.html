@@ -4,17 +4,24 @@
         @for (group of groupedControls; track group) {
         <div style="display: flex; gap: 1rem">
             @for (control of group; track control; let i = $index) {
-                <mat-form-field class="w-100">
-                    <mat-label>{{ control.label | translate }}</mat-label>
-                    @if (control.enum) {
-                            <mat-select [formControlName]="control.name">
-                              @for (value of control.enum; track value) {
-                                <mat-option [value]="value">{{control.translation + value | translate}}</mat-option>
-                              }
-                            </mat-select>
-                    } @else {
-                        <input matInput [formControlName]="control.name"/>
+            <mat-form-field appearance="fill" class="w-100" style="max-height: 75.5px">
+                <mat-label>{{ control.label | translate }}</mat-label>
+                @if (control.enum) {
+                <mat-select [formControlName]="control.name">
+                    @for (value of control.enum; track value) {
+                    <mat-option [value]="value">{{ control.translation + value | translate }}</mat-option>
                     }
+                </mat-select>
+                } @else if (control.date) {
+                <ng-container>
+                    <input matInput [formControlName]="control.name" [matDatepicker]="picker"/>
+                    <!-- <mat-icon matIconSuffix style="position: absolute; right: 0px; bottom: 16px">add</mat-icon> -->
+                    <mat-datepicker-toggle matIconSuffix [for]="picker" style="position: absolute; right: 0px; bottom: 8px"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </ng-container>
+                } @else {
+                <input matInput [formControlName]="control.name" />
+                }
             </mat-form-field>
             }
         </div>
@@ -24,7 +31,7 @@
 
 <mat-dialog-actions>
     @for (action of actions; track action) {
-    <button mat-raised-button (click)="action.callback(sampleData)">
+    <button mat-raised-button (click)="wrapper(action.callback)">
         <mat-icon>{{ action.icon }}</mat-icon>
         {{ action.name | translate }}
     </button>

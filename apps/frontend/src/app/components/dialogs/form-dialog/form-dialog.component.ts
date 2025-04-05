@@ -14,8 +14,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UtilsService } from '../../../services/utils.service';
 import { Action } from '../../../types/table';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @Component({
     selector: 'app-form-dialog',
@@ -29,39 +30,45 @@ import { MatSelectModule } from '@angular/material/select';
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
-        MatSelectModule
+        MatSelectModule,
+        MatDatepickerModule
     ],
     templateUrl: './form-dialog.component.html',
     styleUrl: './form-dialog.component.scss'
 })
-export class FormDialogComponent<T> {
+export class FormDialogComponent {
     public title: string = 'Title';
     public controls: ControlData[] = [];
     public groupedControls: ControlData[][] = [];
-    public actions: Action<T>[] = [];
-    public sampleData!: T;
+    public actions: Action[] = [];
     public form: FormGroup = new FormGroup({});
+    public formValue: unknown | undefined = undefined;
 
     constructor(
-        public matDialogRef: MatDialogRef<FormDialogComponent<T>>,
-        @Inject(MAT_DIALOG_DATA) public data: FormDialogData<T>,
+        public matDialogRef: MatDialogRef<FormDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: FormDialogData,
         private _utilsService: UtilsService
     ) {
         this.title = data.title;
         this.controls = data.controls;
         this.groupedControls = this._utilsService.groupArray(this.controls, this.data.groupSize);
         this.actions = data.actions;
-        this.sampleData = data.sampleData;
 
         for (const control of this.controls) {
             this.form.addControl(control.name, new FormControl(control.defaultValue ?? '', control.validators));
         }
+    }
 
-        this.form.valueChanges.subscribe((formData: T) => {
-            console.log(
-                '🐛 | form-dialog.component.ts:58 | FormDialogComponent<T> | this.form.valueChanges.subscribe | formData:',
-                formData
-            );
-        });
+    public wrapper(callback: any) {
+        if (!this.form.valid) {
+            this.form.markAllAsTouched();
+            return;
+        }
+
+        const cleanFormData = Object.fromEntries(
+            Object.entries(this.form.getRawValue()).filter(([_, value]) => value !== '')
+        );
+
+        callback(cleanFormData, this.matDialogRef);
     }
 }
