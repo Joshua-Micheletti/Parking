@@ -22,6 +22,8 @@ import { TableService } from '../../../../services/table.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { greaterThanOrEqualValidator } from '../../../../validators/greaterThan';
+import { notFutureValidator } from '../../../../validators/notFuture';
 
 @Component({
     selector: 'app-parking-list',
@@ -35,7 +37,7 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     public cars: ParkedCar[] = [];
 
     public columns: Column[] = [
-        { id: 'licensePlate', name: 'features.parking.fields.licensePlate', icon: 'directions_car'},
+        { id: 'licensePlate', name: 'features.parking.fields.licensePlate', icon: 'directions_car' },
         { id: 'brand', name: 'features.parking.fields.brand' },
         { id: 'model', name: 'features.parking.fields.model' },
         { id: 'color', name: 'features.parking.fields.color', icon: 'color_lens' },
@@ -44,7 +46,7 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         { id: 'fuelType', name: 'features.parking.fields.fuelType', icon: 'local_fire_department' },
         { id: 'status', name: 'features.parking.fields.status' },
         { id: 'notes', name: 'features.parking.fields.notes', icon: 'notes' },
-        { id: 'enterDate', name: 'features.parking.fields.enterDate', icon: 'calendar_month'},
+        { id: 'enterDate', name: 'features.parking.fields.enterDate', icon: 'calendar_month' },
         { id: 'billingStartDate', name: 'features.parking.fields.billingStartDate', icon: 'calendar_month' },
         { id: 'billingEndDate', name: 'features.parking.fields.billingEndDate', icon: 'calendar_month' },
         { id: 'base', name: 'features.parking.fields.base', icon: 'warehouse' }
@@ -106,16 +108,20 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         },
         { label: 'features.parking.fields.color', name: 'color' },
         { label: 'features.parking.fields.notes', name: 'notes' },
-        { label: 'features.parking.fields.enterDate', name: 'enterDate'},
+        { label: 'features.parking.fields.enterDate', name: 'enterDate', date: true },
         { label: 'features.parking.fields.billingStartDate', name: 'billingStartDate', date: true },
-        // { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate' }
+        { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate', date: true }
     ];
 
     private _selectedCar: ParkedCar | null = null;
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _matDialog: MatDialog, private _parkingService: ParkingService, private _tableService: TableService) {}
+    constructor(
+        private _matDialog: MatDialog,
+        private _parkingService: ParkingService,
+        private _tableService: TableService
+    ) {}
 
     ngOnInit(): void {
         this._parkingService.getCars();
@@ -146,7 +152,13 @@ export class ParkingListComponent implements OnInit, OnDestroy {
                     icon: 'add'
                 }
             ],
-            groupSize: 3
+            groupSize: 3,
+            formValidators: [
+                greaterThanOrEqualValidator('billingEndDate', 'billingStartDate'),
+                greaterThanOrEqualValidator('billingStartDate', 'enterDate'),
+                greaterThanOrEqualValidator('billingEndDate', 'enterDate'),
+                notFutureValidator('enterDate')
+            ]
         };
 
         const dialogRef: MatDialogRef<FormDialogComponent> = this._matDialog.open<FormDialogComponent>(

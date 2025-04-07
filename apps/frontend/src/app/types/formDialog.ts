@@ -15,5 +15,6 @@ export type FormDialogData = {
     title: string;
     actions: Action[];
     controls: ControlData[];
-    groupSize?: number
+    groupSize?: number,
+    formValidators?: ValidatorFn[]
 };

@@ -1,6 +1,11 @@
 {
     "common": {
-        "close": "Cerrar"
+        "close": "Cerrar",
+        "error": {
+            "invalid_field": "Campo Inválido",
+            "future": "La fecha no puede ser futura",
+            "required": "Obligatorio"
+        }
     },
     "features": {
         "users": {

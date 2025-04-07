@@ -1,6 +1,11 @@
 {
     "common": {
-        "close": "Close"
+        "close": "Close",
+        "error": {
+            "invalid_field": "Invalid Field",
+            "future": "Date can't be in the future",
+            "required": "Required"
+        }
     },
     "features": {
         "users": {

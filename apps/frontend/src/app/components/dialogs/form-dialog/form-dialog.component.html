@@ -4,7 +4,7 @@
         @for (group of groupedControls; track group) {
         <div style="display: flex; gap: 1rem">
             @for (control of group; track control; let i = $index) {
-            <mat-form-field appearance="fill" class="w-100" style="max-height: 75.5px">
+            <mat-form-field appearance="fill" class="w-100" style="max-height: 75.5px; margin: 6px 0px">
                 <mat-label>{{ control.label | translate }}</mat-label>
                 @if (control.enum) {
                 <mat-select [formControlName]="control.name">
@@ -14,13 +14,22 @@
                 </mat-select>
                 } @else if (control.date) {
                 <ng-container>
-                    <input matInput [formControlName]="control.name" [matDatepicker]="picker"/>
-                    <!-- <mat-icon matIconSuffix style="position: absolute; right: 0px; bottom: 16px">add</mat-icon> -->
-                    <mat-datepicker-toggle matIconSuffix [for]="picker" style="position: absolute; right: 0px; bottom: 8px"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <input matInput [formControlName]="control.name" [matDatepicker]="picker" />
+                    <mat-datepicker-toggle
+                        matIconSuffix
+                        [for]="picker"
+                        style="position: absolute; right: 0px; bottom: 8px"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker xPosition="end" yPosition="above"></mat-datepicker>
                 </ng-container>
                 } @else {
                 <input matInput [formControlName]="control.name" />
+                } @if (form.get(control.name)?.hasError('required')) {
+                <mat-error>{{ 'common.error.required' | translate }}</mat-error>
+                } @else if (form.get(control.name)?.hasError('future')) {
+                <mat-error>{{ 'common.error.future' | translate }}</mat-error>
+                } @else if (form.get(control.name)?.invalid) {
+                <mat-error>{{ 'common.error.invalid_field' | translate }}</mat-error>
                 }
             </mat-form-field>
             }

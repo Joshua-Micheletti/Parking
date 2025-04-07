@@ -16,7 +16,7 @@ import { UtilsService } from '../../../services/utils.service';
 import { Action } from '../../../types/table';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
     selector: 'app-form-dialog',
@@ -56,6 +56,10 @@ export class FormDialogComponent {
 
         for (const control of this.controls) {
             this.form.addControl(control.name, new FormControl(control.defaultValue ?? '', control.validators));
+        }
+
+        if (data.formValidators) {
+            this.form.addValidators(data.formValidators);
         }
     }
 
