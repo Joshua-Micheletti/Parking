@@ -15,35 +15,38 @@
 <div class="table-custom">
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         @for (column of columns; track column) {
-            <ng-container [matColumnDef]="column.id">
+        <ng-container [matColumnDef]="column.id">
             @if (column.sortable) {
-                <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-bottom: 1rem">
-                    <span>{{ column.name | translate }}</span>
-                    @if (column.icon) {
-                    <mat-icon style="vertical-align: bottom; margin-left: 4px">{{ column.icon }}</mat-icon>
-                    } @if (column.unit) {
-                    <span>{{ ' (' + column.unit + ')' }}</span>
-                    }
-                </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-bottom: 1rem">
+                <span>{{ column.name | translate }}</span>
+                @if (column.icon) {
+                <mat-icon style="vertical-align: bottom; margin-left: 4px; transform: scale(0.833333)">{{ column.icon }}</mat-icon>
+                } @if (column.unit) {
+                <span>{{ ' (' + column.unit + ')' }}</span>
+                }
+            </th>
             } @else {
-                <th mat-header-cell *matHeaderCellDef style="padding-bottom: 1rem">
-                    <span>{{ column.name | translate }}</span>
-                    @if (column.icon) {
-                    <mat-icon style="vertical-align: bottom; margin-left: 4px">{{ column.icon }}</mat-icon>
-                    } @if (column.unit) {
-                    <span>{{ ' (' + column.unit + ')' }}</span>
-                    }
-                </th>
+            <th mat-header-cell *matHeaderCellDef style="padding-bottom: 1rem">
+                <span>{{ column.name | translate }}</span>
+                @if (column.icon) {
+                <mat-icon style="vertical-align: bottom; margin-left: 4px">{{ column.icon }}</mat-icon>
+                } @if (column.unit) {
+                <span>{{ ' (' + column.unit + ')' }}</span>
+                }
+            </th>
             }
             <td mat-cell *matCellDef="let row">
                 @if (column.customTemplate) {
                 <ng-container [ngTemplateOutlet]="column.customTemplate" [ngTemplateOutletContext]="{ $implicit: row }">
                 </ng-container>
                 } @else if (column.id === 'base' || column.id === 'role') {
-                    <app-rainbow-chip [value]="row?.[column.id]"></app-rainbow-chip>
-                } 
-                @else {
-                {{ row?.[column.id] }}
+                <app-rainbow-chip [value]="row?.[column.id]"></app-rainbow-chip>
+                } @else if (column.date) {
+                {{ row?.[column.id] | date: 'd/M/yy' }}
+                } @else if (column.translation) {
+                {{ column.translation + row?.[column.id] | translate }}
+                } @else {
+                    {{ row?.[column.id] }}
                 }
             </td>
         </ng-container>

@@ -19,9 +19,9 @@ export const postCarInputValidation = [
     body('fuelType').isIn(config.get('parking.fuelTypes')),
     body('status').isIn(config.get('parking.statuses')),
     body('notes').isString().optional(),
-    body('enterDate').isDate().optional(),
-    body('billingStartDate').isDate().optional(),
-    body('billingEndDate').isDate().optional()
+    body('enterDate').isISO8601().optional(),
+    body('billingStartDate').isISO8601().optional(),
+    body('billingEndDate').isISO8601().optional()
 ];
 
 export async function postCar(

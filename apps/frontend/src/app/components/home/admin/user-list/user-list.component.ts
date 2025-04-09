@@ -5,9 +5,6 @@ import { UserService } from '../../../../services/user.service';
 import { Base, bases, baseTranslation, Role, roles, roleTranslation, User } from '../../../../types/user';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Dialog } from '@angular/cdk/dialog';
-import { ModifyUserDialogComponent } from './modify-user-dialog/modify-user-dialog.component';
-import { AddUserDialogComponent } from './add-user-dialog/add-user-dialog.component';
 import { MatRippleModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { TableComponent } from '../../../table/table.component';
@@ -68,7 +65,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
     public addUserControls: ControlData[] = [
         { label: 'features.users.fields.username', name: 'username', validators: [Validators.required] },
-        { label: 'features.users.fields.password', name: 'password', validators: [Validators.required] },
+        { label: 'features.users.fields.password', name: 'password', validators: [Validators.required], type: 'password' },
         {
             label: 'features.users.fields.role',
             name: 'role',
@@ -212,7 +209,7 @@ export class UserListComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._userService.deleteUser(this._selectedUser.username);
+        this._userService.deleteUser(this._selectedUser.id!);
     }
 
     public openUpdateDialog(): void {
@@ -256,7 +253,7 @@ export class UserListComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._userService.updateUser(this._selectedUser!.username, user.role.toLowerCase(), user.base);
+        this._userService.updateUser(this._selectedUser!.id!, user.role.toLowerCase(), user.base);
     }
 
     public getUsersByBase(base: Base): User[] {

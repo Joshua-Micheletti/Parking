@@ -4,3 +4,7 @@
     max-width: 80vw !important;
     max-height: 80vh !important;
 }
+
+::ng-deep .mat-sort-header-content {
+    height: 20px !important;
+}

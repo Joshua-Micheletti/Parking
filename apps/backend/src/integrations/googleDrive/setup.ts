@@ -56,7 +56,6 @@ export async function setupGoogleDrive(): Promise<Router | undefined> {
         console.error(error);
         return;
     }
-    console.log('🐛 | setup.ts:48 | setupGoogleDrive | tokens:', tokens?.get());
 
     if (tokens) {
         const values = tokens.get();

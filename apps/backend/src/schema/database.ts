@@ -31,12 +31,19 @@ if (sequelizeConfig.connect) {
     const bases: string[] = config.get('user.bases');
 
     const userFields: ModelAttributes = {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         username: {
             type: DataTypes.STRING,
-            primaryKey: true
+            allowNull: false,
+            unique: true
         },
         password: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         role: {
             type: DataTypes.ENUM(...roles),
@@ -61,20 +68,23 @@ if (sequelizeConfig.connect) {
     };
 
     User.init(userFields, userInitOptions);
-    User.sync({ alter: true })
-        .then(() => {
-            User.create(
-                {
-                    username: 'superuser',
-                    password:
-                        '$2a$10$qL6UvYwsBVIvTtX8zN2Jquk7Mfg0Kx7vhwAdlC0Vtcv1b5vYLcQ3i',
-                    role: 'admin',
-                    base: 'SEV'
-                },
-                { logging: false }
-            ).catch((error) => {
+    User.sync({ alter: true, logging: false })
+        .then(async () => {
+            try {
+                await User.create(
+                    {
+                        id: 2147483647,
+                        username: 'superuser',
+                        password:
+                            '$2a$10$qL6UvYwsBVIvTtX8zN2Jquk7Mfg0Kx7vhwAdlC0Vtcv1b5vYLcQ3i',
+                        role: 'admin',
+                        base: 'SEV'
+                    },
+                    { logging: false }
+                );
+            } catch (error) {
                 console.log('superuser already saved');
-            });
+            }
         })
         .catch((error) => {
             console.log('Failed to sync the user table');
@@ -83,13 +93,18 @@ if (sequelizeConfig.connect) {
 
     /* -------------------------------- DISTANCE -------------------------------- */
     const distanceFields: ModelAttributes = {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         origin: {
             type: DataTypes.STRING,
-            primaryKey: true
+            allowNull: false
         },
         destination: {
             type: DataTypes.STRING,
-            primaryKey: true
+            allowNull: false
         },
         distance: {
             type: DataTypes.FLOAT,
@@ -108,8 +123,15 @@ if (sequelizeConfig.connect) {
             plural: 'distance'
         },
         tableName: 'distance',
-        timestamps: false
+        timestamps: false,
+        indexes: [
+            {
+                unique: true,
+                fields: ['origin', 'destination']
+            }
+        ]
     };
+
     Distance.init(distanceFields, distanceInitOptions);
     Distance.sync({ alter: true, logging: false }).catch((error) => {
         console.log('Failed to sync the distance table');
@@ -124,10 +146,15 @@ if (sequelizeConfig.connect) {
     const statuses: string[] = config.get('parking.statuses');
 
     const parkingFields: ModelAttributes = {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         license_plate: {
             type: DataTypes.STRING,
-            primaryKey: true,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         brand: {
             type: DataTypes.STRING
@@ -180,7 +207,7 @@ if (sequelizeConfig.connect) {
     };
 
     Parking.init(parkingFields, parkingInitOptions);
-    Parking.sync({ alter: true, logging: false }).catch((error) => {
+    Parking.sync({ alter: true, logging: false, force: true }).catch((error) => {
         console.log('Failed to sync the parking table');
         console.log(error);
     });

@@ -31,6 +31,7 @@ export type User = {
     username: string;
     role: Role;
     base: Base;
+    id?: number;
 };
 
 export function isUser(value: any): value is User {

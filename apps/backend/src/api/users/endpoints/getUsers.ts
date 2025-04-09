@@ -10,7 +10,7 @@ export async function getUsers(
     let response;
 
     // set the default conditions for the query
-    const attributes: string[]  = ['username', 'role'];
+    const attributes: string[]  = ['id', 'username', 'role'];
     const where: WhereOptions = {base: req.base};
 
     // if the user is admin, add the base in the query and delete the filter

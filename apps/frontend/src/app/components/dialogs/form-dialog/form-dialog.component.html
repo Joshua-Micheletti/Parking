@@ -12,7 +12,7 @@
                     <mat-option [value]="value">{{ control.translation + value | translate }}</mat-option>
                     }
                 </mat-select>
-                } @else if (control.date) {
+                } @else if (control.type === 'date') {
                 <ng-container>
                     <input matInput [formControlName]="control.name" [matDatepicker]="picker" />
                     <mat-datepicker-toggle
@@ -23,7 +23,11 @@
                     <mat-datepicker #picker xPosition="end" yPosition="above"></mat-datepicker>
                 </ng-container>
                 } @else {
-                <input matInput [formControlName]="control.name" />
+                <input
+                    matInput
+                    [formControlName]="control.name"
+                    [type]="control.type === 'password' ? 'password' : 'text'"
+                />
                 } @if (form.get(control.name)?.hasError('required')) {
                 <mat-error>{{ 'common.error.required' | translate }}</mat-error>
                 } @else if (form.get(control.name)?.hasError('future')) {

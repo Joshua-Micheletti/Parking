@@ -36,8 +36,7 @@ export class ParkingService {
         const requestConfig: Endpoint = environment.endpoints['postCar'];
         this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, car)).subscribe({
             next: (response: any) => {
-                this._parkedCars = response;
-                this.parkedCars$.next(this._parkedCars);
+                this.getCars();
             },
             error: (error: any) => {
                 console.log(error);

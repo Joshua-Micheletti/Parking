@@ -10,12 +10,7 @@ import {
 import config from 'config';
 
 export const updateUserInputValidation = [
-    body('username')
-        .isString()
-        .isLength({
-            min: config.get('user.minimumLength') ?? 3,
-            max: config.get('user.maximumLength') ?? 20
-        }),
+    body('id').isNumeric(),
     body('role')
         .optional()
         .isString()
@@ -38,15 +33,10 @@ export async function updateUser(
         return;
     }
 
-    if (req.user === req.body.username) {
-        res.status(403).json({ message: 'Forbidden' });
-        return;
-    }
-
     try {
         await User.update(
             { role: req.body.role, base: req.body.base },
-            { where: { username: req.body.username } }
+            { where: { id: req.body.id } }
         );
     } catch (error) {
         next(error);

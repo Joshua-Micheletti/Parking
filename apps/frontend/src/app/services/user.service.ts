@@ -31,7 +31,7 @@ export class UserService {
         });
     }
 
-    public deleteUser(username: string): void {
+    public deleteUser(id: number): void {
         const requestConfig: Endpoint = environment.endpoints['deleteUser'];
         this._httpService
             .request(
@@ -39,7 +39,7 @@ export class UserService {
                     requestConfig.method,
                     requestConfig.path,
                     {},
-                    { params: new HttpParams().set('username', username) }
+                    { params: new HttpParams().set('id', id) }
                 )
             )
             .subscribe({
@@ -77,12 +77,12 @@ export class UserService {
         return subject;
     }
 
-    public updateUser(username: string, role: string, base: string): void {
+    public updateUser(id: number, role: string, base: string): void {
         const requestConfig: Endpoint = environment.endpoints['updateUser'];
 
         console.log(requestConfig);
 
-        const body = { username, role, base };
+        const body = { id, role, base };
 
         this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, body)).subscribe({
             next: (response: any) => {

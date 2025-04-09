@@ -8,6 +8,8 @@ export type Column = {
     unit?: string;
     customTemplate?: TemplateRef<any>;
     sortable?: boolean;
+    date?: boolean;
+    translation?: string;
 };
 
 export type Condition = undefined | 'selectedRow';

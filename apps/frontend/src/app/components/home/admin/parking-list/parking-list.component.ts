@@ -37,19 +37,30 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     public cars: ParkedCar[] = [];
 
     public columns: Column[] = [
-        { id: 'licensePlate', name: 'features.parking.fields.licensePlate', icon: 'directions_car' },
-        { id: 'brand', name: 'features.parking.fields.brand' },
-        { id: 'model', name: 'features.parking.fields.model' },
-        { id: 'color', name: 'features.parking.fields.color', icon: 'color_lens' },
-        { id: 'provider', name: 'features.parking.fields.provider' },
-        { id: 'gearboxType', name: 'features.parking.fields.gearboxType' },
-        { id: 'fuelType', name: 'features.parking.fields.fuelType', icon: 'local_fire_department' },
-        { id: 'status', name: 'features.parking.fields.status' },
-        { id: 'notes', name: 'features.parking.fields.notes', icon: 'notes' },
-        { id: 'enterDate', name: 'features.parking.fields.enterDate', icon: 'calendar_month' },
-        { id: 'billingStartDate', name: 'features.parking.fields.billingStartDate', icon: 'calendar_month' },
-        { id: 'billingEndDate', name: 'features.parking.fields.billingEndDate', icon: 'calendar_month' },
-        { id: 'base', name: 'features.parking.fields.base', icon: 'warehouse' }
+        { id: 'licensePlate', name: 'features.parking.fields.licensePlate', icon: 'directions_car', sortable: true },
+        { id: 'brand', name: 'features.parking.fields.brand', sortable: true },
+        { id: 'model', name: 'features.parking.fields.model', sortable: true },
+        { id: 'color', name: 'features.parking.fields.color', icon: 'color_lens', sortable: true },
+        { id: 'provider', name: 'features.parking.fields.provider', sortable: true },
+        { id: 'gearboxType', name: 'features.parking.fields.gearboxType', translation: 'data.gearboxType.', sortable: true },
+        {
+            id: 'fuelType',
+            name: 'features.parking.fields.fuelType',
+            icon: 'local_fire_department',
+            translation: 'data.fuelType.',
+            sortable: true
+        },
+        { id: 'status', name: 'features.parking.fields.status', translation: 'data.status.', sortable: true },
+        { id: 'notes', name: 'features.parking.fields.notes', icon: 'notes', sortable: true },
+        { id: 'enterDate', name: 'features.parking.fields.enterDate', icon: 'calendar_month', date: true, sortable: true },
+        {
+            id: 'billingStartDate',
+            name: 'features.parking.fields.billingStartDate',
+            icon: 'calendar_month',
+            date: true,
+            sortable: true
+        },
+        { id: 'billingEndDate', name: 'features.parking.fields.billingEndDate', icon: 'calendar_month', date: true, sortable: true }
     ];
 
     public actions: Action[] = [
@@ -100,6 +111,8 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             translation: fuelTypeTranslation
         },
         { label: 'features.parking.fields.provider', name: 'provider', validators: [Validators.required] },
+        { label: 'features.parking.fields.brand', name: 'brand', validators: [Validators.required] },
+        { label: 'features.parking.fields.model', name: 'model', validators: [Validators.required] },
         {
             label: 'features.parking.fields.gearboxType',
             name: 'gearboxType',
@@ -108,9 +121,9 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         },
         { label: 'features.parking.fields.color', name: 'color' },
         { label: 'features.parking.fields.notes', name: 'notes' },
-        { label: 'features.parking.fields.enterDate', name: 'enterDate', date: true },
-        { label: 'features.parking.fields.billingStartDate', name: 'billingStartDate', date: true },
-        { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate', date: true }
+        { label: 'features.parking.fields.enterDate', name: 'enterDate', type: 'date' },
+        { label: 'features.parking.fields.billingStartDate', name: 'billingStartDate', type: 'date' },
+        { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate', type: 'date' }
     ];
 
     private _selectedCar: ParkedCar | null = null;
