@@ -10,6 +10,7 @@ export type Column = {
     sortable?: boolean;
     date?: boolean;
     translation?: string;
+    chip?: boolean;
 };
 
 export type Condition = undefined | 'selectedRow';

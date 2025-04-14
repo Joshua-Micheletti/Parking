@@ -21,6 +21,8 @@ import { MatSortModule, MatSort } from '@angular/material/sort';
 import { roleOrder, User } from '../../types/user';
 import { TableService } from '../../services/table.service';
 import { Subscription } from 'rxjs';
+import { MatFormField } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
     selector: 'app-table',
@@ -31,7 +33,9 @@ import { Subscription } from 'rxjs';
         CommonModule,
         RainbowChipComponent,
         TranslateModule,
-        MatSortModule
+        MatSortModule,
+        MatFormField,
+        MatInputModule
     ],
     templateUrl: './table.component.html',
     styleUrl: './table.component.scss'
@@ -51,10 +55,7 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(
-        private _tableService: TableService,
-        private _applicationRef: ApplicationRef
-    ) {}
+    constructor(private _tableService: TableService, private _applicationRef: ApplicationRef) {}
 
     ngOnInit(): void {}
 
@@ -84,6 +85,16 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
 
     public check(): void {
         console.log(this.columns);
+    }
+
+    public applyFilter(event: Event): void {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    public clearFilter(element: HTMLInputElement): void {
+        this.dataSource.filter = '';
+        element.value = '';
     }
 
     private _setupData(data: T[]): void {

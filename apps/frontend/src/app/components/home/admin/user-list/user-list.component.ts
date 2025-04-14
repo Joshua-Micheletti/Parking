@@ -39,7 +39,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     public users: User[] = [];
     public columns: Column[] = [
         { id: 'username', name: 'features.users.fields.username', icon: 'person', sortable: true },
-        { id: 'role', name: 'features.users.fields.role', icon: 'person_pin', sortable: true }
+        { id: 'role', name: 'features.users.fields.role', icon: 'person_pin', sortable: true, chip: true }
     ];
 
     public actions: Action[] = [
@@ -65,7 +65,12 @@ export class UserListComponent implements OnInit, OnDestroy {
 
     public addUserControls: ControlData[] = [
         { label: 'features.users.fields.username', name: 'username', validators: [Validators.required] },
-        { label: 'features.users.fields.password', name: 'password', validators: [Validators.required], type: 'password' },
+        {
+            label: 'features.users.fields.password',
+            name: 'password',
+            validators: [Validators.required],
+            type: 'password'
+        },
         {
             label: 'features.users.fields.role',
             name: 'role',
@@ -127,7 +132,12 @@ export class UserListComponent implements OnInit, OnDestroy {
                 this.base = authenticated.base;
 
                 if (this.role === 'admin') {
-                    this.columns.push({ id: 'base', name: 'features.users.fields.base', icon: 'warehouse' });
+                    this.columns.push({
+                        id: 'base',
+                        name: 'features.users.fields.base',
+                        icon: 'warehouse',
+                        chip: true
+                    });
                 }
 
                 this._userService.getUsers();
@@ -135,16 +145,12 @@ export class UserListComponent implements OnInit, OnDestroy {
                 this._subscriptions.push(
                     this._userService.users$.subscribe((users: User[]) => {
                         this.users = users;
-                        console.log(
-                            '🐛 | user-list.component.ts:142 | UserListComponent | this._userService.users$.subscribe | this.users:',
-                            this.users
-                        );
                         this._tableService.update$.next();
                         this._matDialog.closeAll();
-                        setTimeout(() => {
-                            this._changeDetectorRef.detectChanges();
-                            this._applicationRef.tick();
-                        }, 0);
+                        // setTimeout(() => {
+                        //     this._changeDetectorRef.detectChanges();
+                        //     this._applicationRef.tick();
+                        // }, 0);
                     })
                 );
             });
@@ -185,9 +191,6 @@ export class UserListComponent implements OnInit, OnDestroy {
         user?: { username: string; password: string; role: Role; base: Base },
         dialogRef?: MatDialogRef<FormDialogComponent>
     ): void {
-        console.log("🐛 | user-list.component.ts:192 | UserListComponent | dialogRef:", dialogRef)
-        console.log("🐛 | user-list.component.ts:193 | UserListComponent | user:", user)
-        
         if (user === undefined || dialogRef === undefined) {
             console.error('MISSING PARAMETERS IN FUNCTION addUser');
             return;
@@ -247,7 +250,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         );
     }
 
-    public updateUser(user?: {role: Role, base: Base}, dialogRef?: MatDialogRef<FormDialogComponent>): void {
+    public updateUser(user?: { role: Role; base: Base }, dialogRef?: MatDialogRef<FormDialogComponent>): void {
         if (user === undefined || dialogRef === undefined) {
             console.error('MISSING PARAMETERS IN updateUser');
             return;

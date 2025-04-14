@@ -10,6 +10,16 @@
         {{ action.name | translate }}
     </button>
     } }
+
+    <mat-form-field appearance="outline" class="filter">
+        <mat-label>{{ 'common.filter' | translate }}</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input />
+        <mat-hint></mat-hint>
+        <mat-error></mat-error>
+        <button mat-icon-button matSuffix (click)="clearFilter(input)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
 </div>
 
 <div class="table-custom">
@@ -20,7 +30,9 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-bottom: 1rem">
                 <span>{{ column.name | translate }}</span>
                 @if (column.icon) {
-                <mat-icon style="vertical-align: bottom; margin-left: 4px; transform: scale(0.833333)">{{ column.icon }}</mat-icon>
+                <mat-icon style="vertical-align: bottom; margin-left: 4px; transform: scale(0.833333)">{{
+                    column.icon
+                }}</mat-icon>
                 } @if (column.unit) {
                 <span>{{ ' (' + column.unit + ')' }}</span>
                 }
@@ -39,14 +51,14 @@
                 @if (column.customTemplate) {
                 <ng-container [ngTemplateOutlet]="column.customTemplate" [ngTemplateOutletContext]="{ $implicit: row }">
                 </ng-container>
-                } @else if (column.id === 'base' || column.id === 'role') {
+                } @else if (column.chip) {
                 <app-rainbow-chip [value]="row?.[column.id]"></app-rainbow-chip>
                 } @else if (column.date) {
                 {{ row?.[column.id] | date: 'd/M/yy' }}
                 } @else if (column.translation) {
                 {{ column.translation + row?.[column.id] | translate }}
                 } @else {
-                    {{ row?.[column.id] }}
+                {{ row?.[column.id] }}
                 }
             </td>
         </ng-container>

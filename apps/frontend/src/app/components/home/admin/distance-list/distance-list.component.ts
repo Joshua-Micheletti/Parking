@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ApplicationRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Distance } from '../../../../types/distance';
 import { MatTableModule } from '@angular/material/table';
 import { DistanceService } from '../../../../services/distance.service';
@@ -6,10 +6,15 @@ import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Dialog } from '@angular/cdk/dialog';
-import { AddDistanceDialogComponent } from './add-distance-dialog/add-distance-dialog.component';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
-import { Event } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
+import { ControlData, FormDialogData } from '../../../../types/formDialog';
+import { bases, baseTranslation } from '../../../../types/user';
+import { Validators } from '@angular/forms';
+import { different } from '../../../../validators/different';
+import { TableService } from '../../../../services/table.service';
 
 @Component({
     selector: 'app-distance-list',
@@ -22,15 +27,21 @@ export class DistanceListComponent implements OnInit, OnDestroy {
     public distances: Distance[] = [];
 
     public columns: Column[] = [
-        { id: 'origin', name: 'features.distances.table.origin', icon: 'arrow_upward' },
-        { id: 'destination', name: 'features.distances.table.destination', icon: 'arrow_downward' },
-        { id: 'distance', name: 'features.distances.table.distance', unit: 'Km' },
-        { id: 'fuel_price', name: 'features.distances.table.price', unit: '€' }
+        { id: 'origin', name: 'features.distances.fields.origin', icon: 'arrow_upward', chip: true, sortable: true },
+        {
+            id: 'destination',
+            name: 'features.distances.fields.destination',
+            icon: 'arrow_downward',
+            chip: true,
+            sortable: true
+        },
+        { id: 'distance', name: 'features.distances.fields.distance', unit: 'Km', sortable: true },
+        { id: 'fuel_price', name: 'features.distances.fields.price', unit: '€', sortable: true }
     ];
 
     public actions: Action[] = [
         {
-            callback: this.addDistance.bind(this),
+            callback: this.openAddDialog.bind(this),
             name: 'features.distances.actions.add',
             icon: 'add_circle'
         },
@@ -47,13 +58,44 @@ export class DistanceListComponent implements OnInit, OnDestroy {
             type: 'warn',
             icon: 'delete'
         }
-    ]
+    ];
+
+    public addDistanceControls: ControlData[] = [
+        {
+            label: 'features.distances.fields.origin',
+            name: 'origin',
+            enum: bases,
+            translation: baseTranslation,
+            validators: [Validators.required]
+        },
+        {
+            label: 'features.distances.fields.destination',
+            name: 'destination',
+            enum: bases,
+            translation: baseTranslation,
+            validators: [Validators.required]
+        },
+        {
+            label: 'features.distances.fields.distance',
+            name: 'distance',
+            validators: [Validators.required]
+        },
+        {
+            label: 'features.distances.fields.price',
+            name: 'fuel_price',
+            validators: [Validators.required]
+        }
+    ];
 
     private _selectedDistance: Distance | null = null;
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _distanceService: DistanceService, private _dialog: Dialog) {}
+    constructor(
+        private _distanceService: DistanceService,
+        private _matDialog: MatDialog,
+        private _tableService: TableService
+    ) {}
 
     ngOnInit(): void {
         this._distanceService.getDistances();
@@ -61,6 +103,8 @@ export class DistanceListComponent implements OnInit, OnDestroy {
         this._subscriptions.push(
             this._distanceService.distances$.subscribe((distances: Distance[]) => {
                 this.distances = distances;
+                this._tableService.update$.next();
+                this._matDialog.closeAll();
             })
         );
     }
@@ -79,8 +123,36 @@ export class DistanceListComponent implements OnInit, OnDestroy {
         return this.columns.map((column: { id: string; name: string }) => column.id);
     }
 
-    public addDistance(): void {
-        this._dialog.open(AddDistanceDialogComponent);
+    public openAddDialog(): void {
+        const data: FormDialogData = {
+            title: 'features.distances.actions.update',
+            actions: [
+                {
+                    name: 'features.distances.actions.add',
+                    callback: this.addDistance.bind(this)
+                }
+            ],
+            controls: this.addDistanceControls,
+            formValidators: [different('origin', 'destination')]
+        };
+
+        this._matDialog.open(FormDialogComponent, {
+            data: data
+        });
+    }
+
+    public addDistance(distance?: Distance, dialogRef?: MatDialogRef<FormDialogComponent>): void {
+        if (distance === undefined || dialogRef === undefined) {
+            console.error('MISSING PARAMETERS IN FUNCTION addDistance');
+            return;
+        }
+
+        const subscription = this._distanceService.addDistance(distance).subscribe((success: boolean) => {
+            if (success) {
+                dialogRef.close();
+            }
+            subscription.unsubscribe();
+        });
     }
 
     public updateDistance(): void {}

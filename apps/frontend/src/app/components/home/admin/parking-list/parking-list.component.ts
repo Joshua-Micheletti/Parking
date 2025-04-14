@@ -165,7 +165,7 @@ export class ParkingListComponent implements OnInit, OnDestroy {
                     icon: 'add'
                 }
             ],
-            groupSize: 3,
+            groupSize: 5,
             formValidators: [
                 greaterThanOrEqualValidator('billingEndDate', 'billingStartDate'),
                 greaterThanOrEqualValidator('billingStartDate', 'enterDate'),
