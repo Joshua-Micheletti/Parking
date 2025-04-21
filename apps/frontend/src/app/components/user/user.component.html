@@ -1,0 +1,38 @@
+<mat-card class="user-card">
+    <mat-card-header style="text-align: center">
+        <h4 style="width: 100%">{{ user }}</h4>
+    </mat-card-header>
+    <mat-card-content style="margin: 1rem 0rem">
+        <div class="row" style="text-align: center">
+            <div
+                class="col-6"
+                style="
+                    display: inline-flex;
+                    gap: 8px;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 0px;
+                "
+            >
+                <h6 style="margin-bottom: 0px">{{'user.role' | translate}}:</h6>
+                <app-rainbow-chip [value]="role"></app-rainbow-chip>
+            </div>
+            <div
+                class="col-6"
+                style="display: inline-flex; gap: 8px; justify-content: center; align-items: center"
+            >
+                <h6 style="margin-bottom: 0px">{{'user.base' | translate}}:</h6>
+                <app-rainbow-chip [value]="base"></app-rainbow-chip>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions style="justify-content: end">
+        <button mat-button (click)="switchTheme()">
+            <mat-icon>
+                {{getTheme()}}
+            </mat-icon>
+            {{'user.theme' | translate}}</button>
+        <button mat-button (click)="switchLanguage()">{{'user.language' | translate}} ({{getLanguage()}})</button>
+        <button mat-button (click)="logout()"><mat-icon>logout</mat-icon>{{'user.logout' | translate}}</button>
+    </mat-card-actions>
+</mat-card>

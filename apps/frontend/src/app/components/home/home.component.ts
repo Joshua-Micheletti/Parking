@@ -8,14 +8,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterOutlet, Router, RouterModule } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
-import { RainbowChipComponent } from '../rainbow-chip/rainbow-chip.component';
 import { Base, Role } from '../../types/user';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { ThemeService } from '../../services/theme.service';
 import { HttpService } from '../../services/http.service';
-import { Endpoint, environment } from '../../../environments/environment';
-import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import { DriverComponent } from './driver/driver.component';
+import { UserComponent } from '../user/user.component';
 
 @Component({
     selector: 'app-home',
@@ -29,9 +28,10 @@ import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
         RouterOutlet,
         RouterModule,
         MatChipsModule,
-        RainbowChipComponent,
         TranslateModule,
-        MatMenuModule
+        MatMenuModule,
+        DriverComponent,
+        UserComponent
     ],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss'

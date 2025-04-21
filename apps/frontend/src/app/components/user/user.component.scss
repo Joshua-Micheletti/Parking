@@ -1,0 +1,17 @@
+.user-card {
+    margin-top: auto;
+    width: 100%;
+    cursor: unset;
+    border-radius: var(--border-radius);
+}
+
+mat-card {
+    display: block;
+    overflow: hidden;
+    min-height: 56px;
+    cursor: pointer;   
+}
+
+::ng-deep .custom-panel {
+    padding: 0px !important;
+}

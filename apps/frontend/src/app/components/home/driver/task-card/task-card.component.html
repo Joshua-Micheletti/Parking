@@ -1,0 +1,18 @@
+<mat-card>
+    <mat-card-header>
+        {{ car }}
+    </mat-card-header>
+
+    <mat-card-content>
+        <app-rainbow-chip [value]="origin"></app-rainbow-chip>
+        <mat-icon style="margin: 0px 4px">trending_flat</mat-icon>
+        <app-rainbow-chip [value]="destination"></app-rainbow-chip>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+        <button mat-button>
+            <mat-icon> </mat-icon>
+            Go
+        </button>
+    </mat-card-actions>
+</mat-card>

@@ -1,1 +1,65 @@
-<p>driver works!</p>
+<div class="wrapper">
+    <div class="header">
+        <button mat-fab class="functionality-icon" [matMenuTriggerFor]="menu">
+            <mat-icon>person</mat-icon>
+        </button>
+
+        <mat-menu
+            #menu="matMenu"
+            style="padding: 0px; border-radius: 8px"
+            panelClass="custom-panel"
+            overlayPanelClass="custom-panel"
+        >
+            <app-user></app-user>
+        </mat-menu>
+    </div>
+    <div class="body">
+        <!-- <h1 style="text-align: center">Tareas</h1> -->
+        <!-- <app-tasks></app-tasks> -->
+
+        <!-- Tasks -->
+        <mat-accordion>
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title> Tareas </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="content">
+                    <app-task-card origin="SEV" destination="MLG" car="VolksWagen Tuareg 9503KMW"></app-task-card>
+                    <app-task-card></app-task-card>
+                    <app-task-card></app-task-card>
+                    <app-task-card></app-task-card>
+                    <app-task-card></app-task-card>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- Completed -->
+        <mat-accordion>
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title> Completadas </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="content">
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                    This is the primary content of the panel.a
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+::ng-deep .mat-mdc-menu-content {
+    padding: 0px !important;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+    transform: translateY(10px);
+    max-width: calc(100vw - 20px) !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+    min-width: unset !important;
+}
+
+.wrapper {
+    overflow: hidden;
+
+    --gap: 10px;
+    --padding: 10px;
+    --header-size: 76px;
+    --body-height: calc(100vh - var(--header-size) - var(--padding));
+    --expansion-header-size: 64px;
+    --padding-bottom: 16px;
+
+    .header {
+        position: absolute;
+        width: 100vw;
+        padding: var(--padding);
+        top: 0px;
+    }
+    
+    .body {
+        margin-top: var(--header-size);
+        display: block;
+        padding: 0px var(--padding) var(--padding) var(--padding);
+        display: flex;
+        gap: var(--gap);
+        flex-direction: column;
+    }
+
+    .content {
+        overflow: scroll;
+        max-height: calc((var(--body-height) - var(--expansion-header-size) * 2 - var(--gap)) / 2);
+        margin-bottom: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-bottom: 8px;
+    }
+
+    
+}
+
+::ng-deep .mat-expansion-panel-body {
+    padding: 0px 8px 0px 8px !important;
+}
+
+
