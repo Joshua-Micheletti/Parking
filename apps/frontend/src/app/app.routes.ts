@@ -6,6 +6,7 @@ import { UserListComponent } from './components/home/admin/user-list/user-list.c
 import { DistanceListComponent } from './components/home/admin/distance-list/distance-list.component';
 import { ParkingListComponent } from './components/home/admin/parking-list/parking-list.component';
 import { FilesComponent } from './components/home/admin/files/files.component';
+import { TaskDescriptionComponent } from './components/home/driver/task-description/task-description.component';
 
 export const routes: Routes = [
     {
@@ -20,5 +21,6 @@ export const routes: Routes = [
         ]
     },
     { path: 'login', component: LoginComponent },
+    { path: 'task/:id', component: TaskDescriptionComponent},
     { path: '**', redirectTo: '/home' }
 ];

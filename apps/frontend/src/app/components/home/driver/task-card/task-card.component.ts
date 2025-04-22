@@ -4,6 +4,7 @@ import { Base } from '../../../../types/user';
 import { RainbowChipComponent } from "../../../rainbow-chip/rainbow-chip.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-card',
@@ -15,8 +16,12 @@ export class TaskCardComponent {
   @Input() origin!: Base;
   @Input() destination!: Base;
   @Input() car!: string;
+  @Input() taskID!: string;
 
-  constructor() {}
+  constructor(private _router: Router) {}
 
-
+  public onGo() {
+    console.log('navigate!');
+    this._router.navigate(['/task', this.taskID]);
+  }
 }

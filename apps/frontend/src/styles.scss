@@ -206,6 +206,17 @@
             protected-ripple-color: var(--warn-color-ripple)
         )
     );
+    @include mat.fab-overrides(
+        (
+            container-color: var(--warn-color),
+            // outlined-label-text-color: var(--warn-color),
+            // protected-label-text-color: var(--warn-color),
+            // protected-state-layer-color: var(--warn-color),
+            // protected-ripple-color: var(--warn-color-ripple)
+        )
+    );
+
+    --mdc-fab-icon-color: hotpink;
 }
 
 html,

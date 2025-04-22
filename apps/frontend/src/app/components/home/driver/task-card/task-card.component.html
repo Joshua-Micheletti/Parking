@@ -5,14 +5,14 @@
 
     <mat-card-content>
         <app-rainbow-chip [value]="origin"></app-rainbow-chip>
-        <mat-icon style="margin: 0px 4px">trending_flat</mat-icon>
+        <mat-icon style="margin: 0px 4px; vertical-align: middle">keyboard_arrow_right</mat-icon>
         <app-rainbow-chip [value]="destination"></app-rainbow-chip>
     </mat-card-content>
 
     <mat-card-actions align="end">
-        <button mat-button>
-            <mat-icon> </mat-icon>
+        <button mat-button (click)="onGo()">
             Go
+            <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
     </mat-card-actions>
 </mat-card>

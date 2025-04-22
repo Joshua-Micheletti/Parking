@@ -1,0 +1,41 @@
+<div class="wrapper">
+    <div class="header">
+        <button mat-icon-button style="transform: scale(1.4) translate(5px, 5px)" (click)="onGoBack()">
+            <mat-icon style="vertical-align: top">keyboard_arrow_left</mat-icon>
+        </button>
+
+        <button mat-fab class="functionality-icon" [matMenuTriggerFor]="menu">
+            <mat-icon>person</mat-icon>
+        </button>
+
+        <mat-menu
+            #menu="matMenu"
+            style="padding: 0px; border-radius: 8px"
+            panelClass="custom-panel"
+            overlayPanelClass="custom-panel"
+        >
+            <app-user></app-user>
+        </mat-menu>
+    </div>
+    <div class="body">
+        <div style="display: flex; flex-direction: row; justify-content: space-evenly; margin: 20px 0px">
+            <app-rainbow-chip [value]="origin" style="transform: scale(2)"></app-rainbow-chip>
+            <mat-icon style="transform: scale(2); vertical-align: middle">keyboard_arrow_right</mat-icon>
+            <app-rainbow-chip [value]="destination" style="transform: scale(2)"></app-rainbow-chip>
+        </div>
+        {{ licensePlate }}
+        {{ fuelType }}
+        {{ model }}
+        {{ brand }}
+        {{ gearboxType }}
+    </div>
+    <div class="actions">
+        <button mat-fab (click)="togglePlaying()">
+            <mat-icon>{{ playing ? 'play_arrow' : 'pause' }}</mat-icon>
+        </button>
+        <button mat-fab><mat-icon>stop</mat-icon></button>
+        <button mat-fab class="warning-button"><mat-icon style="color: var(--button-text)">warning</mat-icon></button>
+        <button mat-fab><mat-icon>local_gas_station</mat-icon></button>
+        <button mat-fab><mat-icon>upload</mat-icon></button>
+    </div>
+</div>

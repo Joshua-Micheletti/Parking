@@ -27,7 +27,7 @@
         padding: var(--padding);
         top: 0px;
         display: flex;
-        justify-content: end;
+        justify-content: space-between;
     }
     
     .body {
@@ -37,6 +37,18 @@
         display: flex;
         gap: var(--gap);
         flex-direction: column;
+    }
+
+    .actions {
+        display: flex;
+        height: 64px;
+        position: absolute;
+        flex-direction: row;
+        bottom: 0px;
+        gap: auto;
+        padding: 0px 8px;
+        width: 100%;
+        justify-content: space-between;
     }
 
     .content {
