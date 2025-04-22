@@ -18,22 +18,69 @@
         </mat-menu>
     </div>
     <div class="body">
-        <div style="display: flex; flex-direction: row; justify-content: space-evenly; margin: 20px 0px">
+        <div style="display: flex; flex-direction: row; justify-content: space-evenly; margin: 20px 0px 30px">
             <app-rainbow-chip [value]="origin" style="transform: scale(2)"></app-rainbow-chip>
             <mat-icon style="transform: scale(2); vertical-align: middle">keyboard_arrow_right</mat-icon>
             <app-rainbow-chip [value]="destination" style="transform: scale(2)"></app-rainbow-chip>
         </div>
-        {{ licensePlate }}
-        {{ fuelType }}
-        {{ model }}
-        {{ brand }}
-        {{ gearboxType }}
+
+        <div style="display: flex; gap: 10px">
+            <mat-form-field appearance="outline">
+                <mat-label>{{'features.parking.fields.brand' | translate}}</mat-label>
+                <input matInput readonly [value]="brand"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>{{'features.parking.fields.model' | translate}}</mat-label>
+                <input matInput readonly [value]="model"/>
+            </mat-form-field>
+        </div>
+
+        <div style="display: flex; gap: 10px">
+            <mat-form-field appearance="outline">
+                <mat-label>{{'features.parking.fields.licensePlate' | translate}}</mat-label>
+                <input matInput readonly [value]="licensePlate"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>{{'features.parking.fields.color' | translate}}</mat-label>
+                <input matInput readonly [value]="color"/>
+            </mat-form-field>
+        </div>
+
+        <div style="display: flex; gap: 10px">
+            <mat-form-field appearance="outline">
+                <mat-label>{{'features.parking.fields.gearboxType' | translate}}</mat-label>
+                <input matInput readonly [value]="'data.gearboxType.' + gearboxType | translate"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>{{'features.parking.fields.fuelType' | translate}}</mat-label>
+                <input matInput readonly [value]="'data.fuelType.' + fuelType | translate"/>
+            </mat-form-field>
+        </div>
+
+        <mat-divider style="margin-bottom: 20px"></mat-divider>
+
+        <div style="width: 100%">
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>{{'features.task.startingDate' | translate}}</mat-label>
+                <input matInput readonly [value]="startDate"/>
+            </mat-form-field>
+        </div>
+
+        <div style="width: 100%">
+            <mat-form-field appearance="outline" style="width: 100%">
+                <mat-label>{{'features.task.endingDate' | translate}}</mat-label>
+                <input matInput readonly [value]="endDate"/>
+            </mat-form-field>
+        </div>
     </div>
     <div class="actions">
-        <button mat-fab (click)="togglePlaying()">
-            <mat-icon>{{ playing ? 'play_arrow' : 'pause' }}</mat-icon>
+        <button mat-fab (click)="togglePlaying()" [disabled]="endDate !== ''">
+            <mat-icon>{{ playing ? 'pause' : 'play_arrow' }}</mat-icon>
         </button>
-        <button mat-fab><mat-icon>stop</mat-icon></button>
+        <button mat-fab (click)="onFinish()" [disabled]="endDate !== '' || !playing"><mat-icon>stop</mat-icon></button>
         <button mat-fab class="warning-button"><mat-icon style="color: var(--button-text)">warning</mat-icon></button>
         <button mat-fab><mat-icon>local_gas_station</mat-icon></button>
         <button mat-fab><mat-icon>upload</mat-icon></button>

@@ -5,10 +5,11 @@ import { RainbowChipComponent } from "../../../rainbow-chip/rainbow-chip.compone
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-task-card',
-  imports: [MatCardModule, RainbowChipComponent, MatIconModule, MatButtonModule],
+  imports: [MatCardModule, RainbowChipComponent, MatIconModule, MatButtonModule, TranslateModule],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss'
 })

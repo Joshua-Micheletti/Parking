@@ -61,6 +61,11 @@
         },
         "files": {
             "name": "Files"
+        },
+        "task": {
+            "startingDate": "Starting Date",
+            "endingDate": "Ending Date",
+            "go": "Go"
         }
     },
     "data": {
