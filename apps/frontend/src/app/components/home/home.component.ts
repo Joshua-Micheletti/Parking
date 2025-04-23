@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
     public features: { icon: string; name: string; path?: string }[] = [
         { icon: 'group', name: 'users', path: 'users' },
         { icon: 'directions_car_filled', name: 'parking', path: 'parking' },
-        { icon: 'work', name: 'distances', path: 'distances' },
         { icon: 'insert_drive_file', name: 'files', path: 'files' }
     ];
 
@@ -75,6 +74,10 @@ export class HomeComponent implements OnInit {
                 this.role = authenticated.role;
                 this.user = authenticated.user;
                 this.base = authenticated.base;
+
+                if (this.role === 'admin') {
+                    this.features.push({ icon: 'work', name: 'distances', path: 'distances' });
+                }
             });
     }
 

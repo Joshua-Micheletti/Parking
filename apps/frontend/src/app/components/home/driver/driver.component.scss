@@ -40,7 +40,8 @@
     }
 
     .content {
-        overflow: scroll;
+        overflow-y: scroll;
+        overflow-x: hidden;
         max-height: calc((var(--body-height) - var(--expansion-header-size) * 2 - var(--gap)) / 2);
         margin-bottom: 0px;
         display: flex;

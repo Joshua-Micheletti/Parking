@@ -8,10 +8,10 @@ import {
     statuses,
     statusTranslation
 } from '../../../../types/parkedCar';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
-import { Base, bases, baseTranslation } from '../../../../types/user';
+import { Base, bases, baseTranslation, Role } from '../../../../types/user';
 import { BaseTabComponent } from '../../../base-tab/base-tab.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
@@ -24,6 +24,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { greaterThanOrEqualValidator } from '../../../../validators/greaterThan';
 import { notFutureValidator } from '../../../../validators/notFuture';
+import { AuthService } from '../../../../services/auth.service';
+import { Auth } from '../../../../types/auth';
 
 @Component({
     selector: 'app-parking-list',
@@ -42,7 +44,12 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         { id: 'model', name: 'features.parking.fields.model', sortable: true },
         { id: 'color', name: 'features.parking.fields.color', icon: 'color_lens', sortable: true },
         { id: 'provider', name: 'features.parking.fields.provider', sortable: true },
-        { id: 'gearboxType', name: 'features.parking.fields.gearboxType', translation: 'data.gearboxType.', sortable: true },
+        {
+            id: 'gearboxType',
+            name: 'features.parking.fields.gearboxType',
+            translation: 'data.gearboxType.',
+            sortable: true
+        },
         {
             id: 'fuelType',
             name: 'features.parking.fields.fuelType',
@@ -52,7 +59,13 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         },
         { id: 'status', name: 'features.parking.fields.status', translation: 'data.status.', sortable: true },
         { id: 'notes', name: 'features.parking.fields.notes', icon: 'notes', sortable: true },
-        { id: 'enterDate', name: 'features.parking.fields.enterDate', icon: 'calendar_month', date: true, sortable: true },
+        {
+            id: 'enterDate',
+            name: 'features.parking.fields.enterDate',
+            icon: 'calendar_month',
+            date: true,
+            sortable: true
+        },
         {
             id: 'billingStartDate',
             name: 'features.parking.fields.billingStartDate',
@@ -60,7 +73,13 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             date: true,
             sortable: true
         },
-        { id: 'billingEndDate', name: 'features.parking.fields.billingEndDate', icon: 'calendar_month', date: true, sortable: true }
+        {
+            id: 'billingEndDate',
+            name: 'features.parking.fields.billingEndDate',
+            icon: 'calendar_month',
+            date: true,
+            sortable: true
+        }
     ];
 
     public actions: Action[] = [
@@ -88,13 +107,6 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             label: 'features.parking.fields.licensePlate',
             name: 'licensePlate',
             validators: [Validators.required]
-        },
-        {
-            label: 'features.parking.fields.base',
-            name: 'base',
-            validators: [Validators.required],
-            enum: bases,
-            translation: baseTranslation
         },
         {
             label: 'features.parking.fields.status',
@@ -126,6 +138,9 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate', type: 'date' }
     ];
 
+    public role: Role = 'driver';
+    public base: Base = 'SEV';
+
     private _selectedCar: ParkedCar | null = null;
 
     private _subscriptions: Subscription[] = [];
@@ -133,11 +148,40 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     constructor(
         private _matDialog: MatDialog,
         private _parkingService: ParkingService,
-        private _tableService: TableService
+        private _tableService: TableService,
+        private _authService: AuthService
     ) {}
 
     ngOnInit(): void {
         this._parkingService.getCars();
+
+        const authSubscription: Subscription = this._authService.authenticated$
+            .pipe(
+                filter((authenticated: Auth) => {
+                    return authenticated.token !== '';
+                })
+            )
+            .subscribe((authenticated: Auth) => {
+                this.role = authenticated.role;
+                this.base = authenticated.base;
+
+                if (this.role === 'admin') {
+                    // this.columns.push({
+                    //     id: 'base',
+                    //     name: 'features.users.fields.base',
+                    //     icon: 'warehouse',
+                    //     chip: true
+                    // });
+                    this.addCarControls.splice(1, 0, {
+                        label: 'features.parking.fields.base',
+                        name: 'base',
+                        validators: [Validators.required],
+                        enum: bases,
+                        translation: baseTranslation
+                    });
+                }
+            });
+        this._subscriptions.push(authSubscription);
 
         const subscription: Subscription = this._parkingService.parkedCars$.subscribe((cars: ParkedCar[]) => {
             this.cars = cars;
@@ -187,6 +231,10 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         if (car === undefined) {
             console.error('CALLED ADD CAR WITHOUT PARAMETERS');
             return;
+        }
+
+        if (this.role !== 'admin') {
+            car.base = this.base;
         }
 
         this._parkingService.addCar(car);

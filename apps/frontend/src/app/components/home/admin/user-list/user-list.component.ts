@@ -74,15 +74,8 @@ export class UserListComponent implements OnInit, OnDestroy {
         {
             label: 'features.users.fields.role',
             name: 'role',
-            enum: roles,
+            enum: roles.filter((value) => value != 'admin'),
             translation: roleTranslation,
-            validators: [Validators.required]
-        },
-        {
-            label: 'features.users.fields.base',
-            name: 'base',
-            enum: bases,
-            translation: baseTranslation,
             validators: [Validators.required]
         }
     ];
@@ -91,15 +84,8 @@ export class UserListComponent implements OnInit, OnDestroy {
         {
             label: 'features.users.fields.role',
             name: 'role',
-            enum: roles,
+            enum: roles.filter((value) => value != 'admin'),
             translation: roleTranslation,
-            validators: [Validators.required]
-        },
-        {
-            label: 'features.users.fields.base',
-            name: 'base',
-            enum: bases,
-            translation: baseTranslation,
             validators: [Validators.required]
         }
     ];
@@ -138,6 +124,24 @@ export class UserListComponent implements OnInit, OnDestroy {
                         icon: 'warehouse',
                         chip: true
                     });
+
+                    this.addUserControls.push({
+                        label: 'features.users.fields.base',
+                        name: 'base',
+                        enum: bases,
+                        translation: baseTranslation,
+                        validators: [Validators.required]
+                    });
+                    this.addUserControls[2].enum?.push('admin');
+
+                    this.updateUserControls.push({
+                        label: 'features.users.fields.base',
+                        name: 'base',
+                        enum: bases,
+                        translation: baseTranslation,
+                        validators: [Validators.required]
+                    });
+                    this.updateUserControls[0].enum?.push('admin');
                 }
 
                 this._userService.getUsers();
@@ -147,10 +151,6 @@ export class UserListComponent implements OnInit, OnDestroy {
                         this.users = users;
                         this._tableService.update$.next();
                         this._matDialog.closeAll();
-                        // setTimeout(() => {
-                        //     this._changeDetectorRef.detectChanges();
-                        //     this._applicationRef.tick();
-                        // }, 0);
                     })
                 );
             });

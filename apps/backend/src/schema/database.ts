@@ -207,7 +207,7 @@ if (sequelizeConfig.connect) {
     };
 
     Parking.init(parkingFields, parkingInitOptions);
-    Parking.sync({ alter: true, logging: false, force: true }).catch((error) => {
+    Parking.sync({ alter: true, logging: false }).catch((error) => {
         console.log('Failed to sync the parking table');
         console.log(error);
     });
