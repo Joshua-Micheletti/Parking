@@ -36,13 +36,6 @@ export const statusTranslation: string = 'data.status.';
 
 /* ------------------------------- Parked Car ------------------------------- */
 export type ParkedCar = {
-    licensePlate: string;
-    brand?: string;
-    model?: string;
-    color?: string;
-    provider?: string;
-    gearboxType?: GearboxType;
-    fuelType?: FuelType;
     status: Status;
     notes?: string;
     enterDate?: string;
@@ -50,3 +43,14 @@ export type ParkedCar = {
     billingEndDate?: string;
     base: Base;
 };
+
+export type Car = {
+    id: number;
+    licensePlate: string;
+    brand?: string;
+    model?: string;
+    color?: string;
+    provider?: string;
+    gearboxType?: GearboxType;
+    fuelType?: FuelType;
+}

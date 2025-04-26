@@ -14,5 +14,8 @@ import { TaskCardComponent } from "./task-card/task-card.component";
     styleUrl: './driver.component.scss'
 })
 export class DriverComponent {
+    public openTasks = false;
+    public openCompleted = false;
+    
     readonly panelOpenState = signal(false);
 }

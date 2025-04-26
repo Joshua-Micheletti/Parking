@@ -1,5 +1,6 @@
 import { ValidatorFn } from '@angular/forms';
 import { Action } from './table';
+import { Observable } from 'rxjs';
 
 export type ControlType = 'date' | 'password';
 
@@ -11,6 +12,8 @@ export type ControlData = {
     enum?: string[];
     translation?: string;
     type?: ControlType;
+    autoComplete?: AutoCompleteOption[];
+    filteredOptions?: Observable<AutoCompleteOption[]>;
 };
 
 export type FormDialogData = {
@@ -20,3 +23,9 @@ export type FormDialogData = {
     groupSize?: number,
     formValidators?: ValidatorFn[]
 };
+
+export type AutoCompleteOption = {
+    value: any;
+    display?: string;
+    tooltip?: string;
+}

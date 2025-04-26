@@ -15,6 +15,7 @@ const sequelizeConfig: DatabaseConfig = JSON.parse(
 let sequelize;
 class User extends Model {}
 class Distance extends Model {}
+class CarPool extends Model {}
 class Parking extends Model {}
 class API extends Model {}
 
@@ -138,14 +139,12 @@ if (sequelizeConfig.connect) {
         console.log(error);
     });
 
-    /* --------------------------------- PARKING -------------------------------- */
+    /* -------------------------------- Car Pool -------------------------------- */
     const gearboxTypes: string[] = config.get('parking.gearboxTypes');
 
     const fuelTypes: string[] = config.get('parking.fuelTypes');
 
-    const statuses: string[] = config.get('parking.statuses');
-
-    const parkingFields: ModelAttributes = {
+    const carPoolFields: ModelAttributes = {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -173,6 +172,42 @@ if (sequelizeConfig.connect) {
         },
         fuel_type: {
             type: DataTypes.ENUM(...fuelTypes)
+        }
+    };
+
+    const carPoolInitOptions: InitOptions = {
+        sequelize,
+        modelName: 'CarPool',
+        name: {
+            singular: 'car_pool',
+            plural: 'car_pool'
+        },
+        tableName: 'car_pool',
+        timestamps: false
+    };
+
+    CarPool.init(carPoolFields, carPoolInitOptions);
+    CarPool.sync({ alter: true, logging: false}).catch((error) => {
+        console.log('Failed to sync the car pool table');
+        console.log(error);
+    });
+
+    /* --------------------------------- PARKING -------------------------------- */
+    const statuses: string[] = config.get('parking.statuses');
+
+    const parkingFields: ModelAttributes = {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        carId: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'car_pool',
+                key: 'id'
+            },
+            unique: true
         },
         status: {
             type: DataTypes.ENUM(...statuses),
@@ -255,4 +290,4 @@ if (sequelizeConfig.connect) {
     });
 }
 
-export { sequelize, User, Distance, Parking, API };
+export { sequelize, User, Distance, CarPool, Parking, API };

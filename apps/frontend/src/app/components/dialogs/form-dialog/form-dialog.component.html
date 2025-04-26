@@ -12,6 +12,28 @@
                     <mat-option [value]="value">{{ control.translation + value | translate }}</mat-option>
                     }
                 </mat-select>
+                } @else if (control.autoComplete) {
+                <input
+                    type="text"
+                    placeholder="Pick one"
+                    aria-label="Number"
+                    matInput
+                    [formControlName]="control.name"
+                    [matAutocomplete]="auto"
+                />
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFunction(control)">
+                    @for (option of (control.filteredOptions | async); track option) { @if (option.tooltip) {
+                    <mat-option
+                        [value]="option.value"
+                        [matTooltip]="option.tooltip"
+                        matTooltipClass="tooltip-break"
+                        matTooltipPosition="after"
+                        >{{ option.display ?? option.value }}</mat-option
+                    >
+                    } @else {
+                    <mat-option [value]="option.value">{{ option.display ?? option.value }}</mat-option>
+                    } }
+                </mat-autocomplete>
                 } @else if (control.type === 'date') {
                 <ng-container>
                     <input matInput [formControlName]="control.name" [matDatepicker]="picker" />

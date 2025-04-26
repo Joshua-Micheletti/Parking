@@ -74,6 +74,22 @@ export const environment: Environment = {
         deleteCar: {
             path: host + '/parking',
             method: 'DELETE'
+        },
+        getCarPool: {
+            path: host + '/carPool',
+            method: 'GET'
+        },
+        postCarPool: {
+            path: host + '/carPool',
+            method: 'POST'
+        },
+        updateCarPool: {
+            path: host + '/carPool/update',
+            method: 'POST'
+        },
+        deleteCarPool: {
+            path: host + '/carPool',
+            method: 'DELETE'
         }
     }
 };

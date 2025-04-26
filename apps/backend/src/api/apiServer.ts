@@ -9,6 +9,7 @@ import distancesServer from './distances/distancesServer';
 import parkingServer from './parking/parkingServer';
 import authServer from './auth/authServer';
 import filesServer from './files/filesServer';
+import carPoolServer from './carPool/carPoolServer';
 import authenticate from '../middleware/auth';
 
 /**
@@ -26,6 +27,7 @@ export default function apiServer(): Router {
   router.use('/distances', authenticate, distancesServer());
   router.use('/parking', authenticate, parkingServer());
   router.use('/files', authenticate, filesServer());
+  router.use('/carPool', authenticate, carPoolServer());
 
   /**
    * Endpoint for /healthcheck. Logs a message and returns OK

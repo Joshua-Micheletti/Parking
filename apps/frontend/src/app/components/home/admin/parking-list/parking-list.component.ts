@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {
+    Car,
     fuelTypes,
     fuelTypeTranslation,
     gearboxTypes,
@@ -15,7 +16,7 @@ import { Base, bases, baseTranslation, Role } from '../../../../types/user';
 import { BaseTabComponent } from '../../../base-tab/base-tab.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
-import { ControlData, FormDialogData } from '../../../../types/formDialog';
+import { AutoCompleteOption, ControlData, FormDialogData } from '../../../../types/formDialog';
 import { Validators } from '@angular/forms';
 import { ParkingService } from '../../../../services/parking.service';
 import { TableService } from '../../../../services/table.service';
@@ -26,6 +27,8 @@ import { greaterThanOrEqualValidator } from '../../../../validators/greaterThan'
 import { notFutureValidator } from '../../../../validators/notFuture';
 import { AuthService } from '../../../../services/auth.service';
 import { Auth } from '../../../../types/auth';
+import { CarService } from '../../../../services/car.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-parking-list',
@@ -104,9 +107,10 @@ export class ParkingListComponent implements OnInit, OnDestroy {
 
     public addCarControls: ControlData[] = [
         {
-            label: 'features.parking.fields.licensePlate',
-            name: 'licensePlate',
-            validators: [Validators.required]
+            label: 'features.parking.fields.car',
+            name: 'car',
+            validators: [Validators.required],
+            autoComplete: []
         },
         {
             label: 'features.parking.fields.status',
@@ -115,23 +119,6 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             enum: statuses,
             translation: statusTranslation
         },
-        {
-            label: 'features.parking.fields.fuelType',
-            name: 'fuelType',
-            validators: [Validators.required],
-            enum: fuelTypes,
-            translation: fuelTypeTranslation
-        },
-        { label: 'features.parking.fields.provider', name: 'provider', validators: [Validators.required] },
-        { label: 'features.parking.fields.brand', name: 'brand', validators: [Validators.required] },
-        { label: 'features.parking.fields.model', name: 'model', validators: [Validators.required] },
-        {
-            label: 'features.parking.fields.gearboxType',
-            name: 'gearboxType',
-            enum: gearboxTypes,
-            translation: gearboxTypeTranslation
-        },
-        { label: 'features.parking.fields.color', name: 'color' },
         { label: 'features.parking.fields.notes', name: 'notes' },
         { label: 'features.parking.fields.enterDate', name: 'enterDate', type: 'date' },
         { label: 'features.parking.fields.billingStartDate', name: 'billingStartDate', type: 'date' },
@@ -149,7 +136,9 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         private _matDialog: MatDialog,
         private _parkingService: ParkingService,
         private _tableService: TableService,
-        private _authService: AuthService
+        private _authService: AuthService,
+        private _carService: CarService,
+        private _translateService: TranslateService
     ) {}
 
     ngOnInit(): void {
@@ -166,12 +155,6 @@ export class ParkingListComponent implements OnInit, OnDestroy {
                 this.base = authenticated.base;
 
                 if (this.role === 'admin') {
-                    // this.columns.push({
-                    //     id: 'base',
-                    //     name: 'features.users.fields.base',
-                    //     icon: 'warehouse',
-                    //     chip: true
-                    // });
                     this.addCarControls.splice(1, 0, {
                         label: 'features.parking.fields.base',
                         name: 'base',
@@ -199,6 +182,24 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     }
 
     public openAddDialog(): void {
+        this._carService.getCars();
+
+        const subscription: Subscription = this._carService.cars$.subscribe((cars: Car[]) => {
+            this.addCarControls[0].autoComplete = cars.map((car: Car) => {
+                let autocompleteOption: AutoCompleteOption;
+                
+                autocompleteOption = {
+                    value: car.id,
+                    display: car.licensePlate,
+                    tooltip: this._carTooltip(car)
+                }
+
+                return autocompleteOption;
+            });
+        });
+
+        this._subscriptions.push(subscription);
+
         const data: FormDialogData = {
             title: 'features.parking.actions.add',
             controls: this.addCarControls,
@@ -250,5 +251,26 @@ export class ParkingListComponent implements OnInit, OnDestroy {
 
     public onSelectedCar(car: ParkedCar | null) {
         this._selectedCar = car;
+    }
+
+    private _carTooltip(car: Car): string {
+        let tooltipText: string = '';
+
+        if (car.brand) {
+            tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
+        }
+        if (car.model) {
+            tooltipText += this._translateService.instant('features.parking.fields.model') + ': ' + car.model + '\n';
+        }
+        if (car.color) {
+            tooltipText += this._translateService.instant('features.parking.fields.color') + ': ' + car.color + '\n';
+        }
+        // if (car.brand) {
+        //     tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
+        // }
+        // if (car.brand) {
+        //     tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
+        // }
+        return tooltipText;
     }
 }

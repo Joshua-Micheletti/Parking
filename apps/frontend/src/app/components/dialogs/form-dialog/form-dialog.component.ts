@@ -9,7 +9,7 @@ import {
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { ControlData, FormDialogData } from '../../../types/formDialog';
+import { AutoCompleteOption, ControlData, FormDialogData } from '../../../types/formDialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UtilsService } from '../../../services/utils.service';
@@ -17,6 +17,10 @@ import { Action } from '../../../types/table';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { map, Observable, startWith } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-form-dialog',
@@ -31,7 +35,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         MatInputModule,
         ReactiveFormsModule,
         MatSelectModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        MatAutocompleteModule,
+        MatTooltipModule,
+        CommonModule
     ],
     templateUrl: './form-dialog.component.html',
     styleUrl: './form-dialog.component.scss'
@@ -43,6 +50,7 @@ export class FormDialogComponent {
     public actions: Action[] = [];
     public form: FormGroup = new FormGroup({});
     public formValue: unknown | undefined = undefined;
+    public filteredOptions: Observable<string[]>[] = [];
 
     constructor(
         public matDialogRef: MatDialogRef<FormDialogComponent>,
@@ -56,6 +64,42 @@ export class FormDialogComponent {
 
         for (const control of this.controls) {
             this.form.addControl(control.name, new FormControl(control.defaultValue ?? '', control.validators));
+
+            if (control.autoComplete) {
+                console.log(
+                    '🐛 | form-dialog.component.ts:69 | FormDialogComponent | control.autoComplete:',
+                    control.autoComplete
+                );
+                const filtered: Observable<AutoCompleteOption[]> = this.form.get(control.name)!.valueChanges.pipe(
+                    startWith(''),
+                    map((value) => {
+                        console.log('🐛 | form-dialog.component.ts:72 | FormDialogComponent | map | value:', value);
+                        console.log('🐛 | form-dialog.component.ts:72 | FormDialogComponent | map | value:', !value);
+
+                        if (!value) {
+                            console.log('RETURNING AUTOCOMPLETE');
+                            console.log(
+                                '🐛 | form-dialog.component.ts:77 | FormDialogComponent | map | control.autoComplete:',
+                                control.autoComplete
+                            );
+                            return control.autoComplete!;
+                        }
+
+                        return this._filter(control.autoComplete!, value || '');
+                    })
+                );
+
+                filtered.subscribe((value) => {
+                    console.log(
+                        '🐛 | form-dialog.component.ts:85 | FormDialogComponent | filtered.subscribe | observable:',
+                        value
+                    );
+                });
+
+                control.filteredOptions = filtered;
+                // this.form.get(control.name)?.setValue(' ');
+                // this.form.get(control.name)?.setValue('');
+            }
         }
 
         if (data.formValidators) {
@@ -74,5 +118,30 @@ export class FormDialogComponent {
         );
 
         callback(cleanFormData, this.matDialogRef);
+    }
+
+    public getDisplayFunction(control: ControlData): (value: any) => string {
+        return (value: any): string => {
+            const option = control.autoComplete?.find((option: AutoCompleteOption) => {
+                return option.value === value;
+            });
+
+            return option?.display ?? option?.value;
+        };
+    }
+
+    private _filter(options: AutoCompleteOption[], value: string): AutoCompleteOption[] {
+        const filterValue = value.toLowerCase();
+
+        if (!filterValue) {
+            // If no filter value, return all options
+            return options;
+        }
+
+        return options.filter((option) => {
+            return Object.values(option).some((fieldValue) =>
+                fieldValue?.toString()?.toLowerCase().includes(filterValue)
+            );
+        });
     }
 }

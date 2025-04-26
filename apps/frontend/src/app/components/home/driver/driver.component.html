@@ -16,11 +16,11 @@
     <div class="body">
         <!-- Tasks -->
         <mat-accordion>
-            <mat-expansion-panel hideToggle>
+            <mat-expansion-panel hideToggle (closed)="openTasks = false" (opened)="openTasks = true">
                 <mat-expansion-panel-header>
                     <mat-panel-title> Tareas </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="content">
+                <div [class]="{'content': true, 'full-content': !openCompleted}">
                     <app-task-card origin="SEV" destination="MLG" car="VolksWagen Tuareg 0614LMW" taskID="123"></app-task-card>
                     <app-task-card origin="MLG" destination="BCN" car="Ford Ka+ QKP5892" taskID="456"></app-task-card>
                     <app-task-card origin="SEV" destination="VLC" car="Fiat Punto 6537ABC" taskID="789"></app-task-card>
@@ -32,11 +32,11 @@
 
         <!-- Completed -->
         <mat-accordion>
-            <mat-expansion-panel hideToggle>
+            <mat-expansion-panel hideToggle (closed)="openCompleted = false" (opened)="openCompleted = true">
                 <mat-expansion-panel-header>
                     <mat-panel-title> Completadas </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="content">
+                <div [class]="{'content': true, 'full-content': !openTasks}">
                     <app-task-card origin="BCN" destination="MLG" car="VolksWagen Polo 9572OOP" taskID="123"></app-task-card>
                     <app-task-card origin="SEV" destination="BCN" car="Renault Megane 6900JFK" taskID="123"></app-task-card>
                     <app-task-card origin="MAD" destination="MLG" car="Ferrari 488 4205AFK" taskID="123"></app-task-card>

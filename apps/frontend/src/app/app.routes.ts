@@ -7,6 +7,7 @@ import { DistanceListComponent } from './components/home/admin/distance-list/dis
 import { ParkingListComponent } from './components/home/admin/parking-list/parking-list.component';
 import { FilesComponent } from './components/home/admin/files/files.component';
 import { TaskDescriptionComponent } from './components/home/driver/task-description/task-description.component';
+import { CarPoolComponent } from './components/home/admin/car-pool/car-pool.component';
 
 export const routes: Routes = [
     {
@@ -17,7 +18,8 @@ export const routes: Routes = [
             { path: 'users', component: UserListComponent },
             { path: 'distances', component: DistanceListComponent },
             { path: 'parking', component: ParkingListComponent },
-            { path: 'files', component: FilesComponent }
+            { path: 'files', component: FilesComponent },
+            { path: 'carPool', component: CarPoolComponent }
         ]
     },
     { path: 'login', component: LoginComponent },
