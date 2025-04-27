@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import {
     body,
     Result,
+    ValidationChain,
     ValidationError,
     validationResult
 } from 'express-validator';
@@ -9,7 +10,7 @@ import config from 'config';
 import { Parking } from '../../../schema/database';
 import { objectFieldsToSnakeCase } from '../../../utils/stringUtils';
 
-export const postCarInputValidation = [
+export const postCarInputValidation: ValidationChain[] = [
     body('carId').isNumeric(),
     body('status').isIn(config.get('parking.statuses')),
     body('notes').isString().optional(),

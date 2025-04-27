@@ -1,3 +1,4 @@
+<input style="opacity: 0; position: absolute; height: 0" autofocus tabindex="-1" cdkFocusInitial />
 <h2 mat-dialog-title style="padding: 1rem 24px 0rem 24px">{{ title | translate }}</h2>
 <mat-dialog-content>
     <form [formGroup]="form">
@@ -15,7 +16,6 @@
                 } @else if (control.autoComplete) {
                 <input
                     type="text"
-                    placeholder="Pick one"
                     aria-label="Number"
                     matInput
                     [formControlName]="control.name"
@@ -24,7 +24,7 @@
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFunction(control)">
                     @for (option of (control.filteredOptions | async); track option) { @if (option.tooltip) {
                     <mat-option
-                        [value]="option.value"
+                        [value]="option.display ?? option.value"
                         [matTooltip]="option.tooltip"
                         matTooltipClass="tooltip-break"
                         matTooltipPosition="after"

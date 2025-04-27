@@ -12,9 +12,17 @@ import errorHandler from './middleware/error';
 import cors from 'cors';
 
 import { setupGoogleDrive } from './integrations/googleDrive/setup';
+import { setupDatabase } from './schema/database';
 
 async function main() {
     const app: Express = express();
+
+    try {
+        await setupDatabase();
+    } catch (error) {
+        console.error(error);
+        return;
+    }
 
     const googleDriveRouter: Router | undefined = await setupGoogleDrive();
 

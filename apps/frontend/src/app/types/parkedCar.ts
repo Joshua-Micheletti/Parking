@@ -39,7 +39,7 @@ export type ParkedCar = {
     status: Status;
     notes?: string;
     enterDate?: string;
-    billindStartDate?: string;
+    billingStartDate?: string;
     billingEndDate?: string;
     base: Base;
 };

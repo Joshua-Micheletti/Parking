@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
 
     public features: { icon: string; name: string; path?: string }[] = [
         { icon: 'group', name: 'users', path: 'users' },
-        { icon: 'directions_car_filled', name: 'parking', path: 'parking' },
+        { icon: 'local_parking', name: 'parking', path: 'parking' },
         { icon: 'insert_drive_file', name: 'files', path: 'files' }
     ];
 

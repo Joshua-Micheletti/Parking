@@ -23,14 +23,32 @@
                 "base": "Base"
             }
         },
+        "carPool": {
+            "name": "Car Pool",
+            "actions": {
+                "add": "Add Car",
+                "update": "Modify Car",
+                "delete": "Delete Car"
+            },
+            "fields": {
+                "licensePlate": "License Plate",
+                "brand": "Brand",
+                "model": "Model",
+                "color": "Color",
+                "provider": "Provider",
+                "gearboxType": "Gearbox Type",
+                "fuelType": "Fuel Type"
+            }
+        },
         "parking": {
             "name": "Parking",
             "actions": {
-                "add": "Add Car",
+                "add": "Register Car",
                 "update": "Update Car",
                 "delete": "Delete Car"
             },
             "fields": {
+                "car": "Car",
                 "licensePlate": "License Plate",
                 "brand": "Brand",
                 "model": "Model",

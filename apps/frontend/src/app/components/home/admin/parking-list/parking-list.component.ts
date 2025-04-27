@@ -1,15 +1,11 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {
     Car,
-    fuelTypes,
-    fuelTypeTranslation,
-    gearboxTypes,
-    gearboxTypeTranslation,
     ParkedCar,
     statuses,
     statusTranslation
 } from '../../../../types/parkedCar';
-import { filter, Subscription } from 'rxjs';
+import { filter, skip, Subscription, take } from 'rxjs';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
 import { Base, bases, baseTranslation, Role } from '../../../../types/user';
@@ -29,6 +25,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { Auth } from '../../../../types/auth';
 import { CarService } from '../../../../services/car.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ErrorDialogComponent } from '../../../dialogs/error-dialog/error-dialog.component';
 
 @Component({
     selector: 'app-parking-list',
@@ -108,7 +105,7 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     public addCarControls: ControlData[] = [
         {
             label: 'features.parking.fields.car',
-            name: 'car',
+            name: 'carId',
             validators: [Validators.required],
             autoComplete: []
         },
@@ -116,13 +113,13 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             label: 'features.parking.fields.status',
             name: 'status',
             validators: [Validators.required],
-            enum: statuses,
+            enum: ['AVAILABLE', 'NOT AVAILABLE'],
             translation: statusTranslation
         },
         { label: 'features.parking.fields.notes', name: 'notes' },
-        { label: 'features.parking.fields.enterDate', name: 'enterDate', type: 'date' },
-        { label: 'features.parking.fields.billingStartDate', name: 'billingStartDate', type: 'date' },
-        { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate', type: 'date' }
+        // { label: 'features.parking.fields.enterDate', name: 'enterDate', type: 'date' }
+        // { label: 'features.parking.fields.billingStartDate', name: 'billingStartDate', type: 'date' },
+        // { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate', type: 'date' }
     ];
 
     public role: Role = 'driver';
@@ -182,50 +179,58 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     }
 
     public openAddDialog(): void {
-        this._carService.getCars();
+        // this._carService.getCars();
 
-        const subscription: Subscription = this._carService.cars$.subscribe((cars: Car[]) => {
+        this._carService.getAvailableCars();
+
+        const subscription: Subscription = this._carService.availableCars$.pipe(skip(1), take(1)).subscribe((cars: Car[]) => {
+            if (cars.length === 0) {
+                this._matDialog.open(ErrorDialogComponent, { data: { message: 'No available cars' } });
+                subscription.unsubscribe();
+                return;
+            }
+
             this.addCarControls[0].autoComplete = cars.map((car: Car) => {
                 let autocompleteOption: AutoCompleteOption;
-                
+
                 autocompleteOption = {
                     value: car.id,
                     display: car.licensePlate,
                     tooltip: this._carTooltip(car)
-                }
+                };
 
                 return autocompleteOption;
             });
-        });
 
-        this._subscriptions.push(subscription);
+            const data: FormDialogData = {
+                title: 'features.parking.actions.add',
+                controls: this.addCarControls,
+                actions: [
+                    {
+                        callback: this.addCar.bind(this),
+                        name: 'features.parking.actions.add',
+                        icon: 'add'
+                    }
+                ],
+                groupSize: 2,
+                formValidators: [
+                    greaterThanOrEqualValidator('billingEndDate', 'billingStartDate'),
+                    greaterThanOrEqualValidator('billingStartDate', 'enterDate'),
+                    greaterThanOrEqualValidator('billingEndDate', 'enterDate'),
+                    notFutureValidator('enterDate')
+                ]
+            };
 
-        const data: FormDialogData = {
-            title: 'features.parking.actions.add',
-            controls: this.addCarControls,
-            actions: [
+            const dialogRef: MatDialogRef<FormDialogComponent> = this._matDialog.open<FormDialogComponent>(
+                FormDialogComponent,
                 {
-                    callback: this.addCar.bind(this),
-                    name: 'features.parking.actions.add',
-                    icon: 'add'
+                    data
+                    // panelClass: 'custom-panel'
                 }
-            ],
-            groupSize: 5,
-            formValidators: [
-                greaterThanOrEqualValidator('billingEndDate', 'billingStartDate'),
-                greaterThanOrEqualValidator('billingStartDate', 'enterDate'),
-                greaterThanOrEqualValidator('billingEndDate', 'enterDate'),
-                notFutureValidator('enterDate')
-            ]
-        };
+            );
 
-        const dialogRef: MatDialogRef<FormDialogComponent> = this._matDialog.open<FormDialogComponent>(
-            FormDialogComponent,
-            {
-                data,
-                panelClass: 'custom-panel'
-            }
-        );
+            subscription.unsubscribe();
+        });
     }
 
     public addCar(car?: ParkedCar): void {
@@ -237,6 +242,11 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         if (this.role !== 'admin') {
             car.base = this.base;
         }
+
+        const currentDate = new Date();
+
+        car.enterDate = currentDate.toISOString();
+        car.billingStartDate = currentDate.toISOString();
 
         this._parkingService.addCar(car);
     }

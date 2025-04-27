@@ -23,14 +23,32 @@
                 "base": "Base"
             }
         },
-        "parking": {
-            "name": "Aparcamiento",
+        "carPool": {
+            "name": "Flota",
             "actions": {
                 "add": "Añadir Coche",
                 "update": "Modificar Coche",
                 "delete": "Eliminar Coche"
             },
             "fields": {
+                "licensePlate": "Matricula",
+                "brand": "Marca",
+                "model": "Modelo",
+                "color": "Color",
+                "provider": "Proveedor",
+                "gearboxType": "Tipo de Cambio",
+                "fuelType": "Combustible"
+            }
+        },
+        "parking": {
+            "name": "Aparcamiento",
+            "actions": {
+                "add": "Registrar Coche",
+                "update": "Modificar Coche",
+                "delete": "Eliminar Coche"
+            },
+            "fields": {
+                "car": "Coche",
                 "licensePlate": "Matricula",
                 "brand": "Marca",
                 "model": "Modelo",

@@ -60,7 +60,7 @@ export const environment: Environment = {
             method: 'DELETE'
         },
         getCars: {
-            path: host + '/parking',
+            path: host + '/parking?full=true',
             method: 'GET'
         },
         postCar: {
@@ -90,6 +90,10 @@ export const environment: Environment = {
         deleteCarPool: {
             path: host + '/carPool',
             method: 'DELETE'
+        },
+        getAvailableCarPool: {
+            path: host + '/carPool?available=true',
+            method: 'GET'
         }
     }
 };

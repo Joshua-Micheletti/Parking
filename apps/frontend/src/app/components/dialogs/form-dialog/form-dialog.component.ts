@@ -57,30 +57,21 @@ export class FormDialogComponent {
         @Inject(MAT_DIALOG_DATA) public data: FormDialogData,
         private _utilsService: UtilsService
     ) {
-        this.title = data.title;
-        this.controls = data.controls;
+        this.title = this.data.title;
+        this.controls = this.data.controls;
         this.groupedControls = this._utilsService.groupArray(this.controls, this.data.groupSize);
-        this.actions = data.actions;
+        this.actions = this.data.actions;
 
         for (const control of this.controls) {
             this.form.addControl(control.name, new FormControl(control.defaultValue ?? '', control.validators));
-
             if (control.autoComplete) {
-                console.log(
-                    '🐛 | form-dialog.component.ts:69 | FormDialogComponent | control.autoComplete:',
-                    control.autoComplete
-                );
                 const filtered: Observable<AutoCompleteOption[]> = this.form.get(control.name)!.valueChanges.pipe(
                     startWith(''),
                     map((value) => {
-                        console.log('🐛 | form-dialog.component.ts:72 | FormDialogComponent | map | value:', value);
-                        console.log('🐛 | form-dialog.component.ts:72 | FormDialogComponent | map | value:', !value);
-
                         if (!value) {
-                            console.log('RETURNING AUTOCOMPLETE');
                             console.log(
-                                '🐛 | form-dialog.component.ts:77 | FormDialogComponent | map | control.autoComplete:',
-                                control.autoComplete
+                                'passing the autocomplete directly:',
+                                JSON.parse(JSON.stringify(control.autoComplete))
                             );
                             return control.autoComplete!;
                         }
@@ -89,21 +80,12 @@ export class FormDialogComponent {
                     })
                 );
 
-                filtered.subscribe((value) => {
-                    console.log(
-                        '🐛 | form-dialog.component.ts:85 | FormDialogComponent | filtered.subscribe | observable:',
-                        value
-                    );
-                });
-
                 control.filteredOptions = filtered;
-                // this.form.get(control.name)?.setValue(' ');
-                // this.form.get(control.name)?.setValue('');
             }
         }
 
-        if (data.formValidators) {
-            this.form.addValidators(data.formValidators);
+        if (this.data.formValidators) {
+            this.form.addValidators(this.data.formValidators);
         }
     }
 
@@ -117,21 +99,45 @@ export class FormDialogComponent {
             Object.entries(this.form.getRawValue()).filter(([_, value]) => value !== '')
         );
 
+        for (let i = 0; i < this.controls.length; i++) {
+            if (this.controls[i].autoComplete) {
+                const selectedOption = this.controls[i].autoComplete?.find((value: AutoCompleteOption) => {
+                    return value.display === cleanFormData[this.controls[i].name];
+                });
+
+                if (selectedOption) {
+                    cleanFormData[this.controls[i].name] = selectedOption.value;
+                }
+            }
+        }
+
         callback(cleanFormData, this.matDialogRef);
     }
 
     public getDisplayFunction(control: ControlData): (value: any) => string {
         return (value: any): string => {
             const option = control.autoComplete?.find((option: AutoCompleteOption) => {
-                return option.value === value;
+                return (option.display ?? option.value) === value;
             });
 
             return option?.display ?? option?.value;
         };
     }
 
-    private _filter(options: AutoCompleteOption[], value: string): AutoCompleteOption[] {
-        const filterValue = value.toLowerCase();
+    private _filter(options: AutoCompleteOption[], value: any): AutoCompleteOption[] {
+        let filterValue: string;
+
+        try {
+            if (typeof value === 'string') {
+                filterValue = value.toLowerCase();
+            } else {
+                filterValue = value.toString();
+                filterValue = filterValue.toLowerCase();
+            }
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
 
         if (!filterValue) {
             // If no filter value, return all options
@@ -139,9 +145,14 @@ export class FormDialogComponent {
         }
 
         return options.filter((option) => {
-            return Object.values(option).some((fieldValue) =>
-                fieldValue?.toString()?.toLowerCase().includes(filterValue)
-            );
+            return Object.values(option).some((fieldValue) => {
+                console.log(
+                    '🐛 | form-dialog.component.ts:125 | FormDialogComponent | returnObject.values | fieldValue:',
+                    fieldValue
+                );
+
+                return fieldValue?.toString()?.toLowerCase().includes(filterValue);
+            });
         });
     }
 }
