@@ -97,8 +97,8 @@
         },
         "role": {
             "admin": "Admin",
-            "dbadmin": "DBAdmin",
-            "driver": "Driver"
+            "dbadmin": "Admin Base",
+            "driver": "Conductor"
         },
         "status": {
             "AVAILABLE": "Disponible",

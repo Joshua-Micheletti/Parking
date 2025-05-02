@@ -14,9 +14,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Action, Column } from '../../types/table';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RainbowChipComponent } from '../rainbow-chip/rainbow-chip.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { roleOrder, User } from '../../types/user';
 import { TableService } from '../../services/table.service';
@@ -55,7 +55,11 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
 
     private _subscriptions: Subscription[] = [];
 
-    constructor(private _tableService: TableService, private _applicationRef: ApplicationRef) {}
+    constructor(
+        private _tableService: TableService,
+        private _applicationRef: ApplicationRef,
+        private _translateService: TranslateService
+    ) {}
 
     ngOnInit(): void {}
 
@@ -112,6 +116,28 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
             }
 
             return '';
+        };
+        this.dataSource.filterPredicate = (data: any, filter: string) => {
+            const parsedFields: string[] = [];
+
+            for (const column of this.columns) {
+                if (data[column.id] === null) {
+                    continue;
+                } else if (column.date) {
+                    const datePipe = new DatePipe('en-US');
+                    parsedFields.push(datePipe.transform(data[column.id], 'd/M/yy') ?? '');
+                } else if (column.translation) {
+                    parsedFields.push(this._translateService.instant(column.translation + data[column.id]));
+                } else {
+                    if (typeof data[column.id] === 'number') {
+                        parsedFields.push(data[column.id].toString());
+                    } else {
+                        parsedFields.push(data[column.id]);
+                    }
+                }
+            }
+
+            return parsedFields.some((field) => field.toLowerCase().includes(filter.trim().toLowerCase()));
         };
     }
 }

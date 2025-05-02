@@ -27,12 +27,20 @@ export class DistanceListComponent implements OnInit, OnDestroy {
     public distances: Distance[] = [];
 
     public columns: Column[] = [
-        { id: 'origin', name: 'features.distances.fields.origin', icon: 'arrow_upward', chip: true, sortable: true },
+        {
+            id: 'origin',
+            name: 'features.distances.fields.origin',
+            icon: 'arrow_upward',
+            chip: true,
+            translation: 'data.base.',
+            sortable: true
+        },
         {
             id: 'destination',
             name: 'features.distances.fields.destination',
             icon: 'arrow_downward',
             chip: true,
+            translation: 'data.base.',
             sortable: true
         },
         { id: 'distance', name: 'features.distances.fields.distance', unit: 'Km', sortable: true },

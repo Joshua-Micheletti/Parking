@@ -116,10 +116,7 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             enum: ['AVAILABLE', 'NOT AVAILABLE'],
             translation: statusTranslation
         },
-        { label: 'features.parking.fields.notes', name: 'notes' },
-        // { label: 'features.parking.fields.enterDate', name: 'enterDate', type: 'date' }
-        // { label: 'features.parking.fields.billingStartDate', name: 'billingStartDate', type: 'date' },
-        // { label: 'features.parking.fields.billingEndDate', name: 'billingEndDate', type: 'date' }
+        { label: 'features.parking.fields.notes', name: 'notes' }
     ];
 
     public role: Role = 'driver';

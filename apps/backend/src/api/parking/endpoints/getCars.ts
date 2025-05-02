@@ -69,5 +69,6 @@ export async function getCars(
             }
         });
     }
+    
     res.status(200).json(response);
 }

@@ -48,18 +48,18 @@ export class CarPoolComponent implements OnInit, OnDestroy {
     public actions: Action[] = [
         {
             callback: this.openAddDialog.bind(this),
-            name: 'features.parking.actions.add',
+            name: 'features.carPool.actions.add',
             icon: 'add_circle'
         },
         {
             callback: this.updateCar.bind(this),
-            name: 'features.parking.actions.update',
+            name: 'features.carPool.actions.update',
             condition: 'selectedRow',
             icon: 'edit'
         },
         {
             callback: this.deleteCar.bind(this),
-            name: 'features.parking.actions.delete',
+            name: 'features.carPool.actions.delete',
             condition: 'selectedRow',
             icon: 'delete'
         }

@@ -30,3 +30,22 @@
     max-height: 56px;
     width: 50%;
 }
+
+::ng-deep .mat-sort-header-container {
+    justify-content: center;
+    width: fit-content;
+    margin: auto;
+}
+
+::ng-deep .mat-mdc-header-cell {
+    text-align: center !important;
+}
+
+::ng-deep .mat-mdc-cell {
+    text-align: center !important;
+}
+
+::ng-deep .mat-sort-header-arrow {
+    position: absolute !important;
+    right: -18px !important;
+}

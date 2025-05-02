@@ -39,7 +39,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     public users: User[] = [];
     public columns: Column[] = [
         { id: 'username', name: 'features.users.fields.username', icon: 'person', sortable: true },
-        { id: 'role', name: 'features.users.fields.role', icon: 'person_pin', sortable: true, chip: true }
+        { id: 'role', name: 'features.users.fields.role', icon: 'person_pin', sortable: true, chip: true, translation: 'data.base.' }
     ];
 
     public actions: Action[] = [
