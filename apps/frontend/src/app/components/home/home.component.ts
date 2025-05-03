@@ -78,6 +78,7 @@ export class HomeComponent implements OnInit {
                 if (this.role === 'admin') {
                     this.features.push({ icon: 'work', name: 'distances', path: 'distances' });
                     this.features.push({ icon: 'directions_car_filled', name: 'carPool', path: 'carPool'});
+                    this.features.push({ icon: 'list', name: 'operations', path: 'operations'});
                 }
             });
     }

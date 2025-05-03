@@ -45,7 +45,7 @@ export async function login(
 
     try {
         response = await User.findOne({
-            attributes: ['password', 'role', 'base'],
+            attributes: ['id', 'password', 'role', 'base'],
             where: {
                 username: username
             }
@@ -78,7 +78,7 @@ export async function login(
         }
 
         const token = jwt.sign(
-            { username: username, role: response.role, base: response.base },
+            { userId: response.id, username: username, role: response.role, base: response.base },
             secret,
             { expiresIn: config.get('jwt.expiresIn') ?? '1h' }
         );

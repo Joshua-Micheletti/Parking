@@ -84,6 +84,19 @@
             "startingDate": "Starting Date",
             "endingDate": "Ending Date",
             "go": "Go"
+        },
+        "operations": {
+            "name": "Operations",
+            "actions": {
+                "accept": "Accept",
+                "reject": "Reject"
+            },
+            "fields": {
+                "username": "User",
+                "base": "Base",
+                "type": "Type",
+                "date": "Date"
+            }
         }
     },
     "data": {
@@ -117,6 +130,11 @@
             "GPL": "GPL",
             "HYBRID": "Hybrid",
             "ELECTRIC": "Electric"
+        },
+        "operationType": {
+            "create": "Creation",
+            "update": "Update",
+            "delete": "Delete"
         }
     },
     "user": {

@@ -4,8 +4,9 @@ import { Request } from 'express';
 declare global {
     namespace Express {
         interface Request {
-            user?: string; // Your custom property
-            role?: string; // Your custom property
+            user?: string;
+            userId?: number;
+            role?: string;
             base?: string;
         }
     }

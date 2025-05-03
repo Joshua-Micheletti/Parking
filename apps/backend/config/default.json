@@ -39,5 +39,9 @@
                 "redirect_uris": ["http://localhost:10000/drive/callback"]
             }
         }
+    },
+    "operation": {
+        "types": ["create", "update", "delete"],
+        "subject": ["parking", "service", "user"]
     }
 }

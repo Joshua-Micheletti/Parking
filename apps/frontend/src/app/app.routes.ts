@@ -8,6 +8,7 @@ import { ParkingListComponent } from './components/home/admin/parking-list/parki
 import { FilesComponent } from './components/home/admin/files/files.component';
 import { TaskDescriptionComponent } from './components/home/driver/task-description/task-description.component';
 import { CarPoolComponent } from './components/home/admin/car-pool/car-pool.component';
+import { OperationsComponent } from './components/home/admin/operations/operations.component';
 
 export const routes: Routes = [
     {
@@ -19,7 +20,8 @@ export const routes: Routes = [
             { path: 'distances', component: DistanceListComponent },
             { path: 'parking', component: ParkingListComponent },
             { path: 'files', component: FilesComponent },
-            { path: 'carPool', component: CarPoolComponent }
+            { path: 'carPool', component: CarPoolComponent },
+            { path: 'operations', component: OperationsComponent }
         ]
     },
     { path: 'login', component: LoginComponent },

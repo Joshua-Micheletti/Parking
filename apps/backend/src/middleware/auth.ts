@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from 'config';
-import { IJwtPayload } from '../model/jwt';
+import { JwtPayload } from '../model/jwt';
 
 export default async function authenticate(
     req: Request,
@@ -38,7 +38,7 @@ export default async function authenticate(
             return;
         }
 
-        const payload: IJwtPayload = decoded;
+        const payload: JwtPayload = decoded;
 
         if (!payload) {
             console.log('No payload found in the token');
@@ -49,6 +49,7 @@ export default async function authenticate(
         req.user = payload.username;
         req.role = payload.role;
         req.base = payload.base;
+        req.userId = payload.userId;
 
         next();
     });

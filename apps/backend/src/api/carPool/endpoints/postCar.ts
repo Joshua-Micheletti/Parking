@@ -6,6 +6,7 @@ import {
     validationResult
 } from 'express-validator';
 import config from 'config';
+import { v4 as uuidv4 } from 'uuid';
 import { CarPool } from '../../../schema/database';
 import { objectFieldsToSnakeCase } from '../../../utils/stringUtils';
 
@@ -32,6 +33,7 @@ export async function postCar(
     }
 
     const values = objectFieldsToSnakeCase(req.body);
+    values.id = uuidv4();
 
     try {
         await CarPool.create(values);
@@ -40,7 +42,5 @@ export async function postCar(
         return;
     }
 
-    res.status(200).json({message: 'Succesfully added car'});
+    res.status(200).json({ message: 'Succesfully added car' });
 }
-
-

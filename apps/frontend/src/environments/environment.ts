@@ -94,6 +94,14 @@ export const environment: Environment = {
         getAvailableCarPool: {
             path: host + '/carPool?available=true',
             method: 'GET'
+        },
+        getOperations: {
+            path: host + '/operations?full=true',
+            method: 'GET'
+        },
+        acceptOperation: {
+            path: host + '/operations/accept',
+            method: 'POST'
         }
     }
 };

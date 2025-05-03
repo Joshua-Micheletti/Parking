@@ -7,6 +7,7 @@ import {
     ValidationError,
     validationResult
 } from 'express-validator';
+import { v4 as uuidv4 } from 'uuid';
 import config from 'config';
 
 export const postUserInputValidation = [
@@ -63,6 +64,7 @@ export async function postUser(
 
             try {
                 response = await User.create({
+                    id: uuidv4(),
                     username: req.body.username,
                     password: hash,
                     role: req.body.role,

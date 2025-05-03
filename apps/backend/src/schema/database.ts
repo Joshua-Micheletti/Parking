@@ -6,6 +6,7 @@ import {
     InitOptions
 } from 'sequelize';
 import config from 'config';
+import { v4 as uuidv4 } from 'uuid';
 import { DatabaseConfig } from '../types/config';
 
 const sequelizeConfig: DatabaseConfig = JSON.parse(
@@ -18,6 +19,9 @@ class Distance extends Model {}
 class CarPool extends Model {}
 class Parking extends Model {}
 class API extends Model {}
+class Operation extends Model {}
+
+const force: boolean = false;
 
 async function setupDatabase() {
     if (sequelizeConfig.connect) {
@@ -37,9 +41,8 @@ async function setupDatabase() {
 
         const userFields: ModelAttributes = {
             id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
+                type: DataTypes.UUID,
+                primaryKey: true
             },
             username: {
                 type: DataTypes.STRING,
@@ -73,12 +76,12 @@ async function setupDatabase() {
         };
 
         User.init(userFields, userInitOptions);
-        User.sync({ alter: true, logging: false })
+        await User.sync({ alter: true, logging: false, force })
             .then(async () => {
                 try {
                     await User.create(
                         {
-                            id: 2147483647,
+                            id: '00000000-0000-0000-0000-000000000000',
                             username: 'superuser',
                             password:
                                 '$2a$10$qL6UvYwsBVIvTtX8zN2Jquk7Mfg0Kx7vhwAdlC0Vtcv1b5vYLcQ3i',
@@ -99,9 +102,8 @@ async function setupDatabase() {
         /* -------------------------------- DISTANCE -------------------------------- */
         const distanceFields: ModelAttributes = {
             id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
+                type: DataTypes.UUID,
+                primaryKey: true
             },
             origin: {
                 type: DataTypes.STRING,
@@ -138,7 +140,7 @@ async function setupDatabase() {
         };
 
         Distance.init(distanceFields, distanceInitOptions);
-        Distance.sync({ alter: true, logging: false }).catch((error) => {
+        await Distance.sync({ alter: true, logging: false, force }).catch((error) => {
             console.log('Failed to sync the distance table');
             console.log(error);
         });
@@ -150,13 +152,8 @@ async function setupDatabase() {
 
         const carPoolFields: ModelAttributes = {
             id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
-                // references: {
-                //     model: 'parking',
-                //     key: 'car_id'
-                // }
+                type: DataTypes.UUID,
+                primaryKey: true
             },
             license_plate: {
                 type: DataTypes.STRING,
@@ -195,7 +192,7 @@ async function setupDatabase() {
         };
 
         CarPool.init(carPoolFields, carPoolInitOptions);
-        await CarPool.sync({ alter: true, logging: false }).catch((error) => {
+        await CarPool.sync({ alter: true, logging: false, force }).catch((error) => {
             console.log('Failed to sync the car pool table');
             console.log(error);
         });
@@ -205,12 +202,11 @@ async function setupDatabase() {
 
         const parkingFields: ModelAttributes = {
             id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
+                type: DataTypes.UUID,
+                primaryKey: true
             },
             car_id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 references: {
                     model: 'car_pool',
                     key: 'id'
@@ -251,7 +247,7 @@ async function setupDatabase() {
 
         Parking.init(parkingFields, parkingInitOptions);
         Parking.belongsTo(CarPool, { foreignKey: 'car_id' });
-        Parking.sync({ alter: true, logging: false }).catch((error) => {
+        await Parking.sync({ alter: true, logging: false, force }).catch((error) => {
             console.log('Failed to sync the parking table');
             console.log(error);
         });
@@ -293,11 +289,64 @@ async function setupDatabase() {
         };
 
         API.init(APIFields, APIInitOptions);
-        API.sync({ alter: true, logging: false }).catch((error) => {
+        await API.sync({ alter: true, logging: false, force }).catch((error) => {
             console.log('Failed to sync the api table');
+            console.log(error);
+        });
+
+        /* -------------------------------- Operation ------------------------------- */
+        const operationTypes: string[] = config.get('operation.types');
+
+        const operationFields: ModelAttributes = {
+            id: {
+                type: DataTypes.UUID,
+                primaryKey: true
+            },
+            user_id: {
+                type: DataTypes.UUID,
+                allowNull: false,
+                references: {
+                    model: 'user',
+                    key: 'id'
+                }
+            },
+            type: {
+                type: DataTypes.ENUM(...operationTypes),
+                allowNull: false
+            },
+            data: {
+                type: DataTypes.JSON
+            },
+            target: {
+                type: DataTypes.STRING
+            },
+            date: {
+                type: DataTypes.DATE
+            },
+            approved: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            }
+        };
+
+        const operationInitOptions: InitOptions = {
+            sequelize,
+            modelName: 'Operation',
+            name: {
+                singular: 'operation',
+                plural: 'operation'
+            },
+            tableName: 'operation',
+            timestamps: false
+        };
+
+        Operation.init(operationFields, operationInitOptions);
+        Operation.belongsTo(User, { foreignKey: 'user_id' });
+        await Operation.sync({ alter: true, logging: false, force }).catch((error) => {
+            console.log('Failed to sync the operation table');
             console.log(error);
         });
     }
 }
 
-export { setupDatabase, sequelize, User, Distance, CarPool, Parking, API };
+export { setupDatabase, sequelize, User, Distance, CarPool, Parking, API, Operation };

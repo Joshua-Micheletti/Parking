@@ -5,6 +5,7 @@ import {
     ValidationError,
     validationResult
 } from 'express-validator';
+import { v4 as uuidv4 } from 'uuid';
 import { Distance } from '../../../schema/database';
 
 export const postDistanceInputValidation = [
@@ -25,6 +26,8 @@ export async function postDistance(
         next(inputErrors);
         return;
     }
+
+    req.body.id = uuidv4();
 
     let response;
 

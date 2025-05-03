@@ -85,6 +85,19 @@
             "startingDate": "Fecha de Inicio",
             "endingDate": "Fecha de Término",
             "go": "Ir"
+        },
+        "operations": {
+            "name": "Operaciones",
+            "actions": {
+                "accept": "Aceptar",
+                "reject": "Rechazar"
+            },
+            "fields": {
+                "username": "Usuario",
+                "base": "Base",
+                "type": "Tipo",
+                "date": "Fecha"
+            }
         }
     },
     "data": {
@@ -118,6 +131,11 @@
             "GPL": "Gas Licuado",
             "HYBRID": "Hibrido",
             "ELECTRIC": "Electrico"
+        },
+        "operationType": {
+            "create": "Creacion",
+            "update": "Modifica",
+            "delete": "Cancelacion"
         }
     },
     "user": {

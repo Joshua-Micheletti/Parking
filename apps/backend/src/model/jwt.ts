@@ -1,5 +1,6 @@
-export interface IJwtPayload {
-    username: string,
-    role: string,
-    base: string
-}
+export type JwtPayload = {
+    username: string;
+    userId: number;
+    role: string;
+    base: string;
+};
