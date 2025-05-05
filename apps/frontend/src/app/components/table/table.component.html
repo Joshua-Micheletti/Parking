@@ -70,6 +70,7 @@
             *matRowDef="let row; columns: getColumnIDs()"
             (click)="selectRow(row)"
             [class]="'table-row' + (selectedRow === row ? ' table-row-selected' : '')"
+            [ngStyle]="{'background': row.accepted === false ? 'red' : 'black'}"
         ></tr>
     </table>
 </div>

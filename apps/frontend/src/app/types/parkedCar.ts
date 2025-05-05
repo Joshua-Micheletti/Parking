@@ -42,6 +42,7 @@ export type ParkedCar = {
     billingStartDate?: string;
     billingEndDate?: string;
     base: Base;
+    accepted?: boolean;
 };
 
 export type Car = {
