@@ -83,7 +83,7 @@ export async function getCars(
                 enter_date: operation.data.enter_date,
                 billing_start_date: operation.data.billing_start_date,
                 base: operation.data.base,
-                accepted: false
+                approved: false
             };
 
             if (isParkingArray(response)) {

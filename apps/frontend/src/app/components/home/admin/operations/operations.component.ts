@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
@@ -6,15 +6,19 @@ import { MatDialog } from '@angular/material/dialog';
 import { TableService } from '../../../../services/table.service';
 import { Operation } from '../../../../types/operation';
 import { OperationService } from '../../../../services/operation.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-operations',
-    imports: [TableComponent],
+    imports: [TableComponent, MatButtonModule, MatIconModule],
     templateUrl: './operations.component.html',
     styleUrl: './operations.component.scss'
 })
-export class OperationsComponent implements OnInit, OnDestroy {
+export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
     /* ------------------------------- Table Data ------------------------------- */
+    @ViewChild('actionTemplate', {static: true}) actionTemplate!: TemplateRef<any>;
+
     public operations: Operation[] = [];
 
     public columns: Column[] = [
@@ -73,6 +77,10 @@ export class OperationsComponent implements OnInit, OnDestroy {
         );
     }
 
+    ngAfterViewInit(): void {
+        this.columns.push({ id: 'actions', name: '', customTemplate: this.actionTemplate, sticky: 'end'});
+    }
+
     ngOnDestroy(): void {
         this._subscriptions.forEach((subscription: Subscription) => {
             subscription.unsubscribe();
@@ -98,5 +106,9 @@ export class OperationsComponent implements OnInit, OnDestroy {
 
     public rejectOperation(): void {
         
+    }
+
+    public check(element: any): void {
+        console.log("🐛 | operations.component.ts:110 | OperationsComponent | check | element:", element)
     }
 }

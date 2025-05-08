@@ -66,13 +66,20 @@ export async function acceptOperation(
     }
 
     try {
-        await Operation.update(
-            { accepted: true },
+        const updateResponse = await Operation.update(
+            { approved: true },
             {
                 where: {
                     id: req.body.id
-                }
+                },
+                logging: console.log
             }
+        );
+        console.log("Type of ID:", typeof req.body.id);
+        console.log('🐛 | acceptOperation.ts:77 | req.body.id:', req.body.id);
+        console.log(
+            '🐛 | acceptOperation.ts:77 | updateResponse:',
+            updateResponse
         );
     } catch (error) {
         next(error);

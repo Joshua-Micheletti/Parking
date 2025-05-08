@@ -47,6 +47,7 @@ export class Operation extends Model {
             JOIN 
               "car_pool" b
               ON (a.data->>'car_id')::uuid = b.id
+            WHERE a.approved = false
           `,
             {
                 type: QueryTypes.SELECT

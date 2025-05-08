@@ -25,7 +25,12 @@
 <div class="table-custom">
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         @for (column of columns; track column) {
-        <ng-container [matColumnDef]="column.id">
+        <ng-container
+            [matColumnDef]="column.id"
+            [sticky]="column.sticky === 'beginning'"
+            [stickyEnd]="column.sticky === 'end'"
+            style="width:120px"
+        >
             @if (column.sortable) {
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-bottom: 1rem">
                 <span>{{ column.name | translate }}</span>
@@ -69,8 +74,14 @@
             mat-row
             *matRowDef="let row; columns: getColumnIDs()"
             (click)="selectRow(row)"
-            [class]="'table-row' + (selectedRow === row ? ' table-row-selected' : '')"
-            [ngStyle]="{'background': row.accepted === false ? 'red' : 'black'}"
+            [class]="
+                (row.approved === false ? 'temporary table-row-temporary' : 'table-row') +
+                (selectedRow === row
+                    ? row.approved === false
+                        ? ' table-row-selected-temporary'
+                        : ' table-row-selected'
+                    : '')
+            "
         ></tr>
     </table>
 </div>

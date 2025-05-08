@@ -1,6 +1,8 @@
 import { TemplateRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
+export type StickyDirection = 'none' | 'beginning' | 'end';
+
 export type Column = {
     id: string;
     name: string;
@@ -11,6 +13,7 @@ export type Column = {
     date?: boolean;
     translation?: string;
     chip?: boolean;
+    sticky?: StickyDirection;
 };
 
 export type Condition = undefined | 'selectedRow';
