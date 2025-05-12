@@ -51,6 +51,7 @@ export class FormDialogComponent {
     public form: FormGroup = new FormGroup({});
     public formValue: unknown | undefined = undefined;
     public filteredOptions: Observable<string[]>[] = [];
+    public view: boolean = false;
 
     constructor(
         public matDialogRef: MatDialogRef<FormDialogComponent>,
@@ -61,6 +62,7 @@ export class FormDialogComponent {
         this.controls = this.data.controls;
         this.groupedControls = this._utilsService.groupArray(this.controls, this.data.groupSize);
         this.actions = this.data.actions;
+        this.view = this.data.view !== undefined ? this.data.view : false;
 
         for (const control of this.controls) {
             this.form.addControl(control.name, new FormControl(control.defaultValue ?? '', control.validators));

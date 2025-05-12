@@ -8,11 +8,15 @@
             <mat-form-field appearance="outline" class="w-100" style="max-height: 75.5px; margin: 6px 0px">
                 <mat-label>{{ control.label | translate }}</mat-label>
                 @if (control.enum) {
-                <mat-select [formControlName]="control.name">
-                    @for (value of control.enum; track value) {
-                    <mat-option [value]="value">{{ control.translation + value | translate }}</mat-option>
+                    @if (view) {
+                        <input [formControlName]="control.name" matInput readonly>
+                    } @else {
+                        <mat-select [formControlName]="control.name">
+                            @for (value of control.enum; track value) {
+                            <mat-option [value]="value">{{ control.translation + value | translate }}</mat-option>
+                            }
+                        </mat-select>
                     }
-                </mat-select>
                 } @else if (control.autoComplete) {
                 <input
                     type="text"
@@ -20,6 +24,7 @@
                     matInput
                     [formControlName]="control.name"
                     [matAutocomplete]="auto"
+                    [readonly]="view"
                 />
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFunction(control)">
                     @for (option of (control.filteredOptions | async); track option) { @if (option.tooltip) {
@@ -36,7 +41,7 @@
                 </mat-autocomplete>
                 } @else if (control.type === 'date') {
                 <ng-container>
-                    <input matInput [formControlName]="control.name" [matDatepicker]="picker" />
+                    <input matInput [formControlName]="control.name" [matDatepicker]="picker" [readonly]="view" />
                     <mat-datepicker-toggle
                         matIconSuffix
                         [for]="picker"
@@ -49,6 +54,7 @@
                     matInput
                     [formControlName]="control.name"
                     [type]="control.type === 'password' ? 'password' : 'text'"
+                    [readonly]="view"
                 />
                 } @if (form.get(control.name)?.hasError('required')) {
                 <mat-error>{{ 'common.error.required' | translate }}</mat-error>

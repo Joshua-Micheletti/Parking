@@ -193,7 +193,7 @@ export class ParkingListComponent implements OnInit, OnDestroy {
                 autocompleteOption = {
                     value: car.id,
                     display: car.licensePlate,
-                    tooltip: this._carTooltip(car)
+                    tooltip: this._carService.carTooltip(car)
                 };
 
                 return autocompleteOption;
@@ -258,26 +258,5 @@ export class ParkingListComponent implements OnInit, OnDestroy {
 
     public onSelectedCar(car: ParkedCar | null) {
         this._selectedCar = car;
-    }
-
-    private _carTooltip(car: Car): string {
-        let tooltipText: string = '';
-
-        if (car.brand) {
-            tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
-        }
-        if (car.model) {
-            tooltipText += this._translateService.instant('features.parking.fields.model') + ': ' + car.model + '\n';
-        }
-        if (car.color) {
-            tooltipText += this._translateService.instant('features.parking.fields.color') + ': ' + car.color + '\n';
-        }
-        // if (car.brand) {
-        //     tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
-        // }
-        // if (car.brand) {
-        //     tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
-        // }
-        return tooltipText;
     }
 }

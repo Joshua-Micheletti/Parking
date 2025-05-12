@@ -11,7 +11,8 @@ import { Op } from 'sequelize';
 import * as sequelize from 'sequelize';
 
 export const getCarsInputValidation: ValidationChain[] = [
-    query('available').isBoolean().optional()
+    query('available').isBoolean().optional(),
+    query('id').isUUID().optional()
 ];
 
 export async function getCars(
@@ -28,14 +29,16 @@ export async function getCars(
 
     let response: CarPool[] | undefined = undefined;
 
-    let where = {};
+    let where: any = {};
 
     if (req.query.available) {
-        where = {
-            id: {
-                [Op.notIn]: sequelize.literal(`(SELECT car_id FROM parking)`)
-            }
+        where.id = {
+            [Op.notIn]: sequelize.literal(`(SELECT car_id FROM parking)`)
         };
+    }
+
+    if (req.query.id) {
+        where.id = req.query.id;
     }
 
     try {

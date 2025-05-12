@@ -12,3 +12,7 @@
 ::ng-deep .tooltip-break {
     white-space: pre-line;
 }
+
+::ng-deep .readonly-select .mat-select-trigger {
+    pointer-events: none;
+}

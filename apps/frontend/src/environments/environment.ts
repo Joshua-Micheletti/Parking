@@ -95,6 +95,10 @@ export const environment: Environment = {
             path: host + '/carPool?available=true',
             method: 'GET'
         },
+        getCar: {
+            path: host + '/carPool?id={{id}}',
+            method: 'GET'
+        },
         getOperations: {
             path: host + '/operations?full=true',
             method: 'GET'

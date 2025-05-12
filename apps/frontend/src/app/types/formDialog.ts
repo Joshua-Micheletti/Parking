@@ -21,7 +21,8 @@ export type FormDialogData = {
     actions: Action[];
     controls: ControlData[];
     groupSize?: number,
-    formValidators?: ValidatorFn[]
+    formValidators?: ValidatorFn[],
+    view?: boolean
 };
 
 export type AutoCompleteOption = {

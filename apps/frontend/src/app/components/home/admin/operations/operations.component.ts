@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, skip, Subscription } from 'rxjs';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,12 @@ import { Operation } from '../../../../types/operation';
 import { OperationService } from '../../../../services/operation.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
+import { AutoCompleteOption, ControlData, FormDialogData } from '../../../../types/formDialog';
+import { bases, baseTranslation } from '../../../../types/user';
+import { Car, statusTranslation } from '../../../../types/parkedCar';
+import { CarService } from '../../../../services/car.service';
+import { Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-operations',
@@ -17,7 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
     /* ------------------------------- Table Data ------------------------------- */
-    @ViewChild('actionTemplate', {static: true}) actionTemplate!: TemplateRef<any>;
+    @ViewChild('actionTemplate', { static: true }) actionTemplate!: TemplateRef<any>;
 
     public operations: Operation[] = [];
 
@@ -62,7 +68,8 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private _operationService: OperationService,
         private _matDialog: MatDialog,
-        private _tableService: TableService
+        private _tableService: TableService,
+        private _carService: CarService
     ) {}
 
     ngOnInit(): void {
@@ -78,7 +85,7 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.columns.push({ id: 'actions', name: '', customTemplate: this.actionTemplate, sticky: 'end'});
+        this.columns.push({ id: 'actions', name: '', customTemplate: this.actionTemplate, sticky: 'end' });
     }
 
     ngOnDestroy(): void {
@@ -104,11 +111,89 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
         this._operationService.acceptOperation(this._selectedOperation.id);
     }
 
-    public rejectOperation(): void {
-        
-    }
+    public rejectOperation(): void {}
 
     public check(element: any): void {
-        console.log("🐛 | operations.component.ts:110 | OperationsComponent | check | element:", element)
+        console.log('🐛 | operations.component.ts:117 | OperationsComponent | check | element:', element);
+    }
+
+    public async openOperationInfo(operation: Operation) {
+        let cars: Car[] = [];
+
+        if (operation.data.car_id) {
+            this._carService.getAvailableCars();
+            this._carService.getCar(operation.data.car_id);
+
+            try {
+                cars = await firstValueFrom(this._carService.availableCars$.pipe(skip(1)));
+            } catch (error) {
+                console.error(error);
+                return;
+            }
+
+            try {
+                const currentCar: Car | undefined = await firstValueFrom(this._carService.car$.pipe(skip(1)));
+
+                if (currentCar && !cars.includes(currentCar)) {
+                    cars.push(currentCar);
+                }
+            } catch (error) {
+                console.error(error);
+                return;
+            }
+        }
+
+        const formControls: ControlData[] = [
+            {
+                label: 'features.parking.fields.base',
+                name: 'base',
+                enum: bases,
+                defaultValue: operation.data.base,
+                translation: baseTranslation
+            },
+            {
+                label: 'features.parking.fields.car',
+                name: 'carId',
+                defaultValue: cars.find((car: Car) => {
+                    return car.id === operation.data.car_id;
+                })?.licensePlate,
+                validators: [Validators.required],
+                autoComplete: cars.map((car: Car) => {
+                    let autocompleteOption: AutoCompleteOption;
+
+                    autocompleteOption = {
+                        value: car.id,
+                        display: car.licensePlate,
+                        tooltip: this._carService.carTooltip(car)
+                    };
+
+                    return autocompleteOption;
+                })
+            },
+            {
+                label: 'features.parking.fields.notes',
+                name: 'notes',
+                defaultValue: operation.data.notes
+            },
+            {
+                label: 'features.parking.fields.status',
+                name: 'status',
+                defaultValue: operation.data.status,
+                enum: ['AVAILABLE', 'NOT AVAILABLE'],
+                translation: statusTranslation
+            }
+        ];
+
+        const data: FormDialogData = {
+            title: 'features.parking.actions.add',
+            controls: formControls,
+            actions: this.actions,
+            groupSize: 2,
+            view: false
+        };
+
+        this._matDialog.open(FormDialogComponent, {
+            data
+        });
     }
 }
