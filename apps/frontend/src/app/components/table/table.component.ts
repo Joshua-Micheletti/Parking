@@ -83,6 +83,12 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public selectRow(row: T): void {
+        const anyRow: any = row;
+
+        if (anyRow.approved) {
+            return;
+        }
+
         this.selectedRow === row ? (this.selectedRow = null) : (this.selectedRow = row);
         this.selectedRowEvent.emit(this.selectedRow);
     }

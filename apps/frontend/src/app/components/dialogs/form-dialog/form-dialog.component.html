@@ -9,7 +9,7 @@
                 <mat-label>{{ control.label | translate }}</mat-label>
                 @if (control.enum) {
                     @if (view) {
-                        <input [formControlName]="control.name" matInput readonly>
+                        <input [value]="(control.translation ?? '') + form.getRawValue()[control.name] | translate" matInput readonly>
                     } @else {
                         <mat-select [formControlName]="control.name">
                             @for (value of control.enum; track value) {
@@ -25,6 +25,9 @@
                     [formControlName]="control.name"
                     [matAutocomplete]="auto"
                     [readonly]="view"
+                    [matTooltip]="getSelectedTooltip(control.name)"
+                    matTooltipClass="tooltip-break"
+                    matTooltipPosition="after"
                 />
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFunction(control)">
                     @for (option of (control.filteredOptions | async); track option) { @if (option.tooltip) {
@@ -72,10 +75,10 @@
 
 <mat-dialog-actions>
     @for (action of actions; track action) {
-    <button mat-raised-button (click)="wrapper(action.callback)">
-        <mat-icon>{{ action.icon }}</mat-icon>
-        {{ action.name | translate }}
-    </button>
+            <button mat-raised-button (click)="wrapper(action)" [ngClass]="{ 'warning-button': action.type === 'warn' }">
+                <mat-icon>{{ action.icon }}</mat-icon>
+                {{ action.name | translate }}
+            </button>
     }
     <button mat-raised-button mat-dialog-close class="warning-button">
         <mat-icon>close</mat-icon>{{ 'common.close' | translate }}

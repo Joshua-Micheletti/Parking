@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { firstValueFrom, skip, Subscription } from 'rxjs';
+import { firstValueFrom, lastValueFrom, skip, Subscription } from 'rxjs';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TableService } from '../../../../services/table.service';
 import { Operation } from '../../../../types/operation';
 import { OperationService } from '../../../../services/operation.service';
@@ -14,6 +14,7 @@ import { bases, baseTranslation } from '../../../../types/user';
 import { Car, statusTranslation } from '../../../../types/parkedCar';
 import { CarService } from '../../../../services/car.service';
 import { Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-operations',
@@ -57,7 +58,8 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
             callback: this.rejectOperation.bind(this),
             name: 'features.operations.actions.reject',
             condition: 'selectedRow',
-            icon: 'thumb_down'
+            icon: 'thumb_down',
+            type: 'warn'
         }
     ];
 
@@ -69,7 +71,8 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
         private _operationService: OperationService,
         private _matDialog: MatDialog,
         private _tableService: TableService,
-        private _carService: CarService
+        private _carService: CarService,
+        private _router: Router
     ) {}
 
     ngOnInit(): void {
@@ -102,7 +105,8 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.columns.map((column: { id: string; name: string }) => column.id);
     }
 
-    public acceptOperation(): void {
+    public acceptOperation(operation?: Operation): void {
+        console.log('🐛 | operations.component.ts:109 | OperationsComponent | acceptOperation | operation:', operation);
         if (!this._selectedOperation) {
             console.error('CALLED ACCEPT OPERATION WITHOUT SELECTING AN OPERATION');
             return;
@@ -113,28 +117,28 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public rejectOperation(): void {}
 
-    public check(element: any): void {
-        console.log('🐛 | operations.component.ts:117 | OperationsComponent | check | element:', element);
-    }
+    public async openOperationInfo(operation: Operation): Promise<void> {
+        this._selectedOperation = operation;
 
-    public async openOperationInfo(operation: Operation) {
         let cars: Car[] = [];
 
         if (operation.data.car_id) {
-            this._carService.getAvailableCars();
-            this._carService.getCar(operation.data.car_id);
-
-            try {
-                cars = await firstValueFrom(this._carService.availableCars$.pipe(skip(1)));
-            } catch (error) {
-                console.error(error);
-                return;
+            if (!operation.approved) {
+                this._carService.getAvailableCars();
+                try {
+                    cars = await firstValueFrom(this._carService.availableCars$.pipe(skip(1)));
+                } catch (error) {
+                    console.error(error);
+                    return;
+                }
             }
 
             try {
-                const currentCar: Car | undefined = await firstValueFrom(this._carService.car$.pipe(skip(1)));
+                const currentCar: Car | undefined = await firstValueFrom(
+                    this._carService.getCar(operation.data.car_id)
+                );
 
-                if (currentCar && !cars.includes(currentCar)) {
+                if (currentCar !== undefined && (operation.approved || !cars.includes(currentCar))) {
                     cars.push(currentCar);
                 }
             } catch (error) {
@@ -184,16 +188,36 @@ export class OperationsComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         ];
 
+        let actions: Action[] = [];
+
+        if (!operation.approved) {
+            actions = [
+                {
+                    callback: () => {},
+                    name: 'features.operations.actions.modify',
+                    condition: 'view',
+                    icon: 'edit'
+                },
+                ...this.actions
+            ];
+        }
+
         const data: FormDialogData = {
             title: 'features.parking.actions.add',
             controls: formControls,
-            actions: this.actions,
+            actions: actions,
             groupSize: 2,
-            view: false
+            view: true
         };
 
         this._matDialog.open(FormDialogComponent, {
             data
         });
+    }
+
+    public goTo(operation: Operation): void {
+        if (operation.target === 'parking') {
+            this._router.navigate(['/home/parking']);
+        }
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Car } from '../types/parkedCar';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { HttpService } from './http.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { UtilsService } from './utils.service';
@@ -18,9 +18,6 @@ export class CarService {
 
     private _availableCars: Car[] = [];
     public availableCars$: BehaviorSubject<Car[]> = new BehaviorSubject<Car[]>(this._availableCars);
-
-    private _car: Car | undefined = undefined;
-    public car$: BehaviorSubject<Car | undefined> = new BehaviorSubject<Car | undefined>(this._car);
 
     constructor(
         private _httpService: HttpService,
@@ -59,25 +56,27 @@ export class CarService {
         });
     }
 
-    public getCar(id: string): void {
+    public getCar(id: string): Observable<Car | undefined> {
         const requestConfig: Endpoint = environment.endpoints['getCar'];
 
         requestConfig.path = requestConfig.path.replace('{{id}}', id);
 
-        this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).subscribe({
-            next: (response: Car[]) => {
-                if (response.length === 0) {
-                    this._car = this._utilsService.convertKeysToCamelCase(response)[0];
+        return this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).pipe(
+            map((response: Car[]) => {
+                let car: Car | undefined = undefined;
+
+                if (response.length === 1) {
+                    car = this._utilsService.convertKeysToCamelCase(response)[0];
                 }
 
-                this.car$.next(this._car);
-            },
-            error: (error: any) => {
+                return car;
+            }),
+            catchError((error: any) => {
                 console.log(error);
                 this._dialog.open(ErrorDialogComponent, { data: { message: 'Error getting car' } });
-                return;
-            }
-        });
+                return throwError(() => error);
+            })
+        );
     }
 
     public addCar(car: Car): void {

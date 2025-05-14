@@ -90,7 +90,8 @@
             "name": "Operaciones",
             "actions": {
                 "accept": "Aceptar",
-                "reject": "Rechazar"
+                "reject": "Rechazar",
+                "modify": "Editar"
             },
             "fields": {
                 "username": "Usuario",

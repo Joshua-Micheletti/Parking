@@ -91,7 +91,18 @@ export class FormDialogComponent {
         }
     }
 
-    public wrapper(callback: any) {
+    public wrapper(action: Action) {
+        if (action.condition === 'view' && this.view) {
+            const actionIndex: number = this.actions.indexOf(action);
+
+            if (actionIndex !== -1) {
+                this.actions.splice(actionIndex, 1);
+                this.view = false;
+            }
+
+            return;
+        }
+
         if (!this.form.valid) {
             this.form.markAllAsTouched();
             return;
@@ -113,7 +124,7 @@ export class FormDialogComponent {
             }
         }
 
-        callback(cleanFormData, this.matDialogRef);
+        action.callback(cleanFormData, this.matDialogRef);
     }
 
     public getDisplayFunction(control: ControlData): (value: any) => string {
@@ -124,6 +135,32 @@ export class FormDialogComponent {
 
             return option?.display ?? option?.value;
         };
+    }
+
+    public getSelectedTooltip(controlName: string): string {
+        const selectedOptionValue = this.form.getRawValue()[controlName];
+
+        const controlData: ControlData | undefined = this.controls.find(
+            (control: ControlData) => control.name === controlName
+        );
+
+        if (controlData === undefined) {
+            return '';
+        }
+
+        const selectedOption: AutoCompleteOption | undefined = controlData.autoComplete?.find(
+            (option: AutoCompleteOption) => (option.display ?? option.value) === selectedOptionValue
+        );
+
+        if (selectedOption === undefined) {
+            return '';
+        }
+
+        if (selectedOption.tooltip === undefined) {
+            return '';
+        }
+
+        return selectedOption.tooltip;
     }
 
     private _filter(options: AutoCompleteOption[], value: any): AutoCompleteOption[] {

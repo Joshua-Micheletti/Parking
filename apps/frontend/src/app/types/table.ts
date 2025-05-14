@@ -16,7 +16,7 @@ export type Column = {
     sticky?: StickyDirection;
 };
 
-export type Condition = undefined | 'selectedRow';
+export type Condition = undefined | 'selectedRow' | 'view';
 
 export type ActionType = 'normal' | 'warn';
 
