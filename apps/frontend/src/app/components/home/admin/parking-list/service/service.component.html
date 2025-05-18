@@ -1,0 +1,17 @@
+<div class="wrapper">
+    <div class="title">
+        Services
+    </div>
+    <div class="forms">
+       @for (service of services; track service) {
+        <div>
+            {{service.id}}
+        </div>
+       } 
+    </div>
+    <div>
+        <button (click)="addService()">
+            add service
+        </button>
+    </div>
+</div>

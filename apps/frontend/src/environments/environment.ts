@@ -106,6 +106,14 @@ export const environment: Environment = {
         acceptOperation: {
             path: host + '/operations/accept',
             method: 'POST'
+        },
+        getServicesByCar: {
+            path: host + '/services?carId={{carId}}',
+            method: 'GET'
+        },
+        postService: {
+            path: host + '/services',
+            method: 'POST'
         }
     }
 };

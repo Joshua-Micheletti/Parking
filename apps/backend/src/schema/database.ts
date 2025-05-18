@@ -1,12 +1,7 @@
 import {
-    Sequelize,
-    Model,
-    ModelAttributes,
-    DataTypes,
-    InitOptions
+    Sequelize
 } from 'sequelize';
 import config from 'config';
-import { v4 as uuidv4 } from 'uuid';
 import { DatabaseConfig } from '../types/config';
 import { Operation, setupOperation } from './operation';
 import { API, setupAPI } from './API';
@@ -14,6 +9,7 @@ import { Parking, setupParking } from './parking';
 import { CarPool, setupCarPool } from './carPool';
 import { Distance, setupDistance } from './distance';
 import { setupUser, User } from './user';
+import { Service, setupService } from './service';
 
 const sequelizeConfig: DatabaseConfig = JSON.parse(
     JSON.stringify(config.get('database'))
@@ -51,6 +47,9 @@ async function setupDatabase() {
 
         /* -------------------------------- Operation ------------------------------- */
         setupOperation(sequelize, User, force);
+
+        /* --------------------------------- Service -------------------------------- */
+        setupService(sequelize, force);
     }
 }
 
@@ -62,5 +61,6 @@ export {
     CarPool,
     Parking,
     API,
-    Operation
+    Operation,
+    Service
 };

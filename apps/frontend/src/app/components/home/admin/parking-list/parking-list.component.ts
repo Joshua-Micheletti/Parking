@@ -26,10 +26,11 @@ import { Auth } from '../../../../types/auth';
 import { CarService } from '../../../../services/car.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ErrorDialogComponent } from '../../../dialogs/error-dialog/error-dialog.component';
+import { ServiceComponent } from './service/service.component';
 
 @Component({
     selector: 'app-parking-list',
-    imports: [TableComponent, BaseTabComponent, MatFormFieldModule, MatInputModule, MatDatepickerModule],
+    imports: [TableComponent, BaseTabComponent, MatFormFieldModule, MatInputModule, MatDatepickerModule, ServiceComponent],
     templateUrl: './parking-list.component.html',
     styleUrl: './parking-list.component.scss'
 })

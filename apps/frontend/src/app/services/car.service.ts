@@ -57,7 +57,7 @@ export class CarService {
     }
 
     public getCar(id: string): Observable<Car | undefined> {
-        const requestConfig: Endpoint = environment.endpoints['getCar'];
+        const requestConfig: Endpoint = JSON.parse(JSON.stringify(environment.endpoints['getCar']));
 
         requestConfig.path = requestConfig.path.replace('{{id}}', id);
 

@@ -55,3 +55,5 @@ export type Car = {
     gearboxType?: GearboxType;
     fuelType?: FuelType;
 }
+
+export type ExtendedParkedCar = ParkedCar & Car;

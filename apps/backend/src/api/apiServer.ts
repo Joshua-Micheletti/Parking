@@ -12,6 +12,7 @@ import filesServer from './files/filesServer';
 import carPoolServer from './carPool/carPoolServer';
 import operationServer from './operations/operationServer';
 import authenticate from '../middleware/auth';
+import serviceServer from './services/serviceServer';
 
 /**
  * Function to setup the various endpoints of the API
@@ -30,6 +31,7 @@ export default function apiServer(): Router {
   router.use('/files', authenticate, filesServer());
   router.use('/carPool', authenticate, carPoolServer());
   router.use('/operations', authenticate, operationServer());
+  router.use('/services', authenticate, serviceServer());
 
   /**
    * Endpoint for /healthcheck. Logs a message and returns OK

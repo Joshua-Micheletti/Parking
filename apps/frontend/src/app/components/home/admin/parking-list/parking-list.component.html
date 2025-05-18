@@ -1,13 +1,21 @@
 @if (role === 'admin') {
-    <app-base-tab [template]="tableTemplate"></app-base-tab>
+<app-base-tab [template]="tableTemplate"></app-base-tab>
 
-    <ng-template #tableTemplate let-base>
-        <app-table [data]="getCarsByBase(base)" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedCar($event)"></app-table>
-    </ng-template>
+<ng-template #tableTemplate let-base>
+    <app-table
+        [data]="getCarsByBase(base)"
+        [columns]="columns"
+        [actions]="actions"
+        [detailTemplate]="detailTemplate"
+        (selectedRow)="onSelectedCar($event)"
+    ></app-table>
+</ng-template>
 } @else if (role === 'dbadmin') {
-    <app-table [data]="cars" [columns]="columns" [actions]="actions" (selectedRow)="onSelectedCar($event)"></app-table>
+<app-table [data]="cars" [columns]="columns" [actions]="actions" [detailTemplate]="detailTemplate" (selectedRow)="onSelectedCar($event)"></app-table>
 } @else {
-    <div>
-        YOU'RE NOT SUPPOSED TO BE HERE
-    </div>
+<div>YOU'RE NOT SUPPOSED TO BE HERE</div>
 }
+
+<ng-template #detailTemplate let-car>
+    <app-service [carId]="car.carId"></app-service>
+</ng-template>

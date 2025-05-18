@@ -1,13 +1,13 @@
 import {
     AfterViewInit,
     ApplicationRef,
-    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
     OnDestroy,
     OnInit,
     Output,
+    TemplateRef,
     ViewChild
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -44,12 +44,14 @@ export class TableComponent<T> implements OnInit, AfterViewInit, OnDestroy {
     @Input() public data: T[] = [];
     @Input() public columns: Column[] = [];
     @Input() public actions: Action[] = [];
+    @Input() public detailTemplate: TemplateRef<any> | null = null;
 
     @Output('selectedRow') public selectedRowEvent: EventEmitter<T | null> = new EventEmitter();
 
     @ViewChild(MatSort) sort!: MatSort;
 
     public selectedRow: T | null = null;
+    public expandedRow: T | null = null;
 
     public dataSource: MatTableDataSource<T> = new MatTableDataSource<T>([]);
 
