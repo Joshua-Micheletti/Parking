@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export type ServiceType =
     | 'PREPARATION DELIVERY'
     | 'DELIVERY TO CLIENT'
@@ -29,3 +31,11 @@ export type Service = {
     assignee: string;
     date: string;
 };
+
+export type ExtendedService = {
+    id: string;
+    type: ServiceType,
+    assigner: User,
+    assignee: User,
+    date: string
+}

@@ -6,7 +6,11 @@
             'driver-chip': value === 'driver',
         }"
     >
-    {{'data.role.' + value | translate}}
+    @if (text) {
+        {{ text | translate}}
+    } @else {
+        {{'data.role.' + value | translate}}
+    }
     </mat-chip>
 } @else if (isBase(value)) {
     <mat-chip
@@ -18,7 +22,11 @@
             'mlg-chip': value === 'MLG'
         }"
     >
-    {{'data.base.' + value | translate}}
+    @if (text) {
+        {{ text | translate}}
+    } @else {
+        {{'data.base.' + value | translate}}
+    }
     </mat-chip>
     
 }

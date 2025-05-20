@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class RainbowChipComponent {
   @Input() value!: Role | Base;
+  @Input() text?: string;
 
   public isBase = isBase;
   public isRole = isRole;

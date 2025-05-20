@@ -1,0 +1,23 @@
+.service-title {
+    font-size: 20px;
+}
+
+.forms {
+    width: 100%;
+    justify-content: initial;
+}
+
+.wrapper {
+    width: 100%;
+}
+
+.service-wrapper {
+    background-color: var(--dialog-background);
+    display: flex;
+    width: 100%;
+    gap: 5%;
+    padding: 8px 16px;
+    margin: 8px 0px;
+    border-radius: var(--border-radius);
+    align-items: center;
+}

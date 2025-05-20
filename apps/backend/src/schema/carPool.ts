@@ -7,6 +7,17 @@ import {
 } from 'sequelize';
 import config from 'config';
 
+export type CarType = {
+    id: string;
+    license_plate: string;
+    brand: string;
+    model: string;
+    color: string;
+    provider: string;
+    gearbox_type: string;
+    fuel_type: string;
+};
+
 export class CarPool extends Model {}
 
 export async function setupCarPool(

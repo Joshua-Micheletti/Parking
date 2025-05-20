@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, firstValueFrom, map, Observable, switchMap, throwError } from 'rxjs';
-import { Service, ServiceType } from '../types/service';
+import { ExtendedService, Service, ServiceType } from '../types/service';
 import { Endpoint, environment } from '../../environments/environment';
 import { HttpService } from './http.service';
 import { HttpRequest } from '@angular/common/http';
@@ -14,14 +14,13 @@ import { Dialog } from '@angular/cdk/dialog';
 export class ServiceService {
     constructor(private _httpService: HttpService, private _utilsService: UtilsService, private _dialog: Dialog) {}
 
-    public getServices(carId: string): Observable<Service[] | undefined> {
-        console.log("🐛 | service.service.ts:18 | ServiceService | getServices | carId:", carId)
+    public getServices(carId: string): Observable<ExtendedService[] | undefined> {
         const requestConfig: Endpoint = JSON.parse(JSON.stringify(environment.endpoints['getServicesByCar']));
 
         requestConfig.path = requestConfig.path.replace('{{carId}}', carId);
 
         return this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).pipe(
-            map((response: Service[]) => {
+            map((response: ExtendedService[]) => {
                 return this._utilsService.convertKeysToCamelCase(response);
             }),
             catchError((error: any) => {

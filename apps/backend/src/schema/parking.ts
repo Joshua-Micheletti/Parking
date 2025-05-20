@@ -76,7 +76,6 @@ export class Parking extends Model {
             ]
         };
 
-        console.log('🐛 | parking.ts:80 | Parking | CarPool:', CarPool);
         const response: Parking[] = await this.findAll({ where, include: [include] });
 
         const formattedResponse: ParkingExtended[] = response.map(

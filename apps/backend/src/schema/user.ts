@@ -7,6 +7,14 @@ import {
 } from 'sequelize';
 import config from 'config';
 
+export type UserType = {
+    id: string,
+    username: string,
+    password: string,
+    role: string,
+    base: string
+}
+
 export class User extends Model {}
 
 export async function setupUser(sequelize: Sequelize, force: boolean = false) {

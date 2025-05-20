@@ -108,7 +108,7 @@ export const environment: Environment = {
             method: 'POST'
         },
         getServicesByCar: {
-            path: host + '/services?carId={{carId}}',
+            path: host + '/services?carId={{carId}}&full=true',
             method: 'GET'
         },
         postService: {

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { Service } from '../../../schema/service';
+import { ExtendedService, Service } from '../../../schema/service';
 import {
     query,
     Result,
@@ -11,7 +11,8 @@ import { objectFieldsToSnakeCase } from '../../../utils/stringUtils';
 import { WhereOptions } from 'sequelize';
 
 export const getServicesInputValidation: ValidationChain[] = [
-    query('carId').isUUID()
+    query('carId').isUUID().optional(),
+    query('full').isBoolean().optional()
 ];
 
 export async function getServices(
@@ -26,17 +27,32 @@ export async function getServices(
         return;
     }
 
-    const whereCondition: WhereOptions = {
-        car_id: req.query.carId
-    };
+    let whereCondition: WhereOptions | undefined = undefined;
 
-    let response: Service[];
+    // let conditions = {};
 
-    try {
-        response = await Service.findAll({ where: whereCondition });
-    } catch (error) {
-        next(error);
-        return;
+    if (req.query.carId) {
+        whereCondition = {
+            car_id: req.query.carId
+        };
+    }
+
+    let response: Service[] | ExtendedService[];
+
+    if (req.query.full) {
+        try {
+            response = await Service.findAllExtended(whereCondition);
+        } catch (error) {
+            next(error);
+            return;
+        }
+    } else {
+        try {
+            response = await Service.findAll({ where: whereCondition });
+        } catch (error) {
+            next(error);
+            return;
+        }
     }
 
     res.status(200).json(response);

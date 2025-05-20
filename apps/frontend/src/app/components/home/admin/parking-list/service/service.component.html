@@ -1,11 +1,23 @@
 <div class="wrapper">
-    <div class="title">
+    <!-- <div class="service-title">
         Services
-    </div>
+    </div> -->
     <div class="forms">
        @for (service of services; track service) {
-        <div>
-            {{service.id}}
+        <div class="service-wrapper">
+            <div>
+                {{service.type}}
+            </div>
+            <div>
+                <app-rainbow-chip [value]="service.assigner.base" [text]="service.assigner.username"></app-rainbow-chip>
+            </div>
+            <div>
+                <app-rainbow-chip [value]="service.assignee.base" [text]="service.assignee.username"></app-rainbow-chip>
+            </div>
+            <div>
+                {{service.date}}
+            </div>
+            
         </div>
        } 
     </div>

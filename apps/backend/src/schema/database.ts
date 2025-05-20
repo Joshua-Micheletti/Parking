@@ -49,7 +49,7 @@ async function setupDatabase() {
         setupOperation(sequelize, User, force);
 
         /* --------------------------------- Service -------------------------------- */
-        setupService(sequelize, force);
+        setupService(sequelize, CarPool, User, force);
     }
 }
 
