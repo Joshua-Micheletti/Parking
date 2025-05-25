@@ -83,7 +83,7 @@ export async function login(
             { expiresIn: config.get('jwt.expiresIn') ?? '1h' }
         );
 
-        res.status(200).json({ message: 'Login successful', token: token, role: response.role, base: response.base });
+        res.status(200).json({ message: 'Login successful', token: token, role: response.role, base: response.base, id: response.id });
         return;
     });
 }

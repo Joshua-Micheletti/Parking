@@ -5,6 +5,6 @@ export async function getRole(
     res: Response,
     next: NextFunction
 ): Promise<void> {
-    res.status(200).json({ user: req.user, role: req.role, base: req.base });
+    res.status(200).json({ user: req.user, role: req.role, base: req.base, id: req.userId });
     return;
 }

@@ -3,9 +3,10 @@ import { User } from '../types/user';
 import { HttpService } from './http.service';
 import { HttpParams, HttpRequest } from '@angular/common/http';
 import { Endpoint, environment } from '../../environments/environment';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, Subject, switchMap, throwError } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { ErrorDialogComponent } from '../components/dialogs/error-dialog/error-dialog.component';
+import { UtilsService } from './utils.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class UserService {
     public users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
     private _users: User[] = [];
 
-    constructor(private _httpService: HttpService, private _dialog: Dialog) {}
+    constructor(private _httpService: HttpService, private _dialog: Dialog, private _utilsService: UtilsService) {}
 
     public getUsers(): void {
         const requestConfig: Endpoint = environment.endpoints['getUsers'];
@@ -29,6 +30,21 @@ export class UserService {
                 return;
             }
         });
+    }
+
+    public getUsersObs(): Observable<User[] | undefined> {
+        const requestConfig: Endpoint = environment.endpoints['getUsers'];
+        
+        return this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).pipe(
+            map((response: User[]) => {
+                return this._utilsService.convertKeysToCamelCase(response);
+            }),
+            catchError((error: any) => {
+                console.log(error);
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error getting users' } });
+                return throwError(() => error);
+            })
+        );
     }
 
     public deleteUser(id: number): void {

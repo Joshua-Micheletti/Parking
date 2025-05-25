@@ -16,8 +16,9 @@ export class AuthService {
     public token: string | null = null;
     public role: Role | null = null;
     public base: Base | null = null;
+    public id: string | null = null;
 
-    public authenticated$: BehaviorSubject<Auth> = new BehaviorSubject<Auth>({ token: '', user: '', role: 'driver', base: 'SEV' });
+    public authenticated$: BehaviorSubject<Auth> = new BehaviorSubject<Auth>({ token: '', user: '', role: 'driver', base: 'SEV', id: '' });
 
     constructor(private _httpService: HttpService, private _router: Router, private _baseService: BaseService) {
         this.token = sessionStorage.getItem('token');
@@ -37,12 +38,14 @@ export class AuthService {
                 this.user = response.user;
                 this.role = response.role;
                 this.base = response.base;
+                this.id = response.id;
 
                 this.authenticated$.next({
                     token: this.token ?? '',
                     user: this.user,
                     role: this.role,
-                    base: this.base
+                    base: this.base,
+                    id: this.id
                 });
             },
             error: (err: unknown) => {
@@ -55,17 +58,19 @@ export class AuthService {
         const requestConfig: Endpoint = environment.endpoints?.['login'];
 
         this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, credentials)).subscribe({
-            next: (res: { message: string; token: string; role: Role; base: Base }) => {
+            next: (res: { message: string; token: string; role: Role; base: Base, id: string }) => {
                 this.user = credentials.username;
                 this.token = res.token;
                 this.role = res.role;
                 this.base = res.base;
+                this.id = res.id;
 
                 this.authenticated$.next({
                     token: this.token ?? '',
                     user: this.user,
                     role: this.role,
-                    base: this.base
+                    base: this.base,
+                    id: this.id
                 });
 
                 sessionStorage.setItem('token', this.token);
@@ -82,7 +87,7 @@ export class AuthService {
 
     public logout(): void {
         sessionStorage.clear();
-        this.authenticated$.next({ token: '', user: '', role: 'driver', base: 'SEV' });
+        this.authenticated$.next({ token: '', user: '', role: 'driver', base: 'SEV', id: '' });
         this.token = null;
         this.user = null;
         this.role = null;

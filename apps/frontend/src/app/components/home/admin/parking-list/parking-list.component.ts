@@ -99,7 +99,8 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             callback: this.deleteCar.bind(this),
             name: 'features.parking.actions.delete',
             condition: 'selectedRow',
-            icon: 'delete'
+            icon: 'delete',
+            type: 'warn'
         }
     ];
 

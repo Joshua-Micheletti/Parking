@@ -136,6 +136,30 @@
             "create": "Creation",
             "update": "Update",
             "delete": "Delete"
+        },
+        "serviceType": {
+            "PREPARATION DELIVERY": "Preparation delivery",
+            "DELIVERY TO CLIENT": "Delivery to client",
+            "PICKUP FROM CLIENT": "Pickup from client",
+            "DELIVERY TO WORKSHOP": "Delivery to workshop",
+            "PICKUP FROM WORKSHOP": "Pickup from workshop",
+            "TAKE TO ITV": "Take to itv",
+            "DELIVERY TO SUPPLIER": "Delivery to supplier",
+            "PICKUP FROM SUPPLIER": "Pickup from supplier",
+            "TRANSFER BETWEEN LOTS OUTGOING": "Transfer between lots outgoing",
+            "APP BL REVIEW": "App bl review",
+            "OTHER": "Other",
+            "DELIVERY TO CLIENT HOME": "Delivery to client home",
+            "PICKUP FROM CLIENT HOME": "Pickup from client home",
+            "DELIVERY AT WORKSHOP": "Delivery at workshop",
+            "PICKUP AT WORKSHOP": "Pickup at workshop",
+            "DELIVERY AT SUPPLIER": "Delivery at supplier",
+            "PICKUP AT SUPPLIER": "Pickup at supplier",
+            "FUEL REFILL": "Fuel refill",
+            "ENGINE OIL TOP UP": "Engine oil top up",
+            "ANTIFREEZE TOP UP": "Antifreeze top up",
+            "WINDSHIELD WASHER TOP UP": "Windshield washer top up",
+            "REMOTE BATTERY REPLACEMENT": "Remote battery replacement"
         }
     },
     "user": {

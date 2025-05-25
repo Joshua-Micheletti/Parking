@@ -148,7 +148,7 @@ export async function setupService(
     Service.belongsTo(CarPool, { foreignKey: 'car_id' });
     Service.belongsTo(User, {as: 'Assigner', foreignKey: 'assigner' });
     Service.belongsTo(User, {as: 'Assignee', foreignKey: 'assignee' });
-    await Service.sync({ alter: true, logging: false, force: true }).catch(
+    await Service.sync({ alter: true, logging: false, force: force }).catch(
         (error) => {
             console.log('Failed to sync the service table');
             console.log(error);

@@ -5,6 +5,7 @@ export type Auth = {
     user: string;
     role: Role;
     base: Base;
+    id: string;
 };
 
 export type Credentials = {

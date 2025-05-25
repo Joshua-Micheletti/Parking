@@ -31,18 +31,23 @@ export class ServiceService {
         );
     }
 
-    public postService(body: {carId: string, assigner: string, assignee: string, type: ServiceType}): Observable<any> {
-      const requestConfig: Endpoint = environment.endpoints['postService'];
+    public postService(body: {
+        carId: string;
+        assigner: string;
+        assignee: string;
+        type: ServiceType;
+    }): Observable<any> {
+        const requestConfig: Endpoint = environment.endpoints['postService'];
 
-      return this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, body)).pipe(
-        switchMap((response: any) => {
-          return this.getServices(body.carId);
-        }),
-        catchError((error: any) => {
-            console.log(error);
-            this._dialog.open(ErrorDialogComponent, { data: { message: 'Error posting services' } });
-            return throwError(() => error);
-        })
-    );
+        return this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, body)).pipe(
+            switchMap((response: any) => {
+                return this.getServices(body.carId);
+            }),
+            catchError((error: any) => {
+                console.log(error);
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error posting services' } });
+                return throwError(() => error);
+            })
+        );
     }
 }

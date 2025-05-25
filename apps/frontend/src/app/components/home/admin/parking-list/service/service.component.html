@@ -1,29 +1,51 @@
 <div class="wrapper">
-    <!-- <div class="service-title">
-        Services
-    </div> -->
     <div class="forms">
+        @if (services.length !== 0) {
+            <div class="service-header">
+                <div class="header-cell">
+                    <b>Type</b>
+                </div>
+                <div class="header-cell">
+                    <b>Assigner</b>
+                </div>
+                <div class="header-cell">
+                    <b>Assignee</b>
+                </div>
+                <div class="header-cell">
+                    <b>Date</b>
+                </div>
+                <div class="header-cell">
+                </div>
+            </div>
+        }
        @for (service of services; track service) {
         <div class="service-wrapper">
-            <div>
-                {{service.type}}
+            <div class="cell">
+                {{'data.serviceType.' + service.type | translate}}
             </div>
-            <div>
+            <div class="cell">
                 <app-rainbow-chip [value]="service.assigner.base" [text]="service.assigner.username"></app-rainbow-chip>
             </div>
-            <div>
+            <div class="cell">
                 <app-rainbow-chip [value]="service.assignee.base" [text]="service.assignee.username"></app-rainbow-chip>
             </div>
-            <div>
-                {{service.date}}
+            <div class="cell">
+                {{service.date | date:'dd/MM/YY, HH:mm'}}
             </div>
-            
+            <div class="actions cell">
+                <button mat-icon-button (click)="editServiceDialog(service)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteServiceDialog(service)" class="warning-button">
+                    <mat-icon style="color: var(--warn-color)">delete</mat-icon>
+                </button>
+            </div>
         </div>
        } 
     </div>
     <div>
-        <button (click)="addService()">
-            add service
+        <button mat-icon-button (click)="addServiceDialog()" style="margin-bottom: 8px" [ngStyle]="{'margin-top': services.length === 0 ? '8px' : '0px'}">
+            <mat-icon>add</mat-icon>
         </button>
     </div>
 </div>

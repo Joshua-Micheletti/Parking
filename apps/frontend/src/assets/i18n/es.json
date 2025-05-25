@@ -137,6 +137,30 @@
             "create": "Creacion",
             "update": "Modifica",
             "delete": "Cancelacion"
+        },
+        "serviceType": {
+            "PREPARATION DELIVERY": "Preparación Entrega",
+            "DELIVERY TO CLIENT": "Entrega a Cliente",
+            "PICKUP FROM CLIENT": "Recogida de Cliente",
+            "DELIVERY TO WORKSHOP": "Entrega a Taller",
+            "PICKUP FROM WORKSHOP": "Recogida de Taller",
+            "TAKE TO ITV": "Llevar a ITV",
+            "DELIVERY TO SUPPLIER": "Entrega a Proveedor",
+            "PICKUP FROM SUPPLIER": "Recogida de Proveedor",
+            "TRANSFER BETWEEN LOTS OUTGOING": "Traslado entre campas salida",
+            "APP BL REVIEW": "Revisión de app BL",
+            "OTHER": "Otros",
+            "DELIVERY TO CLIENT HOME": "Entrega cliente domicilio",
+            "PICKUP FROM CLIENT HOME": "Recogida cliente domicilio",
+            "DELIVERY AT WORKSHOP": "Entrega en el taller",
+            "PICKUP AT WORKSHOP": "Recogida en el taller",
+            "DELIVERY AT SUPPLIER": "Entrega en el proveedor",
+            "PICKUP AT SUPPLIER": "Recogida en el proveedor",
+            "FUEL REFILL": "Repostaje de combustible",
+            "ENGINE OIL TOP UP": "Reposicion aceite motor",
+            "ANTIFREEZE TOP UP": "Reposicion anticongelante",
+            "WINDSHIELD WASHER TOP UP": "Reposicion limpiaparabrisas",
+            "REMOTE BATTERY REPLACEMENT": "Reposicion pilas mando"
         }
     },
     "user": {

@@ -21,3 +21,28 @@
     border-radius: var(--border-radius);
     align-items: center;
 }
+
+.service-header {
+    background-color: var(--table-row-selected-color);
+    display: flex;
+    width: 100%;
+    gap: 5%;
+    padding: 8px 16px;
+    margin: 8px 0px;
+    border-radius: var(--border-radius);
+    align-items: center;
+}
+
+.header-cell {
+    width: 20%;
+    max-width: 20%;
+}
+
+.cell {
+    width: 20%;
+    // white-space: nowrap;
+}
+
+.actions {
+    text-align:end;
+}
