@@ -21,6 +21,13 @@
                 "password": "Password",
                 "role": "Role",
                 "base": "Base"
+            },
+            "errors": {
+                "deleteUser": "Error deleting the user",
+                "addUser": "Error adding the user",
+                "modifyUser": "Error modifying the user",
+                "getUser": "Error getting the user",
+                "getUsers": "Error getting users"
             }
         },
         "carPool": {
@@ -61,6 +68,17 @@
                 "enterDate": "Enter Date",
                 "billingStartDate": "Billing Start Date",
                 "billingEndDate": "Billing End Date"
+            },
+            "services": {
+                "type": "Type",
+                "assigner": "Assigner",
+                "assignee": "Assignee",
+                "date": "Date",
+                "tooltips": {
+                    "add": "Add Service",
+                    "delete": "Delete Service",
+                    "edit": "Edit Service"
+                }
             }
         },
         "distances": {

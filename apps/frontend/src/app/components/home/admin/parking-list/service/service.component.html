@@ -1,27 +1,25 @@
 <div class="wrapper">
     <div class="forms">
         @if (services.length !== 0) {
-            <div class="service-header">
-                <div class="header-cell">
-                    <b>Type</b>
-                </div>
-                <div class="header-cell">
-                    <b>Assigner</b>
-                </div>
-                <div class="header-cell">
-                    <b>Assignee</b>
-                </div>
-                <div class="header-cell">
-                    <b>Date</b>
-                </div>
-                <div class="header-cell">
-                </div>
+        <div class="service-header">
+            <div class="header-cell">
+                <b>{{ 'features.parking.services.type' | translate }}</b>
             </div>
-        }
-       @for (service of services; track service) {
+            <div class="header-cell">
+                <b>{{ 'features.parking.services.assigner' | translate }}</b>
+            </div>
+            <div class="header-cell">
+                <b>{{ 'features.parking.services.assignee' | translate }}</b>
+            </div>
+            <div class="header-cell">
+                <b>{{ 'features.parking.services.date' | translate }}</b>
+            </div>
+            <div class="header-cell"></div>
+        </div>
+        } @for (service of services; track service) {
         <div class="service-wrapper">
             <div class="cell">
-                {{'data.serviceType.' + service.type | translate}}
+                {{ 'data.serviceType.' + service.type | translate }}
             </div>
             <div class="cell">
                 <app-rainbow-chip [value]="service.assigner.base" [text]="service.assigner.username"></app-rainbow-chip>
@@ -30,21 +28,39 @@
                 <app-rainbow-chip [value]="service.assignee.base" [text]="service.assignee.username"></app-rainbow-chip>
             </div>
             <div class="cell">
-                {{service.date | date:'dd/MM/YY, HH:mm'}}
+                {{ service.date | date : 'dd/MM/YY, HH:mm' }}
             </div>
             <div class="actions cell">
-                <button mat-icon-button (click)="editServiceDialog(service)">
+                <button
+                    mat-icon-button
+                    (click)="editServiceDialog(service)"
+                    #tooltip="matTooltip"
+                    [matTooltip]="'features.parking.services.tooltips.edit' | translate"
+                >
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="deleteServiceDialog(service)" class="warning-button">
+                <button
+                    mat-icon-button
+                    (click)="deleteServiceDialog(service)"
+                    class="warning-button"
+                    #tooltip="matTooltip"
+                    [matTooltip]="'features.parking.services.tooltips.delete' | translate"
+                >
                     <mat-icon style="color: var(--warn-color)">delete</mat-icon>
                 </button>
             </div>
         </div>
-       } 
+        }
     </div>
     <div>
-        <button mat-icon-button (click)="addServiceDialog()" style="margin-bottom: 8px" [ngStyle]="{'margin-top': services.length === 0 ? '8px' : '0px'}">
+        <button
+            mat-icon-button
+            (click)="addServiceDialog()"
+            style="margin-bottom: 8px"
+            [ngStyle]="{ 'margin-top': services.length === 0 ? '8px' : '0px' }"
+            #tooltip="matTooltip"
+            [matTooltip]="'features.parking.services.tooltips.add' | translate"
+        >
             <mat-icon>add</mat-icon>
         </button>
     </div>

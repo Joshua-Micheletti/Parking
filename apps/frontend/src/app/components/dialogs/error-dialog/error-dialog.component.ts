@@ -1,10 +1,12 @@
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-error-dialog',
-    imports: [MatButtonModule],
+    imports: [MatButtonModule, TranslateModule, MatIconModule],
     templateUrl: './error-dialog.component.html',
     styleUrl: './error-dialog.component.scss'
 })

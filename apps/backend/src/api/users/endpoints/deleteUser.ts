@@ -1,3 +1,7 @@
+/**
+ * ENDPOINT DELETE /users
+ */
+
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../../../schema/database';
 import {
@@ -7,7 +11,7 @@ import {
     validationResult
 } from 'express-validator';
 
-export const deleteUserInputValidation = [query('id').isNumeric()];
+export const deleteUserInputValidation = [query('id').isUUID()];
 export async function deleteUser(
     req: Request,
     res: Response,

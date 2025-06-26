@@ -178,8 +178,6 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     }
 
     public openAddDialog(): void {
-        // this._carService.getCars();
-
         this._carService.getAvailableCars();
 
         const subscription: Subscription = this._carService.availableCars$.pipe(skip(1), take(1)).subscribe((cars: Car[]) => {

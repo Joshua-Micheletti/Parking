@@ -1,9 +1,12 @@
 <div class="dialog-wrapper">
-    <div class="title">
-        <span> {{ title }} </span>
+    <div class="title icon-title">
+        <mat-icon class="title-icon">
+            error
+        </mat-icon>
+        <span> {{ title | translate}} </span>
     </div>
     <div class="message">
-        <span> {{ message }} </span>
+        <span> {{ message | translate }} </span>
     </div>
     <div class="actions">
         <button mat-flat-button (click)="onClick()" class="warning-button">Close</button>

@@ -21,6 +21,13 @@
                 "password": "Contraseña",
                 "role": "Rol",
                 "base": "Base"
+            },
+            "errors": {
+                "deleteUser": "Error eliminando el usuario",
+                "addUser": "Error añadendo el usuario",
+                "modifyUser": "Error modificando el usuario",
+                "getUser": "Error al obtener el usuario",
+                "getUsers":"Error al obtener los usuarios"
             }
         },
         "carPool": {
@@ -62,6 +69,17 @@
                 "billingStartDate": "Fecha Inicio Facturacion",
                 "billingEndDate": "Fecha Fin Facturacion",
                 "base": "Base"
+            },
+            "services": {
+                "type": "Tipo",
+                "assigner": "Asignador",
+                "assignee": "Asignado",
+                "date": "Data",
+                "tooltips": {
+                    "add": "Añadir Servicio",
+                    "delete": "Eliminar Servicio",
+                    "edit": "Modificar Servicio"
+                }
             }
         },
         "distances": {

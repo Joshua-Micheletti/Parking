@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../../../schema/database';
-import { Attributes, FindOptions, WhereOptions } from 'sequelize';
+import { FindOptions, WhereOptions } from 'sequelize';
 
 export async function getUsers(
     req: Request,

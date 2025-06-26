@@ -188,6 +188,10 @@
     margin-bottom: 1rem;
 }
 
+.mat-tooltip {
+    pointer-events: none !important;
+}
+
 .dialog-wrapper {
     background-color: var(--dialog-background);
     border-radius: var(--border-radius);

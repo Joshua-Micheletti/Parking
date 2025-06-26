@@ -14,10 +14,11 @@ import { User } from '../../../../../types/user';
 import { UserService } from '../../../../../services/user.service';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../../../../services/auth.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-service',
-    imports: [RainbowChipComponent, TranslateModule, DatePipe, MatButtonModule, MatIconModule, CommonModule],
+    imports: [RainbowChipComponent, TranslateModule, DatePipe, MatButtonModule, MatIconModule, CommonModule, MatTooltipModule],
     templateUrl: './service.component.html',
     styleUrl: './service.component.scss'
 })

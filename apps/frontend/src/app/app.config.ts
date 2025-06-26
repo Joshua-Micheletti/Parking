@@ -7,8 +7,15 @@ import { loadingInterceptor } from './interceptors/loading.interceptor';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats, provideNativeDateAdapter } from '@angular/material/core';
+import {
+    DateAdapter,
+    MAT_DATE_FORMATS,
+    MAT_DATE_LOCALE,
+    MatDateFormats,
+    provideNativeDateAdapter
+} from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
     new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -40,7 +47,17 @@ export const appConfig: ApplicationConfig = {
                 }
             })
         ),
-        {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-        {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS}
+        { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+        { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+        {
+            provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+            useValue: {
+                showDelay: 0,
+                hideDelay: 0,
+                touchendHideDelay: 1500,
+                position: 'above',
+                disableTooltipInteractivity: true
+            }
+        }
     ]
 };

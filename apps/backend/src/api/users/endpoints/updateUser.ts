@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../../../schema/database';
-import bcrypt from 'bcrypt';
 import {
     body,
     Result,
@@ -10,7 +9,7 @@ import {
 import config from 'config';
 
 export const updateUserInputValidation = [
-    body('id').isNumeric(),
+    body('id').isUUID(),
     body('role')
         .optional()
         .isString()

@@ -26,7 +26,7 @@ export class UserService {
             },
             error: (error: any) => {
                 console.log(error);
-                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error getting users' } });
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'features.users.errors.getUsers' } });
                 return;
             }
         });
@@ -41,7 +41,7 @@ export class UserService {
             }),
             catchError((error: any) => {
                 console.log(error);
-                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error getting users' } });
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'features.users.errors.getUsers' } });
                 return throwError(() => error);
             })
         );
@@ -64,7 +64,7 @@ export class UserService {
                 },
                 error: (error: any) => {
                     console.log(error);
-                    this._dialog.open(ErrorDialogComponent, { data: { message: 'Error deleting user' } });
+                    this._dialog.open(ErrorDialogComponent, { data: { message: 'features.users.errors.deleteUser' } });
                     this.getUsers();
                 }
             });
@@ -84,7 +84,7 @@ export class UserService {
             },
             error: (error: any) => {
                 console.log(error);
-                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error adding user' } });
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'features.users.errors.addUser' } });
                 this.getUsers();
                 subject.next(false);
             }
@@ -106,7 +106,7 @@ export class UserService {
             },
             error: (error: any) => {
                 console.log(error);
-                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error updating user' } });
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'features.users.errors.modifyUser' } });
                 this.getUsers();
             }
         });
