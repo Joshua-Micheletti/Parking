@@ -181,7 +181,7 @@ export class CarPoolComponent implements OnInit, OnDestroy {
 
     public deleteCar(): void {
         console.log('delete car', this._selectedCar);
-        this._carService.deleteCar(this._selectedCar);
+        // this._carService.deleteCar(this._selectedCar);
     }
 
     public onSelectedCar(car: Car | null) {
