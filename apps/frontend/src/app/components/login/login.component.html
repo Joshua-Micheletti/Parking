@@ -1,37 +1,43 @@
 <form [formGroup]="form" class="wrapper">
-  <div class="row">
-    <div class="col">
-      <mat-form-field class="w-100">
-        <mat-label>Username</mat-label>
-        <input matInput formControlName="username" />
-      </mat-form-field>
+    <div class="row">
+        <div class="col">
+            <mat-form-field class="w-100">
+                <mat-label>{{ 'features.login.username' | translate }}</mat-label>
+                <input matInput formControlName="username" />
+            </mat-form-field>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <mat-form-field class="w-100">
-        <mat-label>Password</mat-label>
-        <input matInput formControlName="password" [type]="passwordType" />
-        <button
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          (click)="
-            passwordType = passwordType === 'password' ? 'text' : 'password'
-          "
-        >
-          <mat-icon>{{
-            passwordType === "password" ? "visibility" : "visibility_off"
-          }}</mat-icon>
-        </button>
-      </mat-form-field>
+    <div class="row">
+        <div class="col">
+            <mat-form-field class="w-100">
+                <mat-label>{{ 'features.login.password' | translate }}</mat-label>
+                <input matInput formControlName="password" [type]="passwordType" />
+                <button
+                    matSuffix
+                    mat-icon-button
+                    aria-label="Clear"
+                    (click)="passwordType = passwordType === 'password' ? 'text' : 'password'"
+                >
+                    <mat-icon>{{ passwordType === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <button mat-flat-button color="primary" class="w-100" (click)="onLogin()">
-        Login
-      </button>
+    <div class="row">
+        <div class="col">
+            <button mat-flat-button color="primary" class="w-100" (click)="onLogin()">
+                {{ 'features.login.login' | translate }}
+            </button>
+        </div>
     </div>
-  </div>
 </form>
+
+<div class="actions">
+    <button mat-button (click)="switchTheme()">
+        <mat-icon>
+            {{ getTheme() }}
+        </mat-icon>
+        {{ 'user.theme' | translate }}
+    </button>
+    <button mat-button (click)="switchLanguage()">{{ 'user.language' | translate }} ({{ getLanguage() }})</button>
+</div>

@@ -4,3 +4,11 @@
   left: 50%;
   transform: translate(-50%, -50%); 
 }
+
+.actions {
+  display: flex;
+  gap: 4px;
+  padding: 1rem;
+  bottom: 0px;
+  position: absolute;
+}

@@ -1,14 +1,11 @@
-<div class="dialog-wrapper">
-    <div class="title icon-title">
-        <mat-icon class="title-icon">
-            error
-        </mat-icon>
-        <span> {{ title | translate}} </span>
-    </div>
-    <div class="message">
-        <span> {{ message | translate }} </span>
-    </div>
-    <div class="actions">
-        <button mat-flat-button (click)="onClick()" class="warning-button">Close</button>
-    </div>
+<div class="icon-title">
+    <mat-icon class="title-icon"> error </mat-icon>
+    <span> {{ title | translate }} </span>
 </div>
+<mat-dialog-content>
+    <span style="font-size: 1.5rem"> {{ message | translate }} </span>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-flat-button (click)="onClick()" class="warning-button">{{ 'common.close' | translate }}</button>
+</mat-dialog-actions>

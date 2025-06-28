@@ -7,6 +7,8 @@ import { environment, Endpoint } from '../../environments/environment';
 import { Base, Role } from '../types/user';
 import { BaseService } from './base.service';
 import { Auth, Credentials } from '../types/auth';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../components/dialogs/error-dialog/error-dialog.component';
 
 @Injectable({
     providedIn: 'root'
@@ -18,9 +20,20 @@ export class AuthService {
     public base: Base | null = null;
     public id: string | null = null;
 
-    public authenticated$: BehaviorSubject<Auth> = new BehaviorSubject<Auth>({ token: '', user: '', role: 'driver', base: 'SEV', id: '' });
+    public authenticated$: BehaviorSubject<Auth> = new BehaviorSubject<Auth>({
+        token: '',
+        user: '',
+        role: 'driver',
+        base: 'SEV',
+        id: ''
+    });
 
-    constructor(private _httpService: HttpService, private _router: Router, private _baseService: BaseService) {
+    constructor(
+        private _httpService: HttpService,
+        private _router: Router,
+        private _baseService: BaseService,
+        private _matDialog: MatDialog
+    ) {
         this.token = sessionStorage.getItem('token');
 
         if (!this.token) {
@@ -58,7 +71,7 @@ export class AuthService {
         const requestConfig: Endpoint = environment.endpoints?.['login'];
 
         this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, credentials)).subscribe({
-            next: (res: { message: string; token: string; role: Role; base: Base, id: string }) => {
+            next: (res: { message: string; token: string; role: Role; base: Base; id: string }) => {
                 this.user = credentials.username;
                 this.token = res.token;
                 this.role = res.role;
@@ -80,6 +93,13 @@ export class AuthService {
                 this._baseService.currentBase = this.base;
             },
             error: (err: unknown) => {
+                this._matDialog.open(ErrorDialogComponent, {
+                    data: {
+                        title: 'common.error.generic',
+                        message: 'features.login.error'
+                    }
+                });
+
                 console.log(err);
             }
         });

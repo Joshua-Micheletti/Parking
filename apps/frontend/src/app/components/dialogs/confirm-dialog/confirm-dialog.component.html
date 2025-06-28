@@ -1,1 +1,13 @@
-<p>confirm-dialog works!</p>
+<div class="icon-title">
+    <mat-icon class="title-icon">help</mat-icon>
+    <span>{{title | translate}}</span>
+</div>
+
+<mat-dialog-content style="padding: 1rem">
+    <span style="font-size:1.5rem;">{{message | translate}}</span>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-flat-button (click)="confirm()">{{'common.confirm' | translate}}</button>
+    <button mat-flat-button (click)="close()" class="warning-button">{{'common.close' | translate}}</button>
+</mat-dialog-actions>

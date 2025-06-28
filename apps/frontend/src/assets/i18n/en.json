@@ -4,9 +4,11 @@
         "error": {
             "invalid_field": "Invalid Field",
             "future": "Date can't be in the future",
-            "required": "Required"
+            "required": "Required",
+            "generic": "Error"
         },
-        "filter": "Filter"
+        "filter": "Filter",
+        "confirm": "Confirm"
     },
     "features": {
         "users": {
@@ -45,6 +47,10 @@
                 "provider": "Provider",
                 "gearboxType": "Gearbox Type",
                 "fuelType": "Fuel Type"
+            },
+            "dialogs": {
+                "confirmDelete": "Confirm the deletion of the car?",
+                "confirmUpdate": "Confirm the edit of the car?"
             }
         },
         "parking": {
@@ -116,6 +122,12 @@
                 "type": "Type",
                 "date": "Date"
             }
+        },
+        "login": {
+            "username": "Username",
+            "password": "Password",
+            "login": "Login",
+            "error": "Error de acceso"
         }
     },
     "data": {

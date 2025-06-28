@@ -109,12 +109,7 @@ export class CarService {
         if (car.color) {
             tooltipText += this._translateService.instant('features.parking.fields.color') + ': ' + car.color + '\n';
         }
-        // if (car.brand) {
-        //     tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
-        // }
-        // if (car.brand) {
-        //     tooltipText += this._translateService.instant('features.parking.fields.brand') + ': ' + car.brand + '\n';
-        // }
+
         return tooltipText;
     }
 }

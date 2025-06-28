@@ -12,6 +12,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ControlData, FormDialogData } from '../../../../types/formDialog';
 import { FormDialogComponent } from '../../../dialogs/form-dialog/form-dialog.component';
 import { Validators } from '@angular/forms';
+import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-car-pool',
@@ -58,10 +59,11 @@ export class CarPoolComponent implements OnInit, OnDestroy {
             icon: 'edit'
         },
         {
-            callback: this.deleteCar.bind(this),
+            callback: this.openDeleteDialog.bind(this),
             name: 'features.carPool.actions.delete',
             condition: 'selectedRow',
-            icon: 'delete'
+            icon: 'delete',
+            type: 'warn'
         }
     ];
 
@@ -160,9 +162,27 @@ export class CarPoolComponent implements OnInit, OnDestroy {
         this._carService.addCar(car);
     }
 
+    public openUpdateDialog(): void {}
+
     public updateCar(): void {}
 
-    public deleteCar(): void {}
+    public openDeleteDialog(): void {
+        this._matDialog
+            .open(ConfirmDialogComponent, {
+                data: { title: 'common.confirm', message: 'features.carPool.dialogs.confirmDelete' }
+            })
+            .afterClosed()
+            .subscribe((response: any) => {
+                if (response) {
+                    this.deleteCar();
+                }
+            });
+    }
+
+    public deleteCar(): void {
+        console.log('delete car', this._selectedCar);
+        this._carService.deleteCar(this._selectedCar);
+    }
 
     public onSelectedCar(car: Car | null) {
         this._selectedCar = car;

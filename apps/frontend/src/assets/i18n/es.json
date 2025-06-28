@@ -4,9 +4,11 @@
         "error": {
             "invalid_field": "Campo Inválido",
             "future": "La fecha no puede ser futura",
-            "required": "Obligatorio"
+            "required": "Obligatorio",
+            "generic": "Error"
         },
-        "filter": "Filtrar"
+        "filter": "Filtrar",
+        "confirm": "Confirmar"
     },
     "features": {
         "users": {
@@ -45,6 +47,10 @@
                 "provider": "Proveedor",
                 "gearboxType": "Tipo de Cambio",
                 "fuelType": "Combustible"
+            },
+            "dialogs": {
+                "confirmDelete": "Confirmar la eliminacion del coche?",
+                "confirmUpdate": "Confirmar la modifica del coche?"
             }
         },
         "parking": {
@@ -117,6 +123,12 @@
                 "type": "Tipo",
                 "date": "Fecha"
             }
+        },
+        "login": {
+            "username": "Usuario",
+            "password": "Contraseña",
+            "login": "Acceder",
+            "error": "Error de acceso"
         }
     },
     "data": {
