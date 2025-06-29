@@ -72,7 +72,7 @@ export const environment: Environment = {
             method: 'POST'
         },
         deleteCar: {
-            path: host + '/parking',
+            path: host + '/parking?id={{id}}',
             method: 'DELETE'
         },
         getCarPool: {
@@ -88,7 +88,7 @@ export const environment: Environment = {
             method: 'POST'
         },
         deleteCarPool: {
-            path: host + '/carPool',
+            path: host + '/carPool?id={{id}}',
             method: 'DELETE'
         },
         getAvailableCarPool: {

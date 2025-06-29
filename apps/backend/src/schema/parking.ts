@@ -8,7 +8,7 @@ import {
     WhereOptions
 } from 'sequelize';
 import config from 'config';
-import { CarPool } from './database';
+import { CarPool, Service } from './database';
 
 export type ParkingType = {
     car_id: string;
@@ -39,6 +39,32 @@ export type ParkingExtended = {
     gearbox_type: string;
     fuel_type: string;
     accepted?: boolean;
+};
+
+export type ParkingFull = {
+    car_id: string;
+    status: string;
+    notes: string;
+    base: string;
+    enter_date: string;
+    billing_start_date: string;
+    billing_end_date: string;
+    id: string;
+    license_plate: string;
+    brand: string;
+    model: string;
+    color: string;
+    provider: string;
+    gearbox_type: string;
+    fuel_type: string;
+    accepted?: boolean;
+    service: {
+        assignee: string;
+        assigner: string;
+        id: string;
+        type: string;
+        date: string;
+    }[];
 };
 
 export function isParking(obj: any): obj is ParkingType {
@@ -76,7 +102,10 @@ export class Parking extends Model {
             ]
         };
 
-        const response: Parking[] = await this.findAll({ where, include: [include] });
+        const response: Parking[] = await this.findAll({
+            where,
+            include: [include]
+        });
 
         const formattedResponse: ParkingExtended[] = response.map(
             (parking: Parking) => {
@@ -90,6 +119,36 @@ export class Parking extends Model {
         );
 
         return formattedResponse;
+    }
+
+    static async findByPkFull(id: string, options: any): Promise<ParkingFull> {
+        const response = await Parking.findByPk(id, {
+            ...options,
+            include: [
+                {
+                    model: CarPool,
+                    attributes: [
+                        'license_plate',
+                        'brand',
+                        'model',
+                        'color',
+                        'provider',
+                        'gearbox_type',
+                        'fuel_type'
+                    ],
+                    include: [
+                        {
+                            model: Service,
+                            attributes: ['id', 'assigner', 'assignee', 'type', 'date']
+                        }
+                    ]
+                }
+            ]
+        });
+
+        const plain = response?.get({ plain: true });
+
+        return { ...plain, ...plain.car_pool, car_pool: undefined };
     }
 }
 

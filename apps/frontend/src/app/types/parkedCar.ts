@@ -43,10 +43,19 @@ export type ParkedCar = {
     billingEndDate?: string;
     base: Base;
     approved?: boolean;
+    id?: string;
+    carId?: string;
+    licensePlate?: string;
+    brand?: string;
+    model?: string;
+    color?: string;
+    provider?: string;
+    gearboxType?: GearboxType;
+    fuelType?: FuelType;
 };
 
 export type Car = {
-    id: number;
+    id: string;
     licensePlate: string;
     brand?: string;
     model?: string;

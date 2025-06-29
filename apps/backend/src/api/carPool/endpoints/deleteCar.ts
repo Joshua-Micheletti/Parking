@@ -7,7 +7,7 @@ import {
     validationResult
 } from 'express-validator';
 
-export const deleteCarInputValidation = [query('id').isNumeric()];
+export const deleteCarInputValidation = [query('id').isUUID()];
 export async function deleteCar(
     req: Request,
     res: Response,

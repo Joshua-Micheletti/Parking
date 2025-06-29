@@ -1,11 +1,6 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {
-    Car,
-    ParkedCar,
-    statuses,
-    statusTranslation
-} from '../../../../types/parkedCar';
-import { filter, skip, Subscription, take } from 'rxjs';
+import { Car, ParkedCar, statuses, statusTranslation } from '../../../../types/parkedCar';
+import { filter, firstValueFrom, skip, Subscription, take } from 'rxjs';
 import { Action, Column } from '../../../../types/table';
 import { TableComponent } from '../../../table/table.component';
 import { Base, bases, baseTranslation, Role } from '../../../../types/user';
@@ -27,10 +22,20 @@ import { CarService } from '../../../../services/car.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ErrorDialogComponent } from '../../../dialogs/error-dialog/error-dialog.component';
 import { ServiceComponent } from './service/service.component';
+import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
+import { ExtendedService } from '../../../../types/service';
+import { ServiceService } from '../../../../services/service.service';
 
 @Component({
     selector: 'app-parking-list',
-    imports: [TableComponent, BaseTabComponent, MatFormFieldModule, MatInputModule, MatDatepickerModule, ServiceComponent],
+    imports: [
+        TableComponent,
+        BaseTabComponent,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        ServiceComponent
+    ],
     templateUrl: './parking-list.component.html',
     styleUrl: './parking-list.component.scss'
 })
@@ -96,7 +101,7 @@ export class ParkingListComponent implements OnInit, OnDestroy {
             icon: 'edit'
         },
         {
-            callback: this.deleteCar.bind(this),
+            callback: this.openDeleteDialog.bind(this),
             name: 'features.parking.actions.delete',
             condition: 'selectedRow',
             icon: 'delete',
@@ -134,7 +139,8 @@ export class ParkingListComponent implements OnInit, OnDestroy {
         private _tableService: TableService,
         private _authService: AuthService,
         private _carService: CarService,
-        private _translateService: TranslateService
+        private _translateService: TranslateService,
+        private _serviceService: ServiceService
     ) {}
 
     ngOnInit(): void {
@@ -180,54 +186,56 @@ export class ParkingListComponent implements OnInit, OnDestroy {
     public openAddDialog(): void {
         this._carService.getAvailableCars();
 
-        const subscription: Subscription = this._carService.availableCars$.pipe(skip(1), take(1)).subscribe((cars: Car[]) => {
-            if (cars.length === 0) {
-                this._matDialog.open(ErrorDialogComponent, { data: { message: 'No available cars' } });
-                subscription.unsubscribe();
-                return;
-            }
+        const subscription: Subscription = this._carService.availableCars$
+            .pipe(skip(1), take(1))
+            .subscribe((cars: Car[]) => {
+                if (cars.length === 0) {
+                    this._matDialog.open(ErrorDialogComponent, { data: { message: 'No available cars' } });
+                    subscription.unsubscribe();
+                    return;
+                }
 
-            this.addCarControls[0].autoComplete = cars.map((car: Car) => {
-                let autocompleteOption: AutoCompleteOption;
+                this.addCarControls[0].autoComplete = cars.map((car: Car) => {
+                    let autocompleteOption: AutoCompleteOption;
 
-                autocompleteOption = {
-                    value: car.id,
-                    display: car.licensePlate,
-                    tooltip: this._carService.carTooltip(car)
+                    autocompleteOption = {
+                        value: car.id,
+                        display: car.licensePlate,
+                        tooltip: this._carService.carTooltip(car)
+                    };
+
+                    return autocompleteOption;
+                });
+
+                const data: FormDialogData = {
+                    title: 'features.parking.actions.add',
+                    controls: this.addCarControls,
+                    actions: [
+                        {
+                            callback: this.addCar.bind(this),
+                            name: 'features.parking.actions.add',
+                            icon: 'add'
+                        }
+                    ],
+                    groupSize: 2,
+                    formValidators: [
+                        greaterThanOrEqualValidator('billingEndDate', 'billingStartDate'),
+                        greaterThanOrEqualValidator('billingStartDate', 'enterDate'),
+                        greaterThanOrEqualValidator('billingEndDate', 'enterDate'),
+                        notFutureValidator('enterDate')
+                    ]
                 };
 
-                return autocompleteOption;
-            });
-
-            const data: FormDialogData = {
-                title: 'features.parking.actions.add',
-                controls: this.addCarControls,
-                actions: [
+                const dialogRef: MatDialogRef<FormDialogComponent> = this._matDialog.open<FormDialogComponent>(
+                    FormDialogComponent,
                     {
-                        callback: this.addCar.bind(this),
-                        name: 'features.parking.actions.add',
-                        icon: 'add'
+                        data
+                        // panelClass: 'custom-panel'
                     }
-                ],
-                groupSize: 2,
-                formValidators: [
-                    greaterThanOrEqualValidator('billingEndDate', 'billingStartDate'),
-                    greaterThanOrEqualValidator('billingStartDate', 'enterDate'),
-                    greaterThanOrEqualValidator('billingEndDate', 'enterDate'),
-                    notFutureValidator('enterDate')
-                ]
-            };
+                );
 
-            const dialogRef: MatDialogRef<FormDialogComponent> = this._matDialog.open<FormDialogComponent>(
-                FormDialogComponent,
-                {
-                    data
-                    // panelClass: 'custom-panel'
-                }
-            );
-
-            subscription.unsubscribe();
-        });
+                subscription.unsubscribe();
+            });
     }
 
     public addCar(car?: ParkedCar): void {
@@ -250,7 +258,55 @@ export class ParkingListComponent implements OnInit, OnDestroy {
 
     public updateCar(): void {}
 
-    public deleteCar(): void {}
+    public async openDeleteDialog(): Promise<void> {
+        if (this._selectedCar === null) {
+            console.error('called openDeleteDialog with selectedCar = null');
+            return;
+        }
+
+        if (!this._selectedCar.carId) {
+            return;
+        }
+
+        let response: ExtendedService[] | undefined;
+        let message: string = 'features.parking.dialogs.confirmDelete';
+
+        try {
+            response = await firstValueFrom(this._serviceService.getServices(this._selectedCar.carId));
+        }
+        catch (error) {
+            console.error(error);
+            return;
+        }
+
+        if (response !== undefined && Array.isArray(response) && response.length !== 0) {
+            message = 'features.parking.dialogs.confirmDeleteWithServices';
+        }
+
+        this._matDialog
+            .open(ConfirmDialogComponent, {
+                data: { message }
+            })
+            .afterClosed()
+            .subscribe((response: any) => {
+                if (response) {
+                    this.deleteCar();
+                }
+            });
+    }
+
+    public deleteCar(): void {
+        if (this._selectedCar === null) {
+            console.error('called deleteCar with selectedCar = null');
+            return;
+        }
+
+        if (!this._selectedCar.id) {
+            return;
+        }
+
+        this._parkingService.removeCar(this._selectedCar.id);
+    }
 
     public getCarsByBase(base: Base): ParkedCar[] {
         return this.cars.filter((car: ParkedCar) => car.base === base);

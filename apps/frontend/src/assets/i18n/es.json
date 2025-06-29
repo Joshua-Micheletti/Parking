@@ -29,7 +29,7 @@
                 "addUser": "Error añadendo el usuario",
                 "modifyUser": "Error modificando el usuario",
                 "getUser": "Error al obtener el usuario",
-                "getUsers":"Error al obtener los usuarios"
+                "getUsers": "Error al obtener los usuarios"
             }
         },
         "carPool": {
@@ -51,6 +51,11 @@
             "dialogs": {
                 "confirmDelete": "Confirmar la eliminacion del coche?",
                 "confirmUpdate": "Confirmar la modifica del coche?"
+            },
+            "errors": {
+                "getCar": "Error al obtener los coches",
+                "deleteCar": "Error al eliminar el coche",
+                "deleteCarDependency": "Error al eliminar el coche porque esta registrado en un aparcamiento. Por favor remuevas el coche del parking antes de eliminarlo"
             }
         },
         "parking": {
@@ -86,6 +91,10 @@
                     "delete": "Eliminar Servicio",
                     "edit": "Modificar Servicio"
                 }
+            },
+            "dialogs": {
+                "confirmDelete": "Confirmar la eliminacion del coche?",
+                "confirmDeleteWithServices": "Confirmar la eliminacion del coche? Hay servicios registrado a este coche y si sigues, estos servicios seran archiviados"
             }
         },
         "distances": {

@@ -50,6 +50,9 @@ async function setupDatabase() {
 
         /* --------------------------------- Service -------------------------------- */
         setupService(sequelize, CarPool, User, force);
+
+        CarPool.hasMany(Service, {foreignKey: 'car_id'});
+        CarPool.hasOne(Parking, {foreignKey: 'car_id'});
     }
 }
 

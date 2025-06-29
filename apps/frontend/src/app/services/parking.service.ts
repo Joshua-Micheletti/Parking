@@ -48,5 +48,20 @@ export class ParkingService {
 
     public updateCar(): void {}
 
-    public removeCar(): void {}
+    public removeCar(id: string): void {
+        const requestConfig: Endpoint = environment.endpoints['deleteCar'];
+
+        requestConfig.path = requestConfig.path.replace('{{id}}', id);
+
+        this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).subscribe({
+            next: (response: any) => {
+                this.getCars();
+            },
+            error: (error: any) => {
+                console.log(error);
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error deleting car' } });
+                return;
+            }
+        });
+    }
 }

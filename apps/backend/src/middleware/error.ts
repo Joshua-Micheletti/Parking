@@ -10,6 +10,7 @@ export default async function errorHandler(
   console.error(error);
 
   if (error instanceof Error) {
+    console.log(error.name);
     let message: any;
 
     try {

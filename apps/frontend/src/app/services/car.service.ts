@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Car } from '../types/parkedCar';
-import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { HttpService } from './http.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { UtilsService } from './utils.service';
@@ -8,6 +8,7 @@ import { Endpoint, environment } from '../../environments/environment';
 import { HttpRequest } from '@angular/common/http';
 import { ErrorDialogComponent } from '../components/dialogs/error-dialog/error-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,7 @@ export class CarService {
 
     constructor(
         private _httpService: HttpService,
-        private _dialog: Dialog,
+        private _dialog: MatDialog,
         private _utilsService: UtilsService,
         private _translateService: TranslateService
     ) {}
@@ -73,7 +74,7 @@ export class CarService {
             }),
             catchError((error: any) => {
                 console.log(error);
-                this._dialog.open(ErrorDialogComponent, { data: { message: 'Error getting car' } });
+                this._dialog.open(ErrorDialogComponent, { data: { message: 'features.carPool.errors.getCar' } });
                 return throwError(() => error);
             })
         );
@@ -95,7 +96,28 @@ export class CarService {
 
     public updateCar(): void {}
 
-    public removeCar(): void {}
+    public removeCar(carId: string): Observable<void> {
+        const requestConfig: Endpoint = JSON.parse(JSON.stringify(environment.endpoints['deleteCarPool']));
+
+        requestConfig.path = requestConfig.path.replace('{{id}}', carId);
+
+        return this._httpService.request(new HttpRequest(requestConfig.method, requestConfig.path, {})).pipe(
+            tap((response: any) => {
+                this.getCars();
+            }),
+            catchError((error: any) => {
+                console.log(error);
+                if (error.error?.message && error.error?.message.includes('foreign key')) {
+                    this._dialog.open(ErrorDialogComponent, {
+                        data: { message: 'features.carPool.errors.deleteCarDependency' }
+                    });
+                } else {
+                    this._dialog.open(ErrorDialogComponent, { data: { message: 'features.carPool.errors.deleteCar' } });
+                }
+                return throwError(() => error);
+            })
+        );
+    }
 
     public carTooltip(car: Car): string {
         let tooltipText: string = '';

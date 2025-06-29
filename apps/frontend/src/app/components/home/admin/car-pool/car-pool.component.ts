@@ -167,6 +167,11 @@ export class CarPoolComponent implements OnInit, OnDestroy {
     public updateCar(): void {}
 
     public openDeleteDialog(): void {
+        if (this._selectedCar === null) {
+            console.error('called openDeleteDialog with selectedCar = null');
+            return;
+        }
+
         this._matDialog
             .open(ConfirmDialogComponent, {
                 data: { title: 'common.confirm', message: 'features.carPool.dialogs.confirmDelete' }
@@ -180,8 +185,12 @@ export class CarPoolComponent implements OnInit, OnDestroy {
     }
 
     public deleteCar(): void {
-        console.log('delete car', this._selectedCar);
-        // this._carService.deleteCar(this._selectedCar);
+        if (this._selectedCar === null) {
+            console.error('called deleteCar with selectedCar = null');
+            return;
+        }
+
+        this._carService.removeCar(this._selectedCar.id).subscribe();
     }
 
     public onSelectedCar(car: Car | null) {
